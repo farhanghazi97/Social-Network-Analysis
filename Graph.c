@@ -72,12 +72,9 @@ int * ReadFile (char * filename) {
 			}
 		}*/
 		
-		char * token;
-		char * line[10];
-		while(fgets(buffer , BUFSIZ , fp) != NULL) {
-			token = strtok(buffer , " ");
-			printf("%s\n" , token);
-			
+		int data;
+		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
+			printf("%d\n" , data);
 		}
 		
 		// Close file
