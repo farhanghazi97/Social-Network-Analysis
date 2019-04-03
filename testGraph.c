@@ -30,10 +30,14 @@ int main(void) {
 	// Print graph to test output
 	showGraph(new_graph);
 	
-	printf("Inserting (3 , 5 , 20)\n");
+	// Test InsertEdge() function
+	printf("\nInserting (3 , 5 , 20)\n\n");
 	InsertEdge(new_graph , 3 , 5 , 20); 
+	showGraph(new_graph);
 	
-	
+	// Test RemoveEdge() function (still buggy - don't know why)
+	printf("\nRemoving (3 , 2 , 10)\n\n");
+	RemoveEdge(new_graph , 2 , 4);
 	showGraph(new_graph);
 	
 	// Free malloc'd DATA ARRAY

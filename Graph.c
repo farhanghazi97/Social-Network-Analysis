@@ -157,11 +157,27 @@ void showGraph(Graph g) {
 	}	
 }
 
-// Appends to approprate top level array list
+// Appends to appropriate top level adjacency list
 void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 	
 	AdjList new_node = newAdjListNode(dest , weight);
 	new_node->next = g->connections[src];
 	g->connections[src] = new_node;
+	
+}
+
+// Remove an edge from appropriate top level adjacency list
+void RemoveEdge (Graph g, Vertex src, Vertex dest) {
+	
+	AdjList curr = g->connections[src];
+	AdjList temp;
+	
+	while(curr != NULL) {
+		if(NodeDest(curr) == dest) {
+			temp = curr;
+			free(temp);
+		}
+		curr = curr->next;
+	}
 	
 }

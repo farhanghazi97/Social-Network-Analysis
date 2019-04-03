@@ -14,9 +14,9 @@ Edge    newEdge         (int source   , int dest , int weight);
 Graph   newGraph        (Edge * edges , int no_of_edges);							
 AdjList newAdjListNode  (int vertex   , int weight);
 
-void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  //DONE
-void  removeEdge   (Graph g, Vertex src, Vertex dest);
-bool  adjacent     (Graph g, Vertex src, Vertex dest);
+void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
+void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				// KINDA DONE
+bool  adjacent     (Graph g, Vertex src, Vertex dest);				
 
 int *  ReadFile   (char * filename);
 
