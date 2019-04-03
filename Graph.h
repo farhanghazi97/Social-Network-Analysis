@@ -8,20 +8,24 @@ typedef int Vertex;
 
 typedef struct  GraphRep    *Graph;
 typedef struct _adjListNode *AdjList;
+typedef struct  EdgeRep     *Edge;
 
-Graph newGraph(int noNodes);										// KINDA DONE
+Graph newGraph     (Edge * edges , int no_of_edges);							
 
 void  insertEdge   (Graph g, Vertex src, Vertex dest, int weight);
 void  removeEdge   (Graph g, Vertex src, Vertex dest);
 bool  adjacent     (Graph g, Vertex src, Vertex dest);
-int   numVerticies (Graph g);		   								// DONE
 
-int  * ReadFile   (char * filename);
+int *  ReadFile   (char * filename);
 int    NodeWeight (AdjList L);
-int    NodeVertex (AdjList L);
+int    NodeDest   (AdjList L);
+int    EdgeSource (Edge e);
+int    EdgeDest   (Edge e);
+int    EdgeWeight (Edge e);
 
 AdjList * GetConnectionsArray (Graph g);
 AdjList   newAdjListNode      (int vertex , int weight);
+Edge      newEdge             (int source , int dest , int weight);
 
 
 

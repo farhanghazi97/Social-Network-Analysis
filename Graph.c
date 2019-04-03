@@ -6,37 +6,70 @@
 #include "Graph.h"
 
 typedef struct GraphRep {
-	int nV;
-	int nE;
 	AdjList connections[MAX_NODES];
 } GraphRep;
 
 typedef struct _adjListNode {
-   Vertex      v;
+   Vertex      dest;
    int         weight;
    AdjList     next;
 } adjListNode;
 
+typedef struct EdgeRep {
+	int source;
+	int dest;
+	int weight;
+} EdgeRep;
 
-Graph newGraph(int noNodes) {
-	Graph new_graph = malloc(sizeof(Graph));
+// Construct graph from array of edge objects
+Graph newGraph(Edge * edges , int no_of_edges) {
+	
+	Graph new_graph = malloc(sizeof(struct GraphRep));
 	assert(new_graph != NULL);
-	new_graph->nV = noNodes;
-	new_graph->nE = 0;
-	new_graph->connections[MAX_NODES] = NULL;
+	
+	// Initialize top level vertex array to NULL pointers
+	for(int i = 0; i < MAX_NODES; i++) {
+		new_graph->connections[i] = NULL;
+	}
+	
+	// While iterating over the edge objects in array,
+	// modify graph structure. 
+	for(int i = 0; i < no_of_edges; i++) {
+		
+		int src = EdgeSource(edges[i]);
+		int dest = EdgeDest(edges[i]);
+		int weight = EdgeWeight(edges[i]);
+		
+		// Set up links between top level vertex array
+		// and the vertices they connect to
+		
+		AdjList new_node = newAdjListNode(dest , weight);
+		new_node->next = new_graph->connections[src];
+		new_graph->connections[src] = new_node;
+		
+	}
+	
 	return new_graph;
 }
 
-AdjList newAdjListNode (int vertex , int weight) {
+
+// Allocate a new Adjacency List Node
+AdjList newAdjListNode (int dest , int weight) {
 	AdjList new_node = malloc(sizeof(AdjList));
-	new_node->v = vertex;
+	new_node->dest = dest;
 	new_node->weight = weight;
 	new_node->next = NULL;
 	return new_node;
 }
 
-int numVerticies (Graph g) {
-	return g->nV;
+// Allocate a new Edge object
+Edge newEdge (int source , int dest , int weight) {
+	Edge new_edge = malloc(sizeof(Edge));
+	assert(new_edge != NULL);
+	new_edge->source = source;
+	new_edge->dest = dest;
+	new_edge->weight = weight;
+	return new_edge;
 }
 
 int * ReadFile (char * filename) {
@@ -56,14 +89,18 @@ int * ReadFile (char * filename) {
 		
 		// Malloc enough space to hold just those numbers
 		// where every line has 3 numbers
+		//int * array = malloc(lines * 3 * sizeof(int));
 		int * array = malloc(lines * 3 * sizeof(int));
 		
 		// Reset file pointer to beginning of file
 		rewind(fp);
-		
-		
+			
 		// Grab data points from input file
 		int data;
+		
+		array[i] = (lines * 3);
+		i++;
+		
 		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
 			array[i] = data;
 			i++;
@@ -71,9 +108,9 @@ int * ReadFile (char * filename) {
 		
 		// Close file
 		fclose(fp);
-		
-		//return array of data
+
 		return array;
+		
 	} else {
 	
 		//ERROR: File does not exist
@@ -85,10 +122,38 @@ AdjList * GetConnectionsArray(Graph g) {
 	return g->connections;
 }
 
-int NodeVertex (AdjList L) {
-	return L->v;
+int NodeDest (AdjList L) {
+	return L->dest;
 }
 
 int NodeWeight (AdjList L) {
 	return L->weight;
+}
+
+int EdgeSource (Edge e) {
+	return e->source;
+}
+
+int EdgeDest   (Edge e) {
+	return e->dest;
+}
+
+int EdgeWeight (Edge e) {
+	return e->weight;
+}
+
+// Helper function to print Graph data.
+void showGraph(Graph g) {
+	
+	for(int i = 0; i < MAX_NODES; i++) {
+		AdjList curr = g->connections[i];
+		if(curr != NULL) {
+			while(curr != NULL) {
+				printf("%d , %d (%d)  " , i , curr->dest , curr->weight);
+				curr = curr->next;
+			}
+			printf("\n");
+		}
+	}
+	
 }
