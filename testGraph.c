@@ -27,8 +27,16 @@ int main(void) {
 	// Using data from the array of edges , we construct graph
 	Graph new_graph = newGraph(edges , number_of_edges);
 	
+	// Print graph to test output
 	showGraph(new_graph);
 	
+	printf("Inserting (3 , 5 , 20)\n");
+	InsertEdge(new_graph , 3 , 5 , 20); 
+	
+	
+	showGraph(new_graph);
+	
+	// Free malloc'd DATA ARRAY
 	free(array);
 	
 }

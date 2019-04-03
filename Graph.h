@@ -10,24 +10,25 @@ typedef struct  GraphRep    *Graph;
 typedef struct _adjListNode *AdjList;
 typedef struct  EdgeRep     *Edge;
 
-Graph newGraph     (Edge * edges , int no_of_edges);							
+Edge    newEdge         (int source   , int dest , int weight);
+Graph   newGraph        (Edge * edges , int no_of_edges);							
+AdjList newAdjListNode  (int vertex   , int weight);
 
-void  insertEdge   (Graph g, Vertex src, Vertex dest, int weight);
+void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  //DONE
 void  removeEdge   (Graph g, Vertex src, Vertex dest);
 bool  adjacent     (Graph g, Vertex src, Vertex dest);
 
 int *  ReadFile   (char * filename);
+
+// Various helper functions to test pass-around of data
 int    NodeWeight (AdjList L);
 int    NodeDest   (AdjList L);
 int    EdgeSource (Edge e);
 int    EdgeDest   (Edge e);
 int    EdgeWeight (Edge e);
 
-AdjList * GetConnectionsArray (Graph g);
-AdjList   newAdjListNode      (int vertex , int weight);
-Edge      newEdge             (int source , int dest , int weight);
 
-
+//AdjList * GetConnectionsArray (Graph g);
 
 
 /*

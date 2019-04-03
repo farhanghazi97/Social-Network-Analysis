@@ -55,7 +55,7 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 
 // Allocate a new Adjacency List Node
 AdjList newAdjListNode (int dest , int weight) {
-	AdjList new_node = malloc(sizeof(AdjList));
+	AdjList new_node = malloc(sizeof(struct _adjListNode));
 	new_node->dest = dest;
 	new_node->weight = weight;
 	new_node->next = NULL;
@@ -89,7 +89,6 @@ int * ReadFile (char * filename) {
 		
 		// Malloc enough space to hold just those numbers
 		// where every line has 3 numbers
-		//int * array = malloc(lines * 3 * sizeof(int));
 		int * array = malloc(lines * 3 * sizeof(int));
 		
 		// Reset file pointer to beginning of file
@@ -109,6 +108,7 @@ int * ReadFile (char * filename) {
 		// Close file
 		fclose(fp);
 
+		// return array with data
 		return array;
 		
 	} else {
@@ -149,11 +149,19 @@ void showGraph(Graph g) {
 		AdjList curr = g->connections[i];
 		if(curr != NULL) {
 			while(curr != NULL) {
-				printf("%d , %d (%d)  " , i , curr->dest , curr->weight);
+				printf("%d -> %d (%d)  " , i , curr->dest , curr->weight);
 				curr = curr->next;
 			}
 			printf("\n");
 		}
-	}
+	}	
+}
+
+// Appends to approprate top level array list
+void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
+	
+	AdjList new_node = newAdjListNode(dest , weight);
+	new_node->next = g->connections[src];
+	g->connections[src] = new_node;
 	
 }
