@@ -4,9 +4,6 @@
 #include <string.h>
 
 #include "Graph.h"
-#define MAX_NODES 10
-
-//HI there!
 
 typedef struct GraphRep {
 	int nV;
@@ -44,7 +41,8 @@ int numVerticies (Graph g) {
 
 int * ReadFile (char * filename) {
     
-    int number; int actual_number; int i = 0; int lines = 0;
+    int i = 0;
+    int lines = 0;
     
 	FILE * fp = fopen(filename , "r");
 	
@@ -63,18 +61,12 @@ int * ReadFile (char * filename) {
 		// Reset file pointer to beginning of file
 		rewind(fp);
 		
-		// Find relevant data from file (vertex , connects-to , weight)
-		/*while((number = fgetc(fp)) != '\n') {
-			if((number != 44 && number != 32)) {
-				number = number - 48;
-				array[i] = number;
-				i++;
-			}
-		}*/
 		
+		// Grab data points from input file
 		int data;
 		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
-			printf("%d\n" , data);
+			array[i] = data;
+			i++;
 		}
 		
 		// Close file

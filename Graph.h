@@ -1,6 +1,7 @@
 // Graph ADT interface for Ass2 (COMP2521)
 
 #include <stdbool.h>
+#define MAX_NODES 10
 
 // vertices are ints
 typedef int Vertex;
