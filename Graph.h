@@ -10,7 +10,6 @@ typedef struct  GraphRep    *Graph;
 typedef struct _adjListNode *AdjList;
 typedef struct  EdgeRep     *Edge;
 
-
 // Create graph by using data from egdes array
 Graph newGraph  (Edge * edges, int no_of_edges);
 
@@ -26,11 +25,14 @@ void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
 //Remove an edge between given vertices
 void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				// KINDA DONE
 
-// Free all the memory associated with the graph g 
+// Free all the memory associated with the graph
 void  FreeGraph    (Graph g);
 
 // Display graph structure
 void  showGraph    (Graph g);
+
+// Free all memory associated with Edges array
+void FreeEdgesArray(Edge * edges, int NEdges);
 
 // Determine if given vertices are adjacent to each other
 bool  Adjacent     (Graph g, Vertex src, Vertex dest);				
@@ -45,12 +47,9 @@ int    EdgeSource (Edge e);
 int    EdgeDest   (Edge e);
 int    EdgeWeight (Edge e);
 
-// Free memory associated with Edges array
-void FreeEdgesArray(Edge * edges, int NEdges);
 
 // Return connections list of graph
-//AdjList * GetConnectionsArray (Graph g);
-
+// AdjList * GetConnectionsArray (Graph g);
 
 /*
  * Returns a list of adjacent vertices

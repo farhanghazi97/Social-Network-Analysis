@@ -5,16 +5,21 @@
 
 #include "Graph.h"
 
+// Struct representing Graph
 typedef struct GraphRep {
 	AdjList connections[MAX_NODES];
 } GraphRep;
 
+// Struct representing individual nodes 
+// that populate the Graph struct
 typedef struct _adjListNode {
    Vertex      dest;
    int         weight;
    AdjList     next;
 } adjListNode;
 
+// Struct representing the connections 
+// between nodes and the weight between them 
 typedef struct EdgeRep {
 	int source;
 	int dest;
@@ -49,6 +54,7 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		
 	}
 	
+	// Return updated graph structure
 	return new_graph;
 }
 
@@ -72,11 +78,13 @@ Edge newEdge (int source , int dest , int weight) {
 	return new_edge;
 }
 
+// Parse input file and grab relevant data
 int * ReadFile (char * filename) {
     
     int i = 0;
     int lines = 0;
     
+    // Open file for reading
 	FILE * fp = fopen(filename , "r");
 	
 	char buffer[BUFSIZ];
@@ -94,12 +102,12 @@ int * ReadFile (char * filename) {
 		// Reset file pointer to beginning of file
 		rewind(fp);
 			
-		// Grab data points from input file
-		int data;
-		
+		// Package size of array into array index;
 		array[i] = (lines * 3);
 		i++;
 		
+		// Grab data points from input file and store in array
+		int data;
 		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
 			array[i] = data;
 			i++;
@@ -117,6 +125,8 @@ int * ReadFile (char * filename) {
 		printf("Could not open file!\n");
 	}
 }
+
+//  -----------------   HELPER FUNCTIONS START ------------- //
 
 AdjList * GetConnectionsArray(Graph g) {
 	return g->connections;
@@ -142,7 +152,9 @@ int EdgeWeight (Edge e) {
 	return e->weight;
 }
 
-// Helper function to print Graph data.
+//  -----------------   HELPER FUNCTIONS END ------------- //
+
+// Display graph structure
 void showGraph(Graph g) {
 	
 	for(int i = 0; i < MAX_NODES; i++) {
@@ -169,18 +181,12 @@ void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 // Remove an edge from appropriate top level adjacency list
 void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	
-	AdjList curr = g->connections[src];
-	AdjList temp;
 	
-	while(curr != NULL) {
-		if(NodeDest(curr) == dest) {
-			temp = curr;
-			free(temp);
-		}
-		curr = curr->next;
-	}
+	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
+	
 }
 
+// Determines if vertices are adjacent to each other
 bool Adjacent (Graph g, Vertex src, Vertex dest) {
 
 	AdjList curr = g->connections[src];
@@ -195,13 +201,14 @@ bool Adjacent (Graph g, Vertex src, Vertex dest) {
 	return flag; 
 }
 
+// Free all memory associated with Edges array
 void FreeEdgesArray(Edge * edges , int NEdges) {
 	for(int i = 0; i < NEdges; i++) {
 		free(edges[i]);
 	}
 }
 
-
+// Free all the memory associated with the graph
 void FreeGraph(Graph g) {
 	if(g != NULL) {
 		for(int i = 0; i < MAX_NODES; i++) {
