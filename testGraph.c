@@ -35,12 +35,30 @@ int main(void) {
 	InsertEdge(new_graph , 3 , 5 , 20); 
 	showGraph(new_graph);
 	
-	// Test RemoveEdge() function (still buggy - don't know why)
-	printf("\nRemoving (3 , 2 , 10)\n\n");
-	RemoveEdge(new_graph , 2 , 4);
+	printf("\nInserting (0, 6 , 12)\n\n");
+	InsertEdge(new_graph , 0 , 6 , 12);
 	showGraph(new_graph);
+	
+	// Test RemoveEdge() function (still buggy - don't know why)
+	//printf("\nRemoving (3 , 2 , 10)\n\n");
+	//RemoveEdge(new_graph , 2 , 4);
+	//showGraph(new_graph);
+	
+	// Test Adjacent() function
+	bool flag;
+	
+	
+	printf("\nIs 3 adjacent to 5 ?\n");
+	flag = Adjacent(new_graph , 3 , 5);
+	if(flag) {
+		printf("Adjacent\n\n");
+	} else {
+		printf("Not adjacent\n\n");
+	}
 	
 	// Free malloc'd DATA ARRAY
 	free(array);
+	FreeEdgesArray(edges , number_of_edges);
+	FreeGraph(new_graph);
 	
 }

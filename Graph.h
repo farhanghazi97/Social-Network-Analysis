@@ -16,7 +16,7 @@ AdjList newAdjListNode  (int vertex   , int weight);
 
 void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
 void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				// KINDA DONE
-bool  adjacent     (Graph g, Vertex src, Vertex dest);				
+bool  Adjacent     (Graph g, Vertex src, Vertex dest);				
 
 int *  ReadFile   (char * filename);
 
@@ -26,6 +26,8 @@ int    NodeDest   (AdjList L);
 int    EdgeSource (Edge e);
 int    EdgeDest   (Edge e);
 int    EdgeWeight (Edge e);
+
+void FreeEdgesArray(Edge * edges, int NEdges);
 
 
 //AdjList * GetConnectionsArray (Graph g);
@@ -65,5 +67,5 @@ void  showGraph(Graph g);
  * Free all the memory associated with the graph g 
  **/
 
-void  freeGraph(Graph g);
+void  FreeGraph(Graph g);
 

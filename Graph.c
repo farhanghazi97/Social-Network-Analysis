@@ -179,5 +179,39 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 		}
 		curr = curr->next;
 	}
+}
+
+bool Adjacent (Graph g, Vertex src, Vertex dest) {
+
+	AdjList curr = g->connections[src];
+	bool flag = false;
 	
+	while(curr != NULL) {
+		if(NodeDest(curr) == dest) {
+			flag = true;
+		}
+		curr = curr->next;
+	}
+	return flag; 
+}
+
+void FreeEdgesArray(Edge * edges , int NEdges) {
+	for(int i = 0; i < NEdges; i++) {
+		free(edges[i]);
+	}
+}
+
+
+void FreeGraph(Graph g) {
+	if(g != NULL) {
+		for(int i = 0; i < MAX_NODES; i++) {
+			AdjList curr = g->connections[i];
+			while(curr != NULL) {
+				AdjList temp = curr;
+				free(temp);
+				curr = curr->next;
+			}
+		}
+	}	
+	free(g);
 }
