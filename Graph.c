@@ -242,6 +242,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 					AdjNode temp = curr->next;
 					curr->next = NULL;
 					free(temp);
+					found = true;
 					break; 
 				} else {
 					// Remove between head and tail of list

@@ -56,17 +56,33 @@ int main(void) {
 	RemoveEdge(new_graph , 2, 7);
 	showGraph(new_graph);
 	
-	printf("\nRemoving (2 --> 4) - TAIL OF LIST\n\n");
+	printf("\nRemoving (2 --> 4) - TAIL OF SAME LIST\n\n");
 	RemoveEdge(new_graph , 2, 4);
 	showGraph(new_graph);
 	
-	printf("\nRemoving (3 --> 2) - TAIL OF SAME LIST\n\n");
+	printf("\nRemoving (0 --> 4) - TAIL OF DIFFERENT LIST (1)\n\n");
+	RemoveEdge(new_graph , 0, 4);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (3 --> 2) - TAIL OF DIFFERNT LIST (2)\n\n");
 	RemoveEdge(new_graph , 3, 2);
 	showGraph(new_graph);
 	
 	printf("\nRemoving (3 --> 5) - SINGLE NODE (HEAD + TAIL)\n\n");
 	RemoveEdge(new_graph , 3, 5);
 	showGraph(new_graph);
+	
+	printf("\nRemoving (0 --> 6) - SINGLE NODE (HEAD + TAIL)\n\n");
+	RemoveEdge(new_graph , 0, 6);
+	showGraph(new_graph);
+	
+	/*  throws error here - only when there are two nodes on each list)
+	
+	printf("\nRemoving (2 --> 3)\n\n");
+	RemoveEdge(new_graph , 2, 3);
+	showGraph(new_graph);
+	
+	-------------------------------------------------------------------- */
 	
 	printf("\nRemoving (2 --> 9) - INVALID INPUT\n\n");
 	RemoveEdge(new_graph , 2 , 9);
