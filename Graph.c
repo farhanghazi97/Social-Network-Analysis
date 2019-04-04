@@ -11,7 +11,7 @@ typedef struct GraphRep {
 	AdjNode connections [MAX_NODES];
 } GraphRep;
 
-// Struct to keep track of length of adjacency 
+// Struct to keep track of length of adjacency
 // lists within connections array in main Graph struct
 typedef struct _adjList {
 	int size;
@@ -19,7 +19,7 @@ typedef struct _adjList {
 	AdjNode last;
 } adjList;
 
-// Struct representing individual nodes 
+// Struct representing individual nodes
 // that populate the Graph struct
 typedef struct _adjListNode {
    Vertex      dest;
@@ -27,8 +27,8 @@ typedef struct _adjListNode {
    AdjNode     next;
 } adjListNode;
 
-// Struct representing the connections 
-// between nodes and the weight between them 
+// Struct representing the connections
+// between nodes and the weight between them
 typedef struct EdgeRep {
 	int source;
 	int dest;
@@ -37,39 +37,39 @@ typedef struct EdgeRep {
 
 // Construct graph from array of edge objects
 Graph newGraph(Edge * edges , int no_of_edges) {
-	
+
 	Graph new_graph = malloc(sizeof(struct GraphRep));
 	assert(new_graph != NULL);
-	
+
 	// Initialize top level vertex array to NULL pointers
 	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->connections[i] = NULL;
 	}
-	
+
 	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->L[i] = newAdjList();
 	}
-	
+
 	// While iterating over the edge objects in array,
-	// modify graph structure. 
+	// modify graph structure.
 	for(int i = 0; i < no_of_edges; i++) {
-		
+
 		int src = EdgeSource(edges[i]);
 		int dest = EdgeDest(edges[i]);
 		int weight = EdgeWeight(edges[i]);
-		
+
 		// Set up links between top level vertex array
 		// and the vertices they connect to
-		
+
 		AdjNode new_node = newAdjNode(dest , weight);
 		new_node->next = new_graph->connections[src];
 		new_graph->connections[src] = new_node;
 		new_graph->L[src]->size++;
-		
+
 		//Set first to point to head of each adjacency list that is updated
 		new_graph->L[src]->first = new_node;
 	}
-	
+
 	// Return updated graph structure
 	return new_graph;
 }
@@ -82,6 +82,10 @@ AdjNode newAdjNode (int dest , int weight) {
 	new_node->weight = weight;
 	new_node->next = NULL;
 	return new_node;
+}
+
+AdjNode outIncident(Graph g, Vertex v) {
+	return g->connections[v];
 }
 
 // Allocate a new Edge object
@@ -106,47 +110,47 @@ AdjList newAdjList (void) {
 
 // Parse input file and grab relevant data
 int * ReadFile (char * filename) {
-    
+
     int i = 0;
     int lines = 0;
-    
+
     // Open file for reading
 	FILE * fp = fopen(filename , "r");
-	
+
 	char buffer[BUFSIZ];
 	if(fp != NULL) {
-		
+
 		// Determine how many sets of entries there are
 		while(fgets(buffer , BUFSIZ , fp) != NULL) {
 			lines++;
 		}
-		
+
 		// Malloc enough space to hold just those numbers
 		// where every line has 3 numbers
 		int * array = malloc(lines * 3 * sizeof(int));
-		
+
 		// Reset file pointer to beginning of file
 		rewind(fp);
-			
+
 		// Package size of array into array index;
 		array[i] = (lines * 3);
 		i++;
-		
+
 		// Grab data points from input file and store in array
 		int data;
 		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
 			array[i] = data;
 			i++;
 		}
-		
+
 		// Close file
 		fclose(fp);
 
 		// return array with data
 		return array;
-		
+
 	} else {
-	
+
 		//ERROR: File does not exist
 		printf("Could not open file!\n");
 	}
@@ -194,7 +198,7 @@ int EdgeWeight (Edge e) {
 
 // Display graph structure
 void showGraph(Graph g) {
-	
+
 	for(int i = 0; i < MAX_NODES; i++) {
 		AdjNode curr = g->connections[i];
 		//if(g->L[i]->size > 0) {
@@ -207,50 +211,63 @@ void showGraph(Graph g) {
 			}
 			printf("\n");
 		}
-	}	
+	}
+}
+
+void PrintAdjList(AdjNode OutList) {
+	if(OutList != NULL) {
+		AdjNode curr = OutList;
+		while(curr != NULL) {
+			printf("Vertex: %d | Weight: %d\n" , NodeDest(curr) , NodeWeight(curr));
+			curr = curr->next;
+
+		}
+	} else {
+		printf("Pointer is NULL\n");
+	}
 }
 
 // Appends to appropriate top level adjacency list
 void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
-	
-	// 
+
+	//
 	AdjNode new_node = newAdjNode(dest , weight);
 	new_node->next = g->connections[src];
 	g->connections[src] = new_node;
 	g->L[src]->size++;
-	
+
 }
 
 // Remove an edge from appropriate top level adjacency list
 void RemoveEdge (Graph g, Vertex src, Vertex dest) {
-	
+
 	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
-	
+
 	// Update - Introduced a new ((AdjList)) struct (see above)
 	//          that will keep track of the length of each individual
 	//			adjacency list in array, plus have pointers to head and tail
-	
+
 	AdjNode curr = g->connections[src];
-	
+
 	bool found = false;
 	if(curr != NULL) {
 		if(NodeDest(curr) == dest) {
-			
+
 			// Remove head of list
 			AdjNode temp = curr;
 			g->connections[src] = curr->next;
 			free(temp);
 			g->L[src]->size--;
-	
+
 		} else {
-		
+
 			int size = g->L[src]->size;
 			int i = 1;
-		
+
 			while(curr->next != NULL) {
 				if(NodeDest(curr->next) == dest) {
 					if(i + 1 == size) {
-					
+
 						// Remove tail of list
 						AdjNode temp = curr->next;
 						curr->next = NULL;
@@ -258,11 +275,11 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 						g->L[src]->size--;
 						found = true;
 						break;
-				
+
 					} else {
-					
+
 						// Remove between head and tail of list
-					
+
 						AdjNode temp = curr->next;
 						curr->next = curr->next->next;
 						free(temp);
@@ -274,7 +291,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 				curr = curr->next;
 				i++;
 			}
-			if(!found) printf("Connection does not exist!\n"); 
+			if(!found) printf("Connection does not exist!\n");
 		}
 	}
 }
@@ -284,14 +301,14 @@ bool Adjacent (Graph g, Vertex src, Vertex dest) {
 
 	AdjNode curr = g->connections[src];
 	bool flag = false;
-	
+
 	while(curr != NULL) {
 		if(NodeDest(curr) == dest) {
 			flag = true;
 		}
 		curr = curr->next;
 	}
-	return flag; 
+	return flag;
 }
 
 // Free all memory associated with Edges array
@@ -304,7 +321,7 @@ void FreeEdgesArray(Edge * edges , int NEdges) {
 // Free all the memory associated with the graph
 void FreeGraph(Graph g) {
 	if(g != NULL) {
-	
+
 		//Free connections array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjNode curr = g->connections[i];
@@ -314,14 +331,14 @@ void FreeGraph(Graph g) {
 				curr = curr->next;
 			}
 		}
-		
+
 		//Free AdjList Tracker array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjList temp = g->L[i];
 			free(temp);
 		}
-	}	
-	
+	}
+
 	// Free pointer
 	free(g);
 }

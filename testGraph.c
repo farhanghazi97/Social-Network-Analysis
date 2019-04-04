@@ -52,6 +52,11 @@ int main(void) {
 	InsertEdge(new_graph , 4 , 8 , 25);
 	showGraph(new_graph);
 
+	printf("\n// ---------- TEST OUTINCIDENT() FUNCTION ----------//\n\n");
+
+	AdjNode OutList = outIncident(new_graph , 2);
+	PrintAdjList(OutList);
+
 	printf("\n// ---------- TEST ADJACENT() FUNCTION ---------- //\n");
 
 	// ---------- TEST ADJACENT() FUNCTION ---------- //

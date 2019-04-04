@@ -11,7 +11,7 @@ typedef struct _adjListNode *AdjNode;
 typedef struct _adjList     *AdjList;
 typedef struct  EdgeRep     *Edge;
 
-// Allocate a new Node structure						
+// Allocate a new Node structure
 AdjNode newAdjNode  (Vertex vertex, int weight);
 
 // Create graph by using data from egdes array
@@ -24,10 +24,10 @@ Edge newEdge    (Vertex source, Vertex dest, int weight);
 AdjList newAdjList (void);
 
 // Insert an edge between given vertices
-void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
+void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight); 
 
 //Remove an edge between given vertices
-void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				
+void  RemoveEdge   (Graph g, Vertex src, Vertex dest);
 
 // Free all the memory associated with the graph
 void  FreeGraph    (Graph g);
@@ -35,11 +35,14 @@ void  FreeGraph    (Graph g);
 // Display graph structure
 void  showGraph    (Graph g);
 
+// Print Adjacency List
+void  PrintAdjList  (AdjNode OutList);
+
 // Free all memory associated with Edges array
 void FreeEdgesArray(Edge * edges, int NEdges);
 
 // Determine if given vertices are adjacent to each other
-bool  Adjacent     (Graph g, Vertex src, Vertex dest);				
+bool  Adjacent     (Graph g, Vertex src, Vertex dest);
 
 // Parse data from given input file
 int *  ReadFile   (char * filename);
@@ -52,16 +55,10 @@ int    EdgeDest   (Edge e);
 int    EdgeWeight (Edge e);
 // AdjNode * GetConnectionsArray (Graph g);
 
-/*
- * Returns a list of adjacent vertices
- * on outgoing edges from a given vertex.
-**/
+// Returns a list of adjacent vertices
+// on outgoing edges from a given vertex.
 AdjNode outIncident(Graph g, Vertex v);
-/*
 
- * Returns a list of adjacent vertices
- * on incoming edges from a given vertex.
-**/
+// Returns a list of adjacent vertices
+// on incoming edges from a given vertex.
 AdjNode inIncident(Graph g, Vertex v);
-
-
