@@ -155,27 +155,39 @@ int * ReadFile (char * filename) {
 //  -----------------   HELPER FUNCTIONS START ------------- //
 
 AdjNode * GetConnectionsArray(Graph g) {
-	return g->connections;
+	if(g != NULL) {
+		return g->connections;
+	}
 }
 
 int NodeDest (AdjNode L) {
-	return L->dest;
+	if(L != NULL) {
+		return L->dest;
+	}
 }
 
 int NodeWeight (AdjNode L) {
-	return L->weight;
+	if(L != NULL) {
+		return L->weight;
+	}
 }
 
 int EdgeSource (Edge e) {
-	return e->source;
+	if(e != NULL) {
+		return e->source;
+	}
 }
 
 int EdgeDest   (Edge e) {
-	return e->dest;
+	if(e != NULL) {
+		return e->dest;
+	}
 }
 
 int EdgeWeight (Edge e) {
-	return e->weight;
+	if(e != NULL) {
+		return e->weight;
+	}
 }
 
 //  -----------------   HELPER FUNCTIONS END ------------- //
@@ -221,51 +233,50 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	AdjNode curr = g->connections[src];
 	
 	bool found = false;
-	
-	if(NodeDest(curr) == dest) {
+	if(curr != NULL) {
+		if(NodeDest(curr) == dest) {
 			
-		// Remove head of list
-		AdjNode temp = curr;
-		g->connections[src] = curr->next;
-		free(temp);
-		g->L[src]->size--;
-		return;
+			// Remove head of list
+			AdjNode temp = curr;
+			g->connections[src] = curr->next;
+			free(temp);
+			g->L[src]->size--;
 	
-	} else {
+		} else {
 		
-		int size = g->L[src]->size;
-		int i = 1;
+			int size = g->L[src]->size;
+			int i = 1;
 		
-		while(curr->next != NULL) {
-			if(NodeDest(curr->next) == dest) {
-				if(i + 1 == size) {
+			while(curr->next != NULL) {
+				if(NodeDest(curr->next) == dest) {
+					if(i + 1 == size) {
 					
-					// Remove tail of list
-					AdjNode temp = curr->next;
-					curr->next = NULL;
-					free(temp);
-					g->L[src]->size--;
-					found = true;
-					break;
+						// Remove tail of list
+						AdjNode temp = curr->next;
+						curr->next = NULL;
+						free(temp);
+						g->L[src]->size--;
+						found = true;
+						break;
 				
-				} else {
+					} else {
 					
-					// Remove between head and tail of list
+						// Remove between head and tail of list
 					
-					AdjNode temp = curr->next;
-					curr->next = curr->next->next;
-					free(temp);
-					g->L[src]->size--;
-					found = true;
+						AdjNode temp = curr->next;
+						curr->next = curr->next->next;
+						free(temp);
+						g->L[src]->size--;
+						found = true;
+						break;
+					}
 				}
+				curr = curr->next;
+				i++;
 			}
-			curr = curr->next;
-			i++;
+			if(!found) printf("Connection does not exist!\n"); 
 		}
 	}
-	
-	if(!found) printf("Connection does not exist!\n"); 
-	
 }
 
 // Determines if vertices are adjacent to each other

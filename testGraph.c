@@ -88,6 +88,14 @@ int main(void) {
 	RemoveEdge(new_graph , 2 , 9);
 	showGraph(new_graph);
 	
+	printf("\nRemoving (1 --> 4) - INVALID INPUT\n\n");
+	RemoveEdge(new_graph , 1 , 4);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (4 --> 9) - INVALID INPUT\n\n");
+	RemoveEdge(new_graph , 4 , 9);
+	showGraph(new_graph);
+	
 	// Test Adjacent() function
 	bool flag;
 	
