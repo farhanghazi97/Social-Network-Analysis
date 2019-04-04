@@ -39,9 +39,21 @@ int main(void) {
 	InsertEdge(new_graph , 0 , 6 , 12);
 	showGraph(new_graph);
 	
-	// Test RemoveEdge() function (still buggy - don't know why)
-	printf("\nRemoving (2 , 8 , 15)\n\n");
-	RemoveEdge(new_graph , 2 , 8);
+	// Test RemoveEdge() function 
+	printf("\nRemoving (2 --> 10) - HEAD OF LIST\n\n");
+	RemoveEdge(new_graph , 2 , 10);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (2 --> 1) - INBETWEEN HEAD AND TAIL\n\n");
+	RemoveEdge(new_graph , 2, 1);
+	showGraph(new_graph);
+	
+	//printf("\nRemoving (2 , 4 , 3) - TAIL OF LIST\n\n");
+	//RemoveEdge(new_graph , 2, 4);
+	//showGraph(new_graph);
+	
+	printf("\nRemoving (2 --> 9) - INVALID INPUT\n\n");
+	RemoveEdge(new_graph , 2 , 9);
 	showGraph(new_graph);
 	
 	// Test Adjacent() function

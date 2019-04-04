@@ -221,18 +221,34 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	int size = g->L[src]->size;
 	
 	int i = 0;
-	while(curr->next != NULL) {
-		if(NodeDest(curr->next) == dest) {
+	bool found = false;
+	
+	if(NodeDest(curr) == dest) {
 			
-			// Handles removal between head and tail
-			AdjNode temp = curr->next;
-			curr->next = curr->next->next;
-			free(temp);
-			g->L[src]->size--;
+		// Remove head of list
+		AdjNode temp = curr;
+		g->connections[src] = curr->next;
+		free(temp);
+		return;
+	
+	} else {
+		
+		while(curr->next != NULL) {
+			if(NodeDest(curr->next) == dest) {
+			
+				// Handles removal between head and tail
+				AdjNode temp = curr->next;
+				curr->next = curr->next->next;
+				free(temp);
+				g->L[src]->size--;
+				found = true;
+			}
+			curr = curr->next;
+			i++;
 		}
-		curr = curr->next;
-		i++;
 	}
+	if(!found) printf("Connection does not exist!\n"); 
+	
 }
 
 // Determines if vertices are adjacent to each other
