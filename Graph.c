@@ -218,9 +218,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	//			adjacency list in array, plus have pointers to head and tail
 	
 	AdjNode curr = g->connections[src];
-	int size = g->L[src]->size;
 	
-	int i = 0;
 	bool found = false;
 	
 	if(NodeDest(curr) == dest) {
@@ -229,24 +227,37 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 		AdjNode temp = curr;
 		g->connections[src] = curr->next;
 		free(temp);
+		g->L[src]->size--;
 		return;
 	
 	} else {
 		
+		int size = g->L[src]->size - 1;
+		int i = 1;
+		
 		while(curr->next != NULL) {
 			if(NodeDest(curr->next) == dest) {
-			
-				// Handles removal between head and tail
-				AdjNode temp = curr->next;
-				curr->next = curr->next->next;
-				free(temp);
-				g->L[src]->size--;
-				found = true;
+				if(i == size) {
+					// Remove tail of list
+					AdjNode temp = curr->next;
+					curr->next = NULL;
+					free(temp);
+					break; 
+				} else {
+					// Remove between head and tail of list
+					AdjNode temp = curr->next;
+					curr->next = curr->next->next;
+					free(temp);
+					g->L[src]->size--;
+					found = true;
+				}
 			}
 			curr = curr->next;
 			i++;
 		}
 	}
+	
+	
 	if(!found) printf("Connection does not exist!\n"); 
 	
 }

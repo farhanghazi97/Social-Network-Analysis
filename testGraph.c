@@ -31,12 +31,16 @@ int main(void) {
 	showGraph(new_graph);
 	
 	// Test InsertEdge() function
-	printf("\nInserting (3 , 5 , 20)\n\n");
+	printf("\nInserting ( 3 --> 5 (20) )\n\n");
 	InsertEdge(new_graph , 3 , 5 , 20); 
 	showGraph(new_graph);
 	
-	printf("\nInserting (0, 6 , 12)\n\n");
+	printf("\nInserting ( 0 --> 6 (12) )\n\n");
 	InsertEdge(new_graph , 0 , 6 , 12);
+	showGraph(new_graph);
+	
+	printf("\nInserting ( 4 --> 8 (25) )\n\n");
+	InsertEdge(new_graph , 4 , 8 , 25);
 	showGraph(new_graph);
 	
 	// Test RemoveEdge() function 
@@ -48,9 +52,21 @@ int main(void) {
 	RemoveEdge(new_graph , 2, 1);
 	showGraph(new_graph);
 	
-	//printf("\nRemoving (2 , 4 , 3) - TAIL OF LIST\n\n");
-	//RemoveEdge(new_graph , 2, 4);
-	//showGraph(new_graph);
+	printf("\nRemoving (2 --> 7) - INBETWEEN HEAD AND TAIL\n\n");
+	RemoveEdge(new_graph , 2, 7);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (2 --> 4) - TAIL OF LIST\n\n");
+	RemoveEdge(new_graph , 2, 4);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (3 --> 2) - TAIL OF SAME LIST\n\n");
+	RemoveEdge(new_graph , 3, 2);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (3 --> 5) - SINGLE NODE (HEAD + TAIL)\n\n");
+	RemoveEdge(new_graph , 3, 5);
+	showGraph(new_graph);
 	
 	printf("\nRemoving (2 --> 9) - INVALID INPUT\n\n");
 	RemoveEdge(new_graph , 2 , 9);
