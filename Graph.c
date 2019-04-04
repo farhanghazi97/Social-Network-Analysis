@@ -11,6 +11,8 @@ typedef struct GraphRep {
 	AdjNode connections [MAX_NODES];
 } GraphRep;
 
+// Struct to keep track of length of adjacency 
+// lists within connections array in main Graph struct
 typedef struct _adjList {
 	int size;
 	AdjNode first;
@@ -90,6 +92,8 @@ Edge newEdge (int source , int dest , int weight) {
 	return new_edge;
 }
 
+
+// Allocate a new Adjacency List Tracker object
 AdjList newAdjList (void) {
 	AdjList L = malloc(sizeof(struct _adjList));
 	L->size = 0;
@@ -172,6 +176,10 @@ int EdgeWeight (Edge e) {
 	return e->weight;
 }
 
+AdjList * getList(Graph new_graph) {
+	return new_graph->L;
+}
+
 //  -----------------   HELPER FUNCTIONS END ------------- //
 
 // Display graph structure
@@ -208,17 +216,20 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
 	
 	AdjNode curr = g->connections[src];
+	int size = g->L[src]->size;
+	
+	int i = 0;
 	while(curr->next != NULL) {
 		if(NodeDest(curr->next) == dest) {
-			
 			// Handles removal between head and tail
 			AdjNode temp = curr->next;
 			curr->next = curr->next->next;
 			free(temp);
+			g->L[src]->size--;
 		}
 		curr = curr->next;
+		i++;
 	}
-	
 }
 
 // Determines if vertices are adjacent to each other
@@ -253,6 +264,10 @@ void FreeGraph(Graph g) {
 				free(temp);
 				curr = curr->next;
 			}
+		}
+		for(int i = 0; i < MAX_NODES; i++) {
+			AdjList temp = g->L[i];
+			free(temp);
 		}
 	}	
 	free(g);

@@ -12,6 +12,8 @@ typedef struct _adjList     *AdjList;
 typedef struct  EdgeRep     *Edge;
 
 
+AdjList * getList(Graph new_graph);
+
 // Allocate a new Node structure						
 AdjNode newAdjNode  (Vertex vertex, int weight);
 
@@ -21,9 +23,8 @@ Graph newGraph  (Edge * edges, int no_of_edges);
 // Allocate a new Edge structure
 Edge newEdge    (Vertex source, Vertex dest, int weight);
 
-
+// Allocate a new Adjacency List Tracker object
 AdjList newAdjList (void);
-
 
 // Insert an edge between given vertices
 void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
