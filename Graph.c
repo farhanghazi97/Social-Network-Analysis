@@ -201,6 +201,7 @@ void showGraph(Graph g) {
 // Appends to appropriate top level adjacency list
 void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 	
+	// 
 	AdjNode new_node = newAdjNode(dest , weight);
 	new_node->next = g->connections[src];
 	g->connections[src] = new_node;
@@ -238,13 +239,16 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 		while(curr->next != NULL) {
 			if(NodeDest(curr->next) == dest) {
 				if(i == size) {
+					
 					// Remove tail of list
 					AdjNode temp = curr->next;
 					curr->next = NULL;
 					free(temp);
 					found = true;
 					break; 
+				
 				} else {
+					
 					// Remove between head and tail of list
 					AdjNode temp = curr->next;
 					curr->next = curr->next->next;
@@ -257,7 +261,6 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 			i++;
 		}
 	}
-	
 	
 	if(!found) printf("Connection does not exist!\n"); 
 	
@@ -305,5 +308,7 @@ void FreeGraph(Graph g) {
 			free(temp);
 		}
 	}	
+	
+	// Free pointer
 	free(g);
 }
