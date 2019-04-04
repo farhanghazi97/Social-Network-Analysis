@@ -4,6 +4,8 @@
 
 int main(void) {
 	
+	
+	
 	//Extract data from file and store in DATA ARRAY
 	int * array = ReadFile("input_file");
 	
@@ -27,10 +29,14 @@ int main(void) {
 	// Using data from the array of edges , we construct graph
 	Graph new_graph = newGraph(edges , number_of_edges);
 	
+	printf("// ---------- INITIAL STATE OF GRAPH ---------- //\n\n");
+	
 	// Print graph to test output
 	showGraph(new_graph);
 	
-	// Test InsertEdge() function
+	printf("\n// ---------- TEST INSERTEDGE() FUNCTION ---------- //\n");
+	
+	// ---------- TEST INSERTEDGE() FUNCTION ---------- //
 	printf("\nInserting ( 3 --> 5 (20) )\n\n");
 	InsertEdge(new_graph , 3 , 5 , 20); 
 	showGraph(new_graph);
@@ -43,7 +49,22 @@ int main(void) {
 	InsertEdge(new_graph , 4 , 8 , 25);
 	showGraph(new_graph);
 	
-	// Test RemoveEdge() function 
+	printf("\n// ---------- TEST ADJACENT() FUNCTION ---------- //\n");
+	
+	// ---------- TEST ADJACENT() FUNCTION ---------- //
+	bool flag;
+	printf("\nIs 3 adjacent to 5 ?\n");
+	flag = Adjacent(new_graph , 3 , 5);
+	
+	if(flag) {
+		printf("Adjacent\n\n");
+	} else {
+		printf("Not adjacent\n\n");
+	}
+	
+	printf("\n// ---------- TEST REMOVEEDGE() FUNCTION ---------- //\n");
+	
+	// ---------- TEST REMOVEEDGE() FUNCTION ---------- //
 	printf("\nRemoving (2 --> 10) - HEAD OF LIST\n\n");
 	RemoveEdge(new_graph , 2 , 10);
 	showGraph(new_graph);
@@ -96,16 +117,23 @@ int main(void) {
 	RemoveEdge(new_graph , 4 , 9);
 	showGraph(new_graph);
 	
-	// Test Adjacent() function
-	bool flag;
+	printf("\nRemoving (1 --> 3)\n\n");
+	RemoveEdge(new_graph , 1 , 3);
+	showGraph(new_graph);
 	
-	printf("\nIs 3 adjacent to 5 ?\n");
-	flag = Adjacent(new_graph , 3 , 5);
-	if(flag) {
-		printf("Adjacent\n\n");
-	} else {
-		printf("Not adjacent\n\n");
-	}
+	printf("\nRemoving (4 --> 8)\n\n");
+	RemoveEdge(new_graph , 4 , 8);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (1 --> 2)\n\n");
+	RemoveEdge(new_graph , 1 , 2);
+	showGraph(new_graph);
+	
+	printf("\nRemoving (4 --> 6)\n");
+	RemoveEdge(new_graph , 4 , 6);
+	showGraph(new_graph);
+	
+	printf("\nALL CONNECTIONS REMOVED AT THIS POINT - EMPTY GRAPH\n\n");
 	
 	// Free malloc'd DATA ARRAY
 	free(array);
