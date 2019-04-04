@@ -40,9 +40,9 @@ int main(void) {
 	showGraph(new_graph);
 	
 	// Test RemoveEdge() function (still buggy - don't know why)
-	printf("\nRemoving (3 , 2 , 10)\n\n");
-	RemoveEdge(new_graph , 2 , 4);
-	showGraph(new_graph);
+	//printf("\nRemoving (2 , 1 , 6)\n\n");
+	//RemoveEdge(new_graph , 2 , 4);
+	//showGraph(new_graph);
 	
 	// Test Adjacent() function
 	bool flag;

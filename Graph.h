@@ -7,8 +7,13 @@
 typedef int Vertex;
 
 typedef struct  GraphRep    *Graph;
-typedef struct _adjListNode *AdjList;
+typedef struct _adjListNode *AdjNode;
+typedef struct _adjList     *AdjList;
 typedef struct  EdgeRep     *Edge;
+
+
+// Allocate a new Node structure						
+AdjNode newAdjNode  (Vertex vertex, int weight);
 
 // Create graph by using data from egdes array
 Graph newGraph  (Edge * edges, int no_of_edges);
@@ -16,8 +21,9 @@ Graph newGraph  (Edge * edges, int no_of_edges);
 // Allocate a new Edge structure
 Edge newEdge    (Vertex source, Vertex dest, int weight);
 
-// Allocate a new Node structure						
-AdjList newAdjListNode  (Vertex vertex, int weight);
+
+AdjList newAdjList (void);
+
 
 // Insert an edge between given vertices
 void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
@@ -41,42 +47,23 @@ bool  Adjacent     (Graph g, Vertex src, Vertex dest);
 int *  ReadFile   (char * filename);
 
 // Various helper functions to test pass-around of data
-int    NodeWeight (AdjList L);
-int    NodeDest   (AdjList L);
+int    NodeWeight (AdjNode L);
+int    NodeDest   (AdjNode L);
 int    EdgeSource (Edge e);
 int    EdgeDest   (Edge e);
 int    EdgeWeight (Edge e);
-
-
-// Return connections list of graph
-// AdjList * GetConnectionsArray (Graph g);
+// AdjNode * GetConnectionsArray (Graph g);
 
 /*
  * Returns a list of adjacent vertices
  * on outgoing edges from a given vertex.
 **/
-AdjList outIncident(Graph g, Vertex v);
+AdjNode outIncident(Graph g, Vertex v);
 /*
 
  * Returns a list of adjacent vertices
  * on incoming edges from a given vertex.
 **/
-AdjList inIncident(Graph g, Vertex v);
-
-
-/**
-* The following  "showGraph" functions is defined for you to be able 
-* to print out your output and write your own tests. 
-* You can choose a suitable implemention (output format) for the following "showGraph" function. 
-* 
-* Note that we will *not* use your implementation of "showGraph" function
-* for our own testing.
-
-* The only reason we provided some show function for dijkstra is so we 
-* could give you some sample output to compare against. 
-
-* Again, our tests will not use your show function, it's there for your use.
-* 
-* */
+AdjNode inIncident(Graph g, Vertex v);
 
 

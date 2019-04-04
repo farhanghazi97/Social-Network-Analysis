@@ -7,15 +7,22 @@
 
 // Struct representing Graph
 typedef struct GraphRep {
-	AdjList connections[MAX_NODES];
+	AdjList L [MAX_NODES];
+	AdjNode connections [MAX_NODES];
 } GraphRep;
+
+typedef struct _adjList {
+	int size;
+	AdjNode first;
+	AdjNode last;
+} adjList;
 
 // Struct representing individual nodes 
 // that populate the Graph struct
 typedef struct _adjListNode {
    Vertex      dest;
    int         weight;
-   AdjList     next;
+   AdjNode     next;
 } adjListNode;
 
 // Struct representing the connections 
@@ -37,6 +44,10 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		new_graph->connections[i] = NULL;
 	}
 	
+	for(int i = 0; i < MAX_NODES; i++) {
+		new_graph->L[i] = newAdjList();
+	}
+	
 	// While iterating over the edge objects in array,
 	// modify graph structure. 
 	for(int i = 0; i < no_of_edges; i++) {
@@ -48,10 +59,11 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		// Set up links between top level vertex array
 		// and the vertices they connect to
 		
-		AdjList new_node = newAdjListNode(dest , weight);
+		AdjNode new_node = newAdjNode(dest , weight);
 		new_node->next = new_graph->connections[src];
 		new_graph->connections[src] = new_node;
-		
+		new_graph->L[src]->size++;
+		new_graph->L[src]->first = new_node;
 	}
 	
 	// Return updated graph structure
@@ -60,8 +72,8 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 
 
 // Allocate a new Adjacency List Node
-AdjList newAdjListNode (int dest , int weight) {
-	AdjList new_node = malloc(sizeof(struct _adjListNode));
+AdjNode newAdjNode (int dest , int weight) {
+	AdjNode new_node = malloc(sizeof(struct _adjListNode));
 	new_node->dest = dest;
 	new_node->weight = weight;
 	new_node->next = NULL;
@@ -76,6 +88,14 @@ Edge newEdge (int source , int dest , int weight) {
 	new_edge->dest = dest;
 	new_edge->weight = weight;
 	return new_edge;
+}
+
+AdjList newAdjList (void) {
+	AdjList L = malloc(sizeof(struct _adjList));
+	L->size = 0;
+	L->first = NULL;
+	L->last = NULL;
+	return L;
 }
 
 // Parse input file and grab relevant data
@@ -128,15 +148,15 @@ int * ReadFile (char * filename) {
 
 //  -----------------   HELPER FUNCTIONS START ------------- //
 
-AdjList * GetConnectionsArray(Graph g) {
+AdjNode * GetConnectionsArray(Graph g) {
 	return g->connections;
 }
 
-int NodeDest (AdjList L) {
+int NodeDest (AdjNode L) {
 	return L->dest;
 }
 
-int NodeWeight (AdjList L) {
+int NodeWeight (AdjNode L) {
 	return L->weight;
 }
 
@@ -158,7 +178,10 @@ int EdgeWeight (Edge e) {
 void showGraph(Graph g) {
 	
 	for(int i = 0; i < MAX_NODES; i++) {
-		AdjList curr = g->connections[i];
+		AdjNode curr = g->connections[i];
+		//if(g->L[i]->size > 0) {
+		//	printf("Size: %d\n" , g->L[i]->size);
+		//}
 		if(curr != NULL) {
 			while(curr != NULL) {
 				printf("%d -> %d (%d)  " , i , curr->dest , curr->weight);
@@ -172,24 +195,36 @@ void showGraph(Graph g) {
 // Appends to appropriate top level adjacency list
 void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 	
-	AdjList new_node = newAdjListNode(dest , weight);
+	AdjNode new_node = newAdjNode(dest , weight);
 	new_node->next = g->connections[src];
 	g->connections[src] = new_node;
+	g->L[src]->size++;
 	
 }
 
 // Remove an edge from appropriate top level adjacency list
 void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	
-	
 	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
+	
+	AdjNode curr = g->connections[src];
+	while(curr->next != NULL) {
+		if(NodeDest(curr->next) == dest) {
+			
+			// Handles removal between head and tail
+			AdjNode temp = curr->next;
+			curr->next = curr->next->next;
+			free(temp);
+		}
+		curr = curr->next;
+	}
 	
 }
 
 // Determines if vertices are adjacent to each other
 bool Adjacent (Graph g, Vertex src, Vertex dest) {
 
-	AdjList curr = g->connections[src];
+	AdjNode curr = g->connections[src];
 	bool flag = false;
 	
 	while(curr != NULL) {
@@ -212,9 +247,9 @@ void FreeEdgesArray(Edge * edges , int NEdges) {
 void FreeGraph(Graph g) {
 	if(g != NULL) {
 		for(int i = 0; i < MAX_NODES; i++) {
-			AdjList curr = g->connections[i];
+			AdjNode curr = g->connections[i];
 			while(curr != NULL) {
-				AdjList temp = curr;
+				AdjNode temp = curr;
 				free(temp);
 				curr = curr->next;
 			}
