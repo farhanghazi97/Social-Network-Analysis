@@ -11,9 +11,6 @@ typedef struct _adjListNode *AdjNode;
 typedef struct _adjList     *AdjList;
 typedef struct  EdgeRep     *Edge;
 
-
-AdjList * getList(Graph new_graph);
-
 // Allocate a new Node structure						
 AdjNode newAdjNode  (Vertex vertex, int weight);
 
@@ -30,7 +27,7 @@ AdjList newAdjList (void);
 void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);  // DONE
 
 //Remove an edge between given vertices
-void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				// KINDA DONE
+void  RemoveEdge   (Graph g, Vertex src, Vertex dest);				
 
 // Free all the memory associated with the graph
 void  FreeGraph    (Graph g);

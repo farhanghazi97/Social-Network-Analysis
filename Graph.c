@@ -65,6 +65,8 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		new_node->next = new_graph->connections[src];
 		new_graph->connections[src] = new_node;
 		new_graph->L[src]->size++;
+		
+		//Set first to point to head of each adjacency list that is updated
 		new_graph->L[src]->first = new_node;
 	}
 	
@@ -176,10 +178,6 @@ int EdgeWeight (Edge e) {
 	return e->weight;
 }
 
-AdjList * getList(Graph new_graph) {
-	return new_graph->L;
-}
-
 //  -----------------   HELPER FUNCTIONS END ------------- //
 
 // Display graph structure
@@ -215,12 +213,17 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	
 	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
 	
+	// Update - Introduced a new ((AdjList)) struct (see above)
+	//          that will keep track of the length of each individual
+	//			adjacency list in array, plus have pointers to head and tail
+	
 	AdjNode curr = g->connections[src];
 	int size = g->L[src]->size;
 	
 	int i = 0;
 	while(curr->next != NULL) {
 		if(NodeDest(curr->next) == dest) {
+			
 			// Handles removal between head and tail
 			AdjNode temp = curr->next;
 			curr->next = curr->next->next;
@@ -257,6 +260,8 @@ void FreeEdgesArray(Edge * edges , int NEdges) {
 // Free all the memory associated with the graph
 void FreeGraph(Graph g) {
 	if(g != NULL) {
+	
+		//Free connections array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjNode curr = g->connections[i];
 			while(curr != NULL) {
@@ -265,6 +270,8 @@ void FreeGraph(Graph g) {
 				curr = curr->next;
 			}
 		}
+		
+		//Free AdjList Tracker array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjList temp = g->L[i];
 			free(temp);
