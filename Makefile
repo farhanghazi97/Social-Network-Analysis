@@ -1,4 +1,5 @@
 CC=gcc
+CFLAGS=-gdwarf-2
 BINS=Graph
 
 all: $(BINS)

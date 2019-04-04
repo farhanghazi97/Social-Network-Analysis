@@ -233,23 +233,25 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	
 	} else {
 		
-		int size = g->L[src]->size - 1;
+		int size = g->L[src]->size;
 		int i = 1;
 		
 		while(curr->next != NULL) {
 			if(NodeDest(curr->next) == dest) {
-				if(i == size) {
+				if(i + 1 == size) {
 					
 					// Remove tail of list
 					AdjNode temp = curr->next;
 					curr->next = NULL;
 					free(temp);
+					g->L[src]->size--;
 					found = true;
-					break; 
+					break;
 				
 				} else {
 					
 					// Remove between head and tail of list
+					
 					AdjNode temp = curr->next;
 					curr->next = curr->next->next;
 					free(temp);

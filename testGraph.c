@@ -76,13 +76,13 @@ int main(void) {
 	RemoveEdge(new_graph , 0, 6);
 	showGraph(new_graph);
 	
-	/*  throws error here - only when there are two nodes on each list)
-	
 	printf("\nRemoving (2 --> 3)\n\n");
 	RemoveEdge(new_graph , 2, 3);
 	showGraph(new_graph);
 	
-	-------------------------------------------------------------------- */
+	printf("\nRemoving (2 --> 8)\n\n");
+	RemoveEdge(new_graph , 2, 8);
+	showGraph(new_graph);
 	
 	printf("\nRemoving (2 --> 9) - INVALID INPUT\n\n");
 	RemoveEdge(new_graph , 2 , 9);
