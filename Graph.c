@@ -8,7 +8,8 @@
 // Struct representing Graph
 typedef struct GraphRep {
 	AdjList L [MAX_NODES];
-	AdjNode connections [MAX_NODES];
+	AdjNode OutLinks [MAX_NODES];
+	AdjNode InLinks [MAX_NODES];
 } GraphRep;
 
 // Struct to keep track of length of adjacency
@@ -43,7 +44,11 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 
 	// Initialize top level vertex array to NULL pointers
 	for(int i = 0; i < MAX_NODES; i++) {
-		new_graph->connections[i] = NULL;
+		new_graph->OutLinks[i] = NULL;
+	}
+
+	for(int i = 0; i < MAX_NODES; i++) {
+		new_graph->InLinks[i]= NULL;
 	}
 
 	for(int i = 0; i < MAX_NODES; i++) {
@@ -61,13 +66,17 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		// Set up links between top level vertex array
 		// and the vertices they connect to
 
-		AdjNode new_node = newAdjNode(dest , weight);
-		new_node->next = new_graph->connections[src];
-		new_graph->connections[src] = new_node;
+		AdjNode new_node_out = newAdjNode(dest , weight);
+		new_node_out->next = new_graph->OutLinks[src];
+		new_graph->OutLinks[src] = new_node_out;
 		new_graph->L[src]->size++;
 
+		AdjNode new_node_in = newAdjNode(src , weight);
+		new_node_in->next = new_graph->InLinks[dest];
+		new_graph->InLinks[dest] = new_node_in;
+
 		//Set first to point to head of each adjacency list that is updated
-		new_graph->L[src]->first = new_node;
+		new_graph->L[src]->first = new_node_out;
 	}
 
 	// Return updated graph structure
@@ -85,7 +94,11 @@ AdjNode newAdjNode (int dest , int weight) {
 }
 
 AdjNode outIncident(Graph g, Vertex v) {
-	return g->connections[v];
+	return g->OutLinks[v];
+}
+
+AdjNode inIncident(Graph g , Vertex v) {
+	return g->InLinks[v];
 }
 
 // Allocate a new Edge object
@@ -160,7 +173,7 @@ int * ReadFile (char * filename) {
 
 AdjNode * GetConnectionsArray(Graph g) {
 	if(g != NULL) {
-		return g->connections;
+		return g->OutLinks;
 	}
 }
 
@@ -200,7 +213,7 @@ int EdgeWeight (Edge e) {
 void showGraph(Graph g) {
 
 	for(int i = 0; i < MAX_NODES; i++) {
-		AdjNode curr = g->connections[i];
+		AdjNode curr = g->OutLinks[i];
 		//if(g->L[i]->size > 0) {
 		//	printf("Size: %d\n" , g->L[i]->size);
 		//}
@@ -214,14 +227,15 @@ void showGraph(Graph g) {
 	}
 }
 
-void PrintAdjList(AdjNode OutList) {
-	if(OutList != NULL) {
-		AdjNode curr = OutList;
+void PrintAdjList(AdjNode List) {
+	if(List != NULL) {
+		AdjNode curr = List;
 		while(curr != NULL) {
 			printf("Vertex: %d | Weight: %d\n" , NodeDest(curr) , NodeWeight(curr));
 			curr = curr->next;
 
 		}
+		printf("\n");
 	} else {
 		printf("Pointer is NULL\n");
 	}
@@ -230,11 +244,14 @@ void PrintAdjList(AdjNode OutList) {
 // Appends to appropriate top level adjacency list
 void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 
-	//
-	AdjNode new_node = newAdjNode(dest , weight);
-	new_node->next = g->connections[src];
-	g->connections[src] = new_node;
+	AdjNode new_node_out = newAdjNode(dest , weight);
+	new_node_out->next = g->OutLinks[src];
+	g->OutLinks[src] = new_node_out;
 	g->L[src]->size++;
+
+	AdjNode new_node_in = newAdjNode(src , weight);
+	new_node_in->next = g->InLinks[dest];
+	g->InLinks[dest] = new_node_in;
 
 }
 
@@ -247,7 +264,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	//          that will keep track of the length of each individual
 	//			adjacency list in array, plus have pointers to head and tail
 
-	AdjNode curr = g->connections[src];
+	AdjNode curr = g->OutLinks[src];
 
 	bool found = false;
 	if(curr != NULL) {
@@ -255,7 +272,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 
 			// Remove head of list
 			AdjNode temp = curr;
-			g->connections[src] = curr->next;
+			g->OutLinks[src] = curr->next;
 			free(temp);
 			g->L[src]->size--;
 
@@ -299,12 +316,13 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 // Determines if vertices are adjacent to each other
 bool Adjacent (Graph g, Vertex src, Vertex dest) {
 
-	AdjNode curr = g->connections[src];
+	AdjNode curr = g->OutLinks[src];
 	bool flag = false;
 
 	while(curr != NULL) {
 		if(NodeDest(curr) == dest) {
 			flag = true;
+			break;
 		}
 		curr = curr->next;
 	}
@@ -324,7 +342,7 @@ void FreeGraph(Graph g) {
 
 		//Free connections array
 		for(int i = 0; i < MAX_NODES; i++) {
-			AdjNode curr = g->connections[i];
+			AdjNode curr = g->OutLinks[i];
 			while(curr != NULL) {
 				AdjNode temp = curr;
 				free(temp);
@@ -336,6 +354,15 @@ void FreeGraph(Graph g) {
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjList temp = g->L[i];
 			free(temp);
+		}
+
+		for(int i = 0; i < MAX_NODES; i++) {
+			AdjNode curr = g->InLinks[i];
+			while(curr != NULL) {
+				AdjNode temp = curr;
+				free(temp);
+				curr = curr->next;
+			}
 		}
 	}
 

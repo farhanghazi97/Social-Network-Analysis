@@ -24,7 +24,7 @@ Edge newEdge    (Vertex source, Vertex dest, int weight);
 AdjList newAdjList (void);
 
 // Insert an edge between given vertices
-void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight); 
+void  InsertEdge   (Graph g, Vertex src, Vertex dest, int weight);
 
 //Remove an edge between given vertices
 void  RemoveEdge   (Graph g, Vertex src, Vertex dest);
@@ -39,13 +39,13 @@ void  showGraph    (Graph g);
 void  PrintAdjList  (AdjNode OutList);
 
 // Free all memory associated with Edges array
-void FreeEdgesArray(Edge * edges, int NEdges);
+void  FreeEdgesArray(Edge * edges, int NEdges);
 
 // Determine if given vertices are adjacent to each other
 bool  Adjacent     (Graph g, Vertex src, Vertex dest);
 
 // Parse data from given input file
-int *  ReadFile   (char * filename);
+int * ReadFile   (char * filename);
 
 // Various helper functions to test pass-around of data
 int    NodeWeight (AdjNode L);

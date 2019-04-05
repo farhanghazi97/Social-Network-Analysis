@@ -4,9 +4,7 @@
 
 // Test bed for graph ADT
 
-// TODO: Adjacent()
-//       outIncident()
-//		 inIncident()
+// TODO: inIncident()
 
 int main(void) {
 
@@ -52,17 +50,22 @@ int main(void) {
 	InsertEdge(new_graph , 4 , 8 , 25);
 	showGraph(new_graph);
 
-	printf("\n// ---------- TEST OUTINCIDENT() FUNCTION ----------//\n\n");
+	printf("\n// ---------- TEST OUT-INCIDENT() FUNCTION ----------//\n\n");
 
 	AdjNode OutList = outIncident(new_graph , 2);
 	PrintAdjList(OutList);
+
+	printf("\n// ---------- TEST IN-INCIDENT() FUNCTION ----------//\n\n");
+
+	AdjNode InList = inIncident(new_graph , 6);
+	PrintAdjList(InList);
 
 	printf("\n// ---------- TEST ADJACENT() FUNCTION ---------- //\n");
 
 	// ---------- TEST ADJACENT() FUNCTION ---------- //
 	bool flag;
 	printf("\nIs 3 adjacent to 5 ?\n");
-	flag = Adjacent(new_graph , 3 , 5);
+	flag = Adjacent(new_graph , 5 , 3);
 
 	if(flag) {
 		printf("Adjacent\n\n");
