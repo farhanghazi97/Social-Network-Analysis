@@ -215,7 +215,7 @@ int EdgeWeight (Edge e) {
 // Display graph structure
 void showGraph(Graph g) {
 
-	for(int i = 0; i < MAX_NODES; i++) {
+	for(int i = 0; i <= MAX_NODES; i++) {
 		AdjNode curr_out = g->OutLinks[i];
 		/*if(g->L[i]->out_size > 0) {
 			printf("OutLinks size: %d\n" , g->L[i]->out_size);
@@ -235,7 +235,7 @@ void showGraph(Graph g) {
 		if(curr_in != NULL) {
 			printf("InLinks: ");
 			while(curr_in != NULL) {
-				printf("%d | %d (%d) " , i ,curr_in->dest , curr_in->weight);
+				printf("%d <- %d (%d) " , i ,curr_in->dest , curr_in->weight);
 				curr_in = curr_in->next;
 			}
 			printf("\n");
@@ -282,48 +282,54 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 	//          that will keep track of the length of each individual
 	//			adjacency list in array, plus have pointers to head and tail
 
-	AdjNode curr = g->OutLinks[src];
+	AdjNode curr_out = g->OutLinks[src];
+	AdjNode curr_in = g->InLinks[dest];
 
 	bool found = false;
-	if(curr != NULL) {
-		if(NodeDest(curr) == dest) {
-
+	if(curr_out != NULL) {
+		if(NodeDest(curr_out) == dest) {
 			// Remove head of list
-			AdjNode temp = curr;
-			g->OutLinks[src] = curr->next;
-			free(temp);
+			// Update OutLinks list
+			AdjNode temp_1 = curr_out;
+			g->OutLinks[src] = curr_out->next;
+			free(temp_1);
 			g->L[src]->out_size--;
+			// Parallel update to InLinks List
+			if(curr_in != NULL) {
+				if(NodeDest(curr_in) == src) {
+					AdjNode temp_2 = curr_in;
+					g->InLinks[dest] = curr_in->next;
+					free(temp_2);
+					g->L[dest]->in_size--;
+				}
+			}
 
 		} else {
 
 			int size = g->L[src]->out_size;
 			int i = 1;
 
-			while(curr->next != NULL) {
-				if(NodeDest(curr->next) == dest) {
+			while(curr_out->next != NULL) {
+				if(NodeDest(curr_out->next) == dest) {
 					if(i + 1 == size) {
-
 						// Remove tail of list
-						AdjNode temp = curr->next;
-						curr->next = NULL;
+						AdjNode temp = curr_out->next;
+						curr_out->next = NULL;
 						free(temp);
 						g->L[src]->out_size--;
 						found = true;
 						break;
-
 					} else {
-
 						// Remove between head and tail of list
-
-						AdjNode temp = curr->next;
-						curr->next = curr->next->next;
-						free(temp);
+						AdjNode temp_1 = curr_out->next;
+						curr_out->next = curr_out->next->next;
+						free(temp_1);
 						g->L[src]->out_size--;
 						found = true;
 						break;
 					}
 				}
-				curr = curr->next;
+				curr_out = curr_out->next;
 				i++;
 			}
 			if(!found) printf("Connection does not exist!\n");
