@@ -216,20 +216,31 @@ int EdgeWeight (Edge e) {
 void showGraph(Graph g) {
 
 	for(int i = 0; i < MAX_NODES; i++) {
-		AdjNode curr = g->OutLinks[i];
+		AdjNode curr_out = g->OutLinks[i];
 		/*if(g->L[i]->out_size > 0) {
 			printf("OutLinks size: %d\n" , g->L[i]->out_size);
 		}
 		if(g->L[i]->in_size > 0) {
 			printf("InLinks size: %d\n" , g->L[i]->in_size);
 		}*/
-		if(curr != NULL) {
-			while(curr != NULL) {
-				printf("%d -> %d (%d)  " , i , curr->dest , curr->weight);
-				curr = curr->next;
+		if(curr_out != NULL) {
+			printf("OutLinks: ");
+			while(curr_out != NULL) {
+				printf("%d -> %d (%d)  " , i , curr_out->dest , curr_out->weight);
+				curr_out = curr_out->next;
 			}
 			printf("\n");
 		}
+		AdjNode curr_in = g->InLinks[i];
+		if(curr_in != NULL) {
+			printf("InLinks: ");
+			while(curr_in != NULL) {
+				printf("%d | %d (%d) " , i ,curr_in->dest , curr_in->weight);
+				curr_in = curr_in->next;
+			}
+			printf("\n");
+		}
+		printf("\n");
 	}
 }
 
