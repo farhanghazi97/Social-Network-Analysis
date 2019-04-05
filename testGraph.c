@@ -54,10 +54,14 @@ int main(void) {
 
 	AdjNode OutList = outIncident(new_graph , 2);
 	PrintAdjList(OutList);
+	OutList = outIncident(new_graph , 1);
+	PrintAdjList(OutList);
 
 	printf("\n// ---------- TEST IN-INCIDENT() FUNCTION ----------//\n\n");
 
 	AdjNode InList = inIncident(new_graph , 6);
+	PrintAdjList(InList);
+	InList = inIncident(new_graph , 2);
 	PrintAdjList(InList);
 
 	printf("\n// ---------- TEST ADJACENT() FUNCTION ---------- //\n");
