@@ -15,7 +15,8 @@ typedef struct GraphRep {
 // Struct to keep track of length of adjacency
 // lists within connections array in main Graph struct
 typedef struct _adjList {
-	int size;
+	int out_size;
+	int in_size;
 	AdjNode first;
 	AdjNode last;
 } adjList;
@@ -69,11 +70,12 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 		AdjNode new_node_out = newAdjNode(dest , weight);
 		new_node_out->next = new_graph->OutLinks[src];
 		new_graph->OutLinks[src] = new_node_out;
-		new_graph->L[src]->size++;
+		new_graph->L[src]->out_size++;
 
 		AdjNode new_node_in = newAdjNode(src , weight);
 		new_node_in->next = new_graph->InLinks[dest];
 		new_graph->InLinks[dest] = new_node_in;
+		new_graph->L[dest]->in_size++;
 
 		//Set first to point to head of each adjacency list that is updated
 		new_graph->L[src]->first = new_node_out;
@@ -115,7 +117,8 @@ Edge newEdge (int source , int dest , int weight) {
 // Allocate a new Adjacency List Tracker object
 AdjList newAdjList (void) {
 	AdjList L = malloc(sizeof(struct _adjList));
-	L->size = 0;
+	L->out_size = 0;
+	L->in_size = 0;
 	L->first = NULL;
 	L->last = NULL;
 	return L;
@@ -214,9 +217,12 @@ void showGraph(Graph g) {
 
 	for(int i = 0; i < MAX_NODES; i++) {
 		AdjNode curr = g->OutLinks[i];
-		//if(g->L[i]->size > 0) {
-		//	printf("Size: %d\n" , g->L[i]->size);
-		//}
+		/*if(g->L[i]->out_size > 0) {
+			printf("OutLinks size: %d\n" , g->L[i]->out_size);
+		}
+		if(g->L[i]->in_size > 0) {
+			printf("InLinks size: %d\n" , g->L[i]->in_size);
+		}*/
 		if(curr != NULL) {
 			while(curr != NULL) {
 				printf("%d -> %d (%d)  " , i , curr->dest , curr->weight);
@@ -247,11 +253,12 @@ void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 	AdjNode new_node_out = newAdjNode(dest , weight);
 	new_node_out->next = g->OutLinks[src];
 	g->OutLinks[src] = new_node_out;
-	g->L[src]->size++;
+	g->L[src]->out_size++;
 
 	AdjNode new_node_in = newAdjNode(src , weight);
 	new_node_in->next = g->InLinks[dest];
 	g->InLinks[dest] = new_node_in;
+	g->L[dest]->in_size++;
 
 }
 
@@ -274,11 +281,11 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 			AdjNode temp = curr;
 			g->OutLinks[src] = curr->next;
 			free(temp);
-			g->L[src]->size--;
+			g->L[src]->out_size--;
 
 		} else {
 
-			int size = g->L[src]->size;
+			int size = g->L[src]->out_size;
 			int i = 1;
 
 			while(curr->next != NULL) {
@@ -289,7 +296,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 						AdjNode temp = curr->next;
 						curr->next = NULL;
 						free(temp);
-						g->L[src]->size--;
+						g->L[src]->out_size--;
 						found = true;
 						break;
 
@@ -300,7 +307,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 						AdjNode temp = curr->next;
 						curr->next = curr->next->next;
 						free(temp);
-						g->L[src]->size--;
+						g->L[src]->out_size--;
 						found = true;
 						break;
 					}
