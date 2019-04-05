@@ -1,4 +1,4 @@
 Social Network Analysis
 
 Farhan Sattar Ghazi (z5199861)
-Kanadech King       (z5176970)
+Kanadech Jirapongtanavech (z5176970)
