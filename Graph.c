@@ -43,15 +43,15 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 	Graph new_graph = malloc(sizeof(struct GraphRep));
 	assert(new_graph != NULL);
 
-	// Initialize top level vertex array to NULL pointers
+	// Initialize OutLinks array to NULL pointers
 	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->OutLinks[i] = NULL;
 	}
-
+	// Initialize InLinks array to NULL pointers
 	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->InLinks[i]= NULL;
 	}
-
+	// Initialize Adjacency List Tracker 
 	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->L[i] = newAdjList();
 	}
@@ -66,7 +66,6 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 
 		// Set up links between top level vertex array
 		// and the vertices they connect to
-
 		AdjNode new_node_out = newAdjNode(dest , weight);
 		new_node_out->next = new_graph->OutLinks[src];
 		new_graph->OutLinks[src] = new_node_out;
@@ -135,38 +134,30 @@ int * ReadFile (char * filename) {
 
 	char buffer[BUFSIZ];
 	if(fp != NULL) {
-
 		// Determine how many sets of entries there are
 		while(fgets(buffer , BUFSIZ , fp) != NULL) {
 			lines++;
 		}
-
 		// Malloc enough space to hold just those numbers
 		// where every line has 3 numbers
 		int * array = malloc(lines * 3 * sizeof(int));
-
 		// Reset file pointer to beginning of file
 		rewind(fp);
-
 		// Package size of array into array index;
 		array[i] = (lines * 3);
 		i++;
-
 		// Grab data points from input file and store in array
 		int data;
 		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
 			array[i] = data;
 			i++;
 		}
-
 		// Close file
 		fclose(fp);
-
 		// return array with data
 		return array;
 
 	} else {
-
 		//ERROR: File does not exist
 		printf("Could not open file!\n");
 	}
@@ -377,10 +368,8 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 
 // Determines if vertices are adjacent to each other
 bool Adjacent (Graph g, Vertex src, Vertex dest) {
-
 	AdjNode curr = g->OutLinks[src];
 	bool flag = false;
-
 	while(curr != NULL) {
 		if(NodeDest(curr) == dest) {
 			flag = true;
@@ -401,8 +390,7 @@ void FreeEdgesArray(Edge * edges , int NEdges) {
 // Free all the memory associated with the graph
 void FreeGraph(Graph g) {
 	if(g != NULL) {
-
-		//Free connections array
+		//Free OutLinks array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjNode curr = g->OutLinks[i];
 			while(curr != NULL) {
@@ -411,13 +399,12 @@ void FreeGraph(Graph g) {
 				curr = curr->next;
 			}
 		}
-
 		//Free AdjList Tracker array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjList temp = g->L[i];
 			free(temp);
 		}
-
+		// Free InLinks array
 		for(int i = 0; i < MAX_NODES; i++) {
 			AdjNode curr = g->InLinks[i];
 			while(curr != NULL) {
@@ -427,7 +414,6 @@ void FreeGraph(Graph g) {
 			}
 		}
 	}
-
-	// Free pointer
+	// Free graph
 	free(g);
 }
