@@ -301,14 +301,22 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 					g->InLinks[dest] = curr_in->next;
 					free(temp_2);
 					g->L[dest]->in_size--;
+				} else {
+					while(curr_in->next != NULL) {
+						if(NodeDest(curr_in->next) == src) {
+							AdjNode temp = curr_in->next;
+							curr_in->next = NULL;
+							free(temp);
+							g->L[dest]->in_size--;
+							break;
+						}
+						curr_in = curr_in->next;
+					}
 				}
 			}
-
 		} else {
-
 			int size = g->L[src]->out_size;
 			int i = 1;
-
 			while(curr_out->next != NULL) {
 				if(NodeDest(curr_out->next) == dest) {
 					if(i + 1 == size) {
@@ -331,6 +339,36 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 				}
 				curr_out = curr_out->next;
 				i++;
+			}
+			int size_in = g->L[dest]->in_size;
+			int j = 1;
+			while(curr_in != NULL) {
+				if(NodeDest(curr_in) == src) {
+					AdjNode temp = curr_in;
+					g->InLinks[dest] = curr_in->next;
+					free(temp);
+					g->L[dest]->in_size--;
+					break;
+				} else {
+					while(curr_in->next != NULL) {
+						if(NodeDest(curr_in->next) == src){
+							if(j + 1 == size_in) {
+								AdjNode temp = curr_in->next;
+								curr_in->next = NULL;
+								free(temp);
+								g->L[dest]->in_size--;
+								break;
+							} else {
+								AdjNode temp_1 = curr_in->next;
+								curr_in->next = curr_in->next->next;
+								free(temp_1);
+								g->L[dest]->in_size--;
+								break;
+							}
+						}
+					}
+				}
+				curr_in = curr_in->next;
 			}
 			if(!found) printf("Connection does not exist!\n");
 		}
