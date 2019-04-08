@@ -32,7 +32,6 @@ PQ newPQ() {
 
 static Link NewNode (void) {
 	Link new_node = malloc(sizeof(struct Node));
-	new_node->val = NULL;
 	new_node->next = NULL;
 	return new_node;
 }
@@ -45,12 +44,33 @@ int PQEmpty(PQ p) {
 }
 
 void addPQ(PQ pq, ItemPQ element) {
-	
-	Link new_node = NewNode();
-	new_node->val = element;
-	
+
+	bool found = false;
+
 	if(PQEmpty(pq)) {
+		Link new_node = NewNode();
+		new_node->val = element;
 		pq->front = pq->curr = pq->end = new_node;
+	} else {
+		Link iter = pq->front;
+		pq->curr = pq->front;
+		while(pq->curr->next != NULL){
+			if(pq->curr->val.value <= element.value && pq->curr->next->val.value > element.value){
+				iter = pq->curr;
+			}
+			if(pq->curr->val.key == element.key){
+				found = true;
+				break;
+			}
+		}
+		if(found){
+			updatePQ(pq,element);
+		} else {
+			Link new_node = NewNode();
+			new_node->val = element;
+			new_node->next = iter->next->next;
+			iter->next = new_node;
+		}
 	}
 }
 
@@ -60,7 +80,7 @@ ItemPQ dequeuePQ(PQ pq) {
 }
 
 void updatePQ(PQ pq, ItemPQ element) {
-
+	
 }
 
 void  showPQ(PQ pq) {
