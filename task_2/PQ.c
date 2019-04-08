@@ -62,7 +62,7 @@ void addPQ(PQ pq, ItemPQ element) {
 		if(pq->found){
 			pq->search->val = element;
 			pq->found = false;
-			// need to call a sort fucntion here
+			sortPQ(pq);
 		} else {
 			Link iter = pq->front;
 			pq->curr = pq->front;
@@ -122,7 +122,7 @@ void updatePQ(PQ pq, ItemPQ element) {
 	} else {
 		pq->search->val = element;
 		pq->found = false;
-		// insert a sort function here
+		sortPQ(pq);
 	}
 }
 
@@ -143,6 +143,31 @@ static void searchPQ(PQ pq,int key){
 			return;
 		}
 		pq->search = pq->search->next;
+	}
+}
+
+static void swap(Link p1 , Link p2) {
+	ItemPQ temp = p1->val;
+	p1->val = p2->val;
+	p2->val = temp;
+}
+
+static void sortPQ(PQ pq) {
+	Link start = pq->front;
+	Link traverse;
+	Link min;
+
+	while(start->next) {
+		min = start;
+		traverse = start->next;
+		while(traverse) {
+			if(min->val.value > traverse->val.value) {
+				min = traverse;
+			}
+			traverse = traverse->next;
+		}
+		swap(start , min);
+		start = start->next;
 	}
 }
 
