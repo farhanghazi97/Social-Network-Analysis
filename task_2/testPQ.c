@@ -36,6 +36,11 @@ int main(void) {
 	addPQ(new_PQ , test_item);
 	showPQ(new_PQ);
 	
+	printf("Adding dup\n");
+	test_item.key = 2;
+	test_item.value = 7;
+	addPQ(new_PQ , test_item);
+	showPQ(new_PQ);
 	freePQ(new_PQ);
 
 	return 0;

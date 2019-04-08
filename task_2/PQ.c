@@ -64,7 +64,6 @@ void addPQ(PQ pq, ItemPQ element) {
 			pq->search->val = element;
 			pq->found = false;
 			// need to call a sort fucntion here
-			assert(0);
 		} else {
 			Link iter = pq->front;
 			pq->curr = pq->front;
@@ -114,7 +113,7 @@ void updatePQ(PQ pq, ItemPQ element) {
 	
 }
 
-void  showPQ(PQ pq) {
+void showPQ(PQ pq) {
 	Link curr = pq->front;
 	while(curr != NULL) {
 		printf("Key : %d | Value: %d\n" , curr->val.key , curr->val.value);
@@ -124,10 +123,11 @@ void  showPQ(PQ pq) {
 
 static void searchPQ(PQ pq,int key){
 	pq->search = pq->front;
-	while(pq->search->next != NULL){
+	while(pq->search != NULL){
 		if(pq->search->val.key == key){
-			pq->found == true;
-			break;
+			pq->found = true;
+			printf("FOUND\n");
+			return;
 		}
 		pq->search = pq->search->next;
 	}
