@@ -23,6 +23,7 @@ typedef struct Node {
 static Link NewNode (void);
 
 static void searchPQ(PQ pq, int key);
+static void sortPQ(PQ pq); // TODO
 
 PQ newPQ() {
 	PQ new_PQ = malloc(sizeof(struct PQRep));
@@ -50,8 +51,6 @@ int PQEmpty(PQ p) {
 }
 
 void addPQ(PQ pq, ItemPQ element) {
-
-	bool found = false;
 
 	if(PQEmpty(pq)) {
 		Link new_node = NewNode();
@@ -105,12 +104,26 @@ void addPQ(PQ pq, ItemPQ element) {
 }
 
 ItemPQ dequeuePQ(PQ pq) {
-	ItemPQ throwAway = {0};
-	return throwAway;
+	assert(pq->front != NULL);
+	ItemPQ item = pq->front->val;
+	Link old = pq->front;
+	pq->front = old->next;
+	if (pq->front == NULL){
+		pq->end = NULL;
+	}
+	free(old);
+	return item;
 }
 
 void updatePQ(PQ pq, ItemPQ element) {
-	
+	searchPQ(pq, element.key);
+	if(!pq->found){
+		return;
+	} else {
+		pq->search->val = element;
+		pq->found = false;
+		// insert a sort function here
+	}
 }
 
 void showPQ(PQ pq) {
