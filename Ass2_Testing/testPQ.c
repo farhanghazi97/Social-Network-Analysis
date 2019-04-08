@@ -28,6 +28,7 @@ int main(){
   addPQ(pq,newItemPQ(5,3));
   
   ItemPQ v; 
+  
   for(int i=0; i<5; i++){  
       v = dequeuePQ(pq);
       printf("Dequeued: {%d,%d}\n",v.key,v.value);

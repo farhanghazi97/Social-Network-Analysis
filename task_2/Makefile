@@ -4,12 +4,12 @@ BINS=PQ
 
 all: $(BINS)
 
-PQ: PQ.o testPQ.o
-	$(CC) -o PQ PQ.o testPQ.o
+PQ: PQ.o testPQself.o
+	$(CC) -o PQ PQ.o testPQself.o
 
 PQ.o: PQ.c PQ.h
 
-testPQ.o: testPQ.c PQ.h
+testPQself.o: testPQself.c PQ.h
 
 clean:
 	rm -f $(BINS) *.o core

@@ -64,7 +64,6 @@ void addPQ(PQ pq, ItemPQ element) {
 			pq->found = false;
 			sortPQ(pq);
 		} else {
-			Link iter = pq->front;
 			pq->curr = pq->front;
 			Link new_node = NewNode();
 			new_node->val = element;
@@ -112,6 +111,7 @@ ItemPQ dequeuePQ(PQ pq) {
 		pq->end = NULL;
 	}
 	free(old);
+	pq->size--;
 	return item;
 }
 
@@ -139,7 +139,6 @@ static void searchPQ(PQ pq,int key){
 	while(pq->search != NULL){
 		if(pq->search->val.key == key){
 			pq->found = true;
-			printf("FOUND\n");
 			return;
 		}
 		pq->search = pq->search->next;
