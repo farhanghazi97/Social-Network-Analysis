@@ -4,22 +4,54 @@
 #include <stdio.h>
 #include <assert.h>
 
+typedef struct Node * Link;
 
-struct PQRep {
+typedef struct PQRep {
+	int size;
+	Link front;
+	Link curr;
+	Link end;
+} PQRep;
 
-};
+typedef struct Node {
+	ItemPQ val;
+	Link next;
+} Node;
 
+static Link NewNode (void);
 
 PQ newPQ() {
-	return NULL;
+	PQ new_PQ = malloc(sizeof(struct PQRep));
+	assert(new_PQ != NULL);
+	new_PQ->size = 0;
+	new_PQ->front = NULL;
+	new_PQ->curr = NULL;
+	new_PQ->end = NULL;
+	return new_PQ;
+}
+
+static Link NewNode (void) {
+	Link new_node = malloc(sizeof(struct Node));
+	new_node->val = NULL;
+	new_node->next = NULL;
+	return new_node;
 }
 
 int PQEmpty(PQ p) {
-		return 0;
+	if(p->size == 0) {
+		return 1;
+	}
+	return 0;
 }
 
 void addPQ(PQ pq, ItemPQ element) {
-
+	
+	Link new_node = NewNode();
+	new_node->val = element;
+	
+	if(PQEmpty(pq)) {
+		pq->front = pq->curr = pq->end = new_node;
+	}
 }
 
 ItemPQ dequeuePQ(PQ pq) {
