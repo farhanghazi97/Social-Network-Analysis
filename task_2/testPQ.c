@@ -9,11 +9,13 @@ int main(void) {
 
 	PQ new_PQ = newPQ();
 	addPQ(new_PQ, test_item);
+	printf("First Add\n");
 	showPQ(new_PQ);
 	
 	test_item.key = 3;
 	test_item.value = 12;
 	addPQ(new_PQ , test_item);
+	printf("Second Add\n");
 	showPQ(new_PQ);
 	
 	// NOTE: Does not update head of list (instead appends it)
@@ -21,6 +23,7 @@ int main(void) {
 	//       is highest (lowest weight)
 	test_item.key = 4;
 	test_item.value = 1;
+	printf("Third Add\n");
 	addPQ(new_PQ , test_item);
 	showPQ(new_PQ);
 	
@@ -29,6 +32,7 @@ int main(void) {
 	
 	test_item.key = 3;
 	test_item.value = 9;
+	printf("Fourth Add\n");
 	addPQ(new_PQ , test_item);
 	showPQ(new_PQ);
 	

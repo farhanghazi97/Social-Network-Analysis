@@ -11,6 +11,8 @@ typedef struct PQRep {
 	Link front;
 	Link curr;
 	Link end;
+	bool found;
+	Link search;
 } PQRep;
 
 typedef struct Node {
@@ -20,6 +22,8 @@ typedef struct Node {
 
 static Link NewNode (void);
 
+static void searchPQ(PQ pq, int key);
+
 PQ newPQ() {
 	PQ new_PQ = malloc(sizeof(struct PQRep));
 	assert(new_PQ != NULL);
@@ -27,6 +31,8 @@ PQ newPQ() {
 	new_PQ->front = NULL;
 	new_PQ->curr = NULL;
 	new_PQ->end = NULL;
+	new_PQ->found = false;
+	new_PQ->search = NULL;
 	return new_PQ;
 }
 
@@ -51,25 +57,50 @@ void addPQ(PQ pq, ItemPQ element) {
 		Link new_node = NewNode();
 		new_node->val = element;
 		pq->front = pq->curr = pq->end = new_node;
+		pq->size++;
 	} else {
-		Link iter = pq->front;
-		pq->curr = pq->front;
-		while(pq->curr->next != NULL){
-			if(pq->curr->val.value <= element.value && pq->curr->next->val.value > element.value){
-				iter = pq->curr;
-			}
-			if(pq->curr->val.key == element.key){
-				found = true;
-				break;
-			}
-		}
-		if(found){
-			updatePQ(pq,element);
+		searchPQ(pq,element.key);
+		if(pq->found){
+			pq->search->val = element;
+			pq->found = false;
+			// need to call a sort fucntion here
+			assert(0);
 		} else {
+			Link iter = pq->front;
+			pq->curr = pq->front;
 			Link new_node = NewNode();
 			new_node->val = element;
-			new_node->next = iter->next->next;
-			iter->next = new_node;
+			if(pq->size == 1) {
+				if(pq->front->val.value <= element.value){
+					pq->front->next = new_node;
+					pq->end = new_node;
+					pq->size++;
+				} else {
+					new_node->next = pq->front;
+					pq->front = new_node;
+					pq->size++;
+				}
+			} else {
+				while(pq->curr->next != NULL){
+					if (pq->curr->val.value > element.value){
+						new_node->next = pq->front;
+						pq->front = new_node;
+						pq->size++;
+						return;
+					}
+					if (pq->curr->val.value <= element.value && pq->curr->next->val.value > element.value){
+						new_node->next = pq->curr->next;
+						pq->curr->next = new_node;
+						pq->size++;
+						return;
+					}
+					pq->curr = pq->curr->next;
+				}
+				pq->end->next = new_node;
+				pq->end = new_node;
+				pq->size++;
+			}
+
 		}
 	}
 }
@@ -84,10 +115,21 @@ void updatePQ(PQ pq, ItemPQ element) {
 }
 
 void  showPQ(PQ pq) {
-	Link curr = pq->curr;
+	Link curr = pq->front;
 	while(curr != NULL) {
 		printf("Key : %d | Value: %d\n" , curr->val.key , curr->val.value);
 		curr = curr->next;
+	}
+}
+
+static void searchPQ(PQ pq,int key){
+	pq->search = pq->front;
+	while(pq->search->next != NULL){
+		if(pq->search->val.key == key){
+			pq->found == true;
+			break;
+		}
+		pq->search = pq->search->next;
 	}
 }
 
