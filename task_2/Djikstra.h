@@ -1,11 +1,11 @@
 // Dijkstra ADT interface for Ass2 (COMP2521)
 #include <stdbool.h>
-#include "Graph.h"
+#include "../task_1/Graph.h"
 
 #ifndef _CS2521_DIJKSTRA_H
 #define _CS2521_DIJKSTRA_H
 
-typedef struct PredNode * PNode
+typedef struct PredNode * PNode;
 
 typedef struct PredNode {
    int         v;
