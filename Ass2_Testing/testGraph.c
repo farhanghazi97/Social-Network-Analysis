@@ -54,7 +54,7 @@ int main(int argc, char* argv[]){
 
 	printf("\n\n");
 
-	graphVis(g, DEFAULT);
+	//graphVis(g, DEFAULT);
 }
 
 void check_removeEdge_adjacent(Graph g) {
