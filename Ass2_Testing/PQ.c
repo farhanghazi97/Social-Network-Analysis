@@ -171,11 +171,13 @@ static void sortPQ(PQ pq) {
 }
 
 void freePQ(PQ pq) {
-	Link curr = pq->front;
-	while(curr->next != NULL) {
-		Link temp = curr;
-		free(temp);
-		curr = curr->next;
+	if(pq != NULL) {
+		Link curr = pq->front;
+		while(curr->next != NULL) {
+			Link temp = curr;
+			free(temp);
+			curr = curr->next;
+		}
+		free(pq);
 	}
-	free(pq);
 }

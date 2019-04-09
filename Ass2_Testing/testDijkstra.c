@@ -57,13 +57,15 @@ void displayShortestPathsStruct(ShortestPaths sps){
 	int i = 0;
 	printf("Node %d\n",sps.src);
 	printf("  Distance\n");
+	//printf("Number of nodes: %d\n" , sps.noNodes);
 	for (i = 0; i < sps.noNodes; i++) {
-			if(i == sps.src)
+		if(i == sps.src) {
 	    	printf("    %d : X\n",i);
-			else
-				printf("    %d : %d\n",i,sps.dist[i]);
+		} else {
+			printf("    %d : %d\n",i,sps.dist[i]);
+		}
 	}
-	printf("  Preds\n");
+	/*printf("  Preds\n");
 	for (i = 0; i < sps.noNodes; i++) {
 		printf("    %d : ",i);
 		PredNode* curr = sps.pred[i];
@@ -72,7 +74,7 @@ void displayShortestPathsStruct(ShortestPaths sps){
 			curr = curr->next;
 		}
 		printf("NULL\n");
-	}
+	}*/
 }
 
 int main(int argc, char* argv[]){
