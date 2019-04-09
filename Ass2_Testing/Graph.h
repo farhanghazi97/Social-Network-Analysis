@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #ifndef _CS2521_GRAPH_H
 #define _CS2521_GRAPH_H
+#define MAX_NODES 10
 
 typedef struct GraphRep *Graph;
 

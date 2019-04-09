@@ -14,7 +14,7 @@
 void check_removeEdge_adjacent(Graph g);
 void check_inIncident(Graph g);
 void check_outIncident(Graph g);
-	
+
 void printSortedAdjList(AdjList list){
 
     Tree t = newTree();
@@ -28,7 +28,7 @@ void printSortedAdjList(AdjList list){
 
 
 int main(int argc, char* argv[]){
-	
+
     Graph g = newGraph(10);
 	insertEdge(g,0,1,2);
 	insertEdge(g,0,2,5);
@@ -46,15 +46,15 @@ int main(int argc, char* argv[]){
 	insertEdge(g,8,1,8);
 	insertEdge(g,1,3,4);
 	insertEdge(g,7,5,2);
-	insertEdge(g,7,2,6);		
-	
+	insertEdge(g,7,2,6);
+
 	check_removeEdge_adjacent(g);
 	check_inIncident(g);
 	check_outIncident(g);
-	
+
 	printf("\n\n");
-	
-	//graphVis(g, DEFAULT);
+
+	graphVis(g, DEFAULT);
 }
 
 void check_removeEdge_adjacent(Graph g) {
