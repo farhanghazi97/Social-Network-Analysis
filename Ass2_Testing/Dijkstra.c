@@ -14,7 +14,6 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	ShortestPaths static_SP;
 	static_SP.noNodes = numVerticies(g);
 	static_SP.src = v;
-	static_SP.dist = NULL;
 	static_SP.dist = malloc(numVerticies(g) * sizeof(int));
 	for(int i = 0; i < static_SP.noNodes; i++) {
 		static_SP.dist[i] = 1000000;
@@ -27,8 +26,6 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	item.value = 0;
 	addPQ(new_PQ , item);
 
-	ItemPQ temp;
-
 	// While the priority queue is not empty, grab highest priority vertex and
 	// find all its neighbours. Calculate distance between source and egdes and
 	// update the array if shortest path is found.
@@ -36,6 +33,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	// NOT IMPLEMENTED: If connection does not exist, dist defualts to 1000000
 	// (BAD!)
 
+	ItemPQ temp;
 	while(!(PQEmpty(new_PQ))) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
 		AdjList curr = outIncident(g , vertex.key);
