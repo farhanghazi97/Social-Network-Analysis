@@ -21,12 +21,21 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	}
 	static_SP.pred = NULL;
 
+	// Add souce vertex to priority queue with shortest distance 0
 	static_SP.dist[v] = 0;
 	item.key = v;
 	item.value = 0;
 	addPQ(new_PQ , item);
 
 	ItemPQ temp;
+
+	// While the priority queue is not empty, grab highest priority vertex and
+	// find all its neighbours. Calculate distance between source and egdes and
+	// update the array if shortest path is found.
+
+	// NOT IMPLEMENTED: If connection does not exist, dist defualts to 1000000
+	// (BAD!)
+
 	while(!(PQEmpty(new_PQ))) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
 		AdjList curr = outIncident(g , vertex.key);
