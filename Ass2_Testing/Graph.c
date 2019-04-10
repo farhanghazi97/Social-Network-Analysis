@@ -13,7 +13,7 @@ typedef struct GraphRep {
 	int nV;
 	AdjNode L [MAX_NODES];
 	AdjList OutLinks [MAX_NODES];
-	AdjList InLinks [MAX_NODES];
+	AdjList InLinks  [MAX_NODES];
 } GraphRep;
 
 // Struct to keep track of length of adjacency
@@ -107,6 +107,10 @@ AdjList outIncident(Graph g, Vertex v) {
 
 AdjList inIncident(Graph g , Vertex v) {
 	return g->InLinks[v];
+}
+
+int outIncidentsize(Graph g , Vertex v) {
+	return g->L[v]->out_size;
 }
 
 /*
