@@ -5,7 +5,7 @@
 #ifndef _CS2521_DIJKSTRA_H
 #define _CS2521_DIJKSTRA_H
 
-typedef struct PredNode * PNode;
+
 
 typedef struct PredNode {
    int         v;

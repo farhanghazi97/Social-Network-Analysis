@@ -5,16 +5,17 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
+typedef struct PredNode * PNode;
 
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
 	PQ new_PQ = newPQ();
 	ItemPQ item;
-
+	int *visited = calloc(numVerticies(g),sizeof(int));
 	ShortestPaths static_SP;
 	static_SP.noNodes = numVerticies(g);
 	static_SP.src = v;
-	static_SP.dist = malloc(numVerticies(g) * sizeof(int));
+	static_SP.dist = malloc(numVerticies(g)*sizeof(int));
 	for(int i = 0; i < static_SP.noNodes; i++) {
 		static_SP.dist[i] = 1000000;
 	}
@@ -25,7 +26,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	item.key = v;
 	item.value = 0;
 	addPQ(new_PQ , item);
-
+	
 	// While the priority queue is not empty, grab highest priority vertex and
 	// find all its neighbours. Calculate distance between source and egdes and
 	// update the array if shortest path is found.
@@ -36,17 +37,26 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	ItemPQ temp;
 	while(!(PQEmpty(new_PQ))) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
-		AdjList curr = outIncident(g , vertex.key);
-		while(curr != NULL) {
-			temp.key = curr->w;
-			temp.value = curr->weight;
-			if(static_SP.dist[temp.key] > static_SP.dist[vertex.key] + temp.value) {
-				static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
-				addPQ(new_PQ , temp);
+		if (!visited[vertex.key]) {
+			AdjList curr = outIncident(g , vertex.key);
+			while(curr != NULL) {
+				temp.key = curr->w;
+				temp.value = curr->weight;
+				if(static_SP.dist[temp.key] > static_SP.dist[vertex.key] + temp.value) {
+					static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
+					addPQ(new_PQ , temp);
+				}
+				curr = curr->next;
 			}
-			curr = curr->next;
+		}
+		visited[vertex.key] = 1;
+	}
+	for(int i = 0; i < numVerticies(g); i++) {
+		if (!visited[i]) {
+			static_SP.dist[i] = 0;
 		}
 	}
+
 
 	//Throwing error!
 	//freePQ(new_PQ);
