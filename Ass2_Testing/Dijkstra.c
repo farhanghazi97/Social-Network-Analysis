@@ -42,24 +42,25 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
 		printf("Pop %d\n",vertex.key);
 		if (!visited[vertex.key]) {
-			AdjList curr = outIncident(g , vertex.key);
-			while(curr!= NULL) {
+			visited[vertex.key] = 1;					//mark as visited first
+			AdjList curr = outIncident(g , vertex.key); //grab outIncident List
+			while(curr) {
 				temp.key = curr->w;
 				temp.value = curr->weight;
 				printf("Check %d\n",curr->w);
 				if(static_SP.dist[temp.key] >= static_SP.dist[vertex.key] + temp.value) {
 					if (static_SP.dist[temp.key] == static_SP.dist[vertex.key] + temp.value){
-						struct PredNode *curr = static_SP.pred[temp.key];
-						while(curr->next != NULL){
-							curr = curr->next;
+						struct PredNode *curr1 = static_SP.pred[temp.key];
+						while(curr1->next != NULL){
+							printf("Curr is %d\n",curr1->v);
+							curr1 = curr1->next;
 						}
-						curr->next = NewPredNode(vertex.key);
+						curr1->next = NewPredNode(vertex.key);
 					} else {
 						static_SP.pred[temp.key] = NewPredNode(vertex.key);
 						static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
 						printf("Update %d dist to %d\n",temp.key,static_SP.dist[temp.key]);
 						addPQ(new_PQ , temp);
-						visited[vertex.key] = 1;
 						printf("Add %d to Q\n",temp.key);
 					}
 				}
