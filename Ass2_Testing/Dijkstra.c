@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 typedef struct PredNode * PNode;
-
+static struct PredNode * NewPredNode (int val);
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
 	PQ new_PQ = newPQ();
@@ -19,7 +19,10 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	for(int i = 0; i < static_SP.noNodes; i++) {
 		static_SP.dist[i] = 1000000;
 	}
-	static_SP.pred = NULL;
+	static_SP.pred = malloc(numVerticies(g)*sizeof(struct PredNode*));
+	for (int i=0; i<numVerticies(g);i++){
+		static_SP.pred[i]=NULL;
+	}
 
 	// Add souce vertex to priority queue with shortest distance 0
 	static_SP.dist[v] = 0;
@@ -37,19 +40,33 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	ItemPQ temp;
 	while(!(PQEmpty(new_PQ))) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
+		printf("Pop %d\n",vertex.key);
 		if (!visited[vertex.key]) {
 			AdjList curr = outIncident(g , vertex.key);
-			while(curr != NULL) {
+			while(curr!= NULL) {
 				temp.key = curr->w;
 				temp.value = curr->weight;
-				if(static_SP.dist[temp.key] > static_SP.dist[vertex.key] + temp.value) {
-					static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
-					addPQ(new_PQ , temp);
+				printf("Check %d\n",curr->w);
+				if(static_SP.dist[temp.key] >= static_SP.dist[vertex.key] + temp.value) {
+					if (static_SP.dist[temp.key] == static_SP.dist[vertex.key] + temp.value){
+						struct PredNode *curr = static_SP.pred[temp.key];
+						while(curr->next != NULL){
+							curr = curr->next;
+						}
+						curr->next = NewPredNode(vertex.key);
+					} else {
+						static_SP.pred[temp.key] = NewPredNode(vertex.key);
+						static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
+						printf("Update %d dist to %d\n",temp.key,static_SP.dist[temp.key]);
+						addPQ(new_PQ , temp);
+						visited[vertex.key] = 1;
+						printf("Add %d to Q\n",temp.key);
+					}
 				}
 				curr = curr->next;
 			}
+			printf("End while\n");
 		}
-		visited[vertex.key] = 1;
 	}
 	for(int i = 0; i < numVerticies(g); i++) {
 		if (!visited[i]) {
@@ -71,4 +88,11 @@ void showShortestPaths(ShortestPaths paths) {
 
 void  freeShortestPaths(ShortestPaths paths) {
 
+}
+
+static struct PredNode * NewPredNode (int val){
+	struct PredNode * new_node = malloc(sizeof(struct PredNode));
+	new_node->v = val;
+	new_node->next = NULL;
+	return new_node;
 }
