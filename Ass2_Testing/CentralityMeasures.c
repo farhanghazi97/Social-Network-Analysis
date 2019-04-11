@@ -4,14 +4,48 @@
 #include "PQ.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 NodeValues outDegreeCentrality(Graph g){
-	NodeValues throwAway = {0};
-	return throwAway;
+
+	NodeValues new_NV;
+	new_NV.noNodes = numVerticies(g);
+	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
+	assert(new_NV.values != NULL);
+
+	for(int i = 0; i < new_NV.noNodes; i++) {
+		AdjList curr = outIncident(g , i);
+		int count = 0;
+		if(curr != NULL) {
+			while(curr != NULL) {
+				count++;
+				curr = curr->next;
+			}
+		}
+		new_NV.values[i] = count;
+	}
+	return new_NV;
 }
 NodeValues inDegreeCentrality(Graph g){
-	NodeValues throwAway = {0};
-	return throwAway;
+
+	NodeValues new_NV;
+	new_NV.noNodes = numVerticies(g);
+	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
+	assert(new_NV.values != NULL);
+
+	for(int i = 0; i < new_NV.noNodes; i++) {
+		AdjList curr = inIncident(g , i);
+		int count = 0;
+		if(curr != NULL) {
+			while(curr != NULL) {
+				count++;
+				curr = curr->next;
+			}
+		}
+		new_NV.values[i] = count;
+	}
+	return new_NV;
+
 }
 NodeValues degreeCentrality(Graph g) {
 	NodeValues throwAway = {0};
@@ -34,9 +68,11 @@ NodeValues betweennessCentralityNormalised(Graph g){
 }
 
 void showNodeValues(NodeValues values){
-
+	for(int i = 0; i < values.noNodes; i++) {
+		printf("%d: %lf\n" , i , values.values[i]);
+	}
 }
 
 void freeNodeValues(NodeValues values){
-
+	free(values.values);
 }

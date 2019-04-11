@@ -55,7 +55,7 @@ Graph newGraph(int noNodes) {
 	for(int i = 0; i < noNodes; i++) {
 		new_graph->L[i] = newAdjList();
 	}
-	
+
 	// Return updated graph structure
 	return new_graph;
 }
@@ -258,7 +258,7 @@ bool adjacent (Graph g, Vertex src, Vertex dest) {
 void freeGraph(Graph g) {
 	if(g != NULL) {
 		//Free OutLinks array
-		for(int i = 0; i < MAX_NODES; i++) {
+		for(int i = 0; i < g->nV; i++) {
 			AdjList curr = g->OutLinks[i];
 			while(curr != NULL) {
 				AdjList temp = curr;
@@ -267,12 +267,12 @@ void freeGraph(Graph g) {
 			}
 		}
 		//Free AdjList Tracker array
-		for(int i = 0; i < MAX_NODES; i++) {
+		for(int i = 0; i < g->nV; i++) {
 			AdjNode temp = g->L[i];
 			free(temp);
 		}
 		// Free InLinks array
-		for(int i = 0; i < MAX_NODES; i++) {
+		for(int i = 0; i < g->nV; i++) {
 			AdjList curr = g->InLinks[i];
 			while(curr != NULL) {
 				AdjList temp = curr;
