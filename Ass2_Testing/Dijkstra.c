@@ -49,7 +49,6 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 		if (!visited[vertex.key]) {
 			visited[vertex.key] = 1;					//mark as visited first
 			AdjList curr = outIncident(g , vertex.key); //grab outIncident List
-			//printf("Out size of vertex %d: %d\n" , vertex.key , outIncidentsize(g , vertex.key));
 			while(curr) {
 				//printf("%d\n" , curr->w);
 				temp.key = curr->w;
@@ -92,7 +91,7 @@ void showShortestPaths(ShortestPaths paths) {
 
 
 void  freeShortestPaths(ShortestPaths paths) {
-	free(paths.dist);
+	/*free(paths.dist);
 	for(int i = 0; i < paths.noNodes; i++) {
 		PNode curr = paths.pred[i];
 		while(curr != NULL) {
@@ -101,7 +100,7 @@ void  freeShortestPaths(ShortestPaths paths) {
 			curr = curr->next;
 		}
 	}
-	free(paths.pred);
+	free(paths.pred);*/
 }
 
 static PNode NewPredNode (int val){

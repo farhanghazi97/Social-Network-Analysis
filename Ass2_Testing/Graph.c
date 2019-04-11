@@ -21,8 +21,6 @@ typedef struct GraphRep {
 typedef struct _adjList {
 	int out_size;
 	int in_size;
-	AdjList first;
-	AdjList last;
 } adjList;
 
 // Struct representing the connections
@@ -35,12 +33,7 @@ typedef struct EdgeRep {
 
 static AdjNode newAdjList (void);
 static AdjList newAdjNode (int dest , int weight);
-
 static int NodeDest (AdjList L);
-//static int NodeWeight (AdjList L);
-//static int EdgeSource (Edge e);
-//static int EdgeDest   (Edge e);
-//static int EdgeWeight (Edge e);
 
 // Construct graph from array of edge objects
 Graph newGraph(int noNodes) {
@@ -62,31 +55,7 @@ Graph newGraph(int noNodes) {
 	for(int i = 0; i < noNodes; i++) {
 		new_graph->L[i] = newAdjList();
 	}
-
-	// While iterating over the edge objects in array,
-	// modify graph structure.
-	/*for(int i = 0; i < no_of_edges; i++) {
-
-		int src = EdgeSource(edges[i]);
-		int dest = EdgeDest(edges[i]);
-		int weight = EdgeWeight(edges[i]);
-
-		// Set up links between top level vertex array
-		// and the vertices they connect to
-		AdjList new_node_out = newAdjNode(dest , weight);
-		new_node_out->next = new_graph->OutLinks[src];
-		new_graph->OutLinks[src] = new_node_out;
-		new_graph->L[src]->out_size++;
-
-		AdjList new_node_in = newAdjNode(src , weight);
-		new_node_in->next = new_graph->InLinks[dest];
-		new_graph->InLinks[dest] = new_node_in;
-		new_graph->L[dest]->in_size++;
-
-		//Set first to point to head of each adjacency list that is updated
-		new_graph->L[src]->first = new_node_out;
-	}*/
-
+	
 	// Return updated graph structure
 	return new_graph;
 }
@@ -109,101 +78,20 @@ AdjList inIncident(Graph g , Vertex v) {
 	return g->InLinks[v];
 }
 
-int outIncidentsize(Graph g , Vertex v) {
-	return g->L[v]->out_size;
-}
-
-/*
-// Allocate a new Edge object
-static Edge newEdge (int source , int dest , int weight) {
-	Edge new_edge = malloc(sizeof(Edge));
-	assert(new_edge != NULL);
-	new_edge->source = source;
-	new_edge->dest = dest;
-	new_edge->weight = weight;
-	return new_edge;
-}
-*/
-
 // Allocate a new Adjacency List Tracker object
 static AdjNode newAdjList (void) {
 	AdjNode L = malloc(sizeof(struct _adjList));
 	L->out_size = 0;
 	L->in_size = 0;
-	L->first = NULL;
-	L->last = NULL;
 	return L;
 }
-/*
-// Parse input file and grab relevant data
-static int * ReadFile (char * filename) {
 
-    int i = 0;
-    int lines = 0;
 
-    // Open file for reading
-	FILE * fp = fopen(filename , "r");
-
-	char buffer[BUFSIZ];
-	if(fp != NULL) {
-		// Determine how many sets of entries there are
-		while(fgets(buffer , BUFSIZ , fp) != NULL) {
-			lines++;
-		}
-		// Malloc enough space to hold just those numbers
-		// where every line has 3 numbers
-		int * array = malloc(lines * 3 * sizeof(int));
-		// Reset file pointer to beginning of file
-		rewind(fp);
-		// Package size of array into array index;
-		array[i] = (lines * 3);
-		i++;
-		// Grab data points from input file and store in array
-		int data;
-		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
-			array[i] = data;
-			i++;
-		}
-		// Close file
-		fclose(fp);
-		// return array with data
-		return array;
-
-	} else {
-		//ERROR: File does not exist
-		printf("Could not open file!\n");
-		return 0;
-	}
-}
-*/
-//  -----------------   HELPER FUNCTIONS START ------------- //
-/*
-static AdjList * GetConnectionsArray(Graph g) {
-	return g->OutLinks;
-}
-*/
 static int NodeDest (AdjList L) {
 	return L->w;
 }
-/*
-static int NodeWeight (AdjList L) {
-	return L->weight;
-}
 
-static int EdgeSource (Edge e) {
-	return e->source;
-}
-
-static int EdgeDest   (Edge e) {
-	return e->dest;
-}
-
-static int EdgeWeight (Edge e) {
-	return e->weight;
-}
-*/
-
-int  numVerticies(Graph g) {
+int numVerticies(Graph g) {
 	return g->nV;
 }
 
@@ -212,14 +100,8 @@ int  numVerticies(Graph g) {
 // Display graph structure
 void showGraph(Graph g) {
 
-	for(int i = 0; i <= MAX_NODES; i++) {
+	for(int i = 0; i <= g->nV; i++) {
 		AdjList curr_out = g->OutLinks[i];
-		/*if(g->L[i]->out_size > 0) {
-			printf("OutLinks size: %d\n" , g->L[i]->out_size);
-		}
-		if(g->L[i]->in_size > 0) {
-			printf("InLinks size: %d\n" , g->L[i]->in_size);
-		}*/
 		if(curr_out != NULL) {
 			printf("OutLinks: ");
 			while(curr_out != NULL) {
@@ -240,20 +122,6 @@ void showGraph(Graph g) {
 		printf("\n");
 	}
 }
-
-/*static void PrintAdjList(AdjList List) {
-	if(List != NULL) {
-		AdjList curr = List;
-		while(curr != NULL) {
-			printf("Vertex: %d | Weight: %d\n" , NodeDest(curr) , NodeWeight(curr));
-			curr = curr->next;
-
-		}
-		printf("\n");
-	} else {
-		printf("Pointer is NULL\n");
-	}
-}*/
 
 // Appends to appropriate top level adjacency list
 void insertEdge (Graph g, Vertex src, Vertex dest, int weight) {
@@ -385,13 +253,6 @@ bool adjacent (Graph g, Vertex src, Vertex dest) {
 	}
 	return flag;
 }
-
-// Free all memory associated with Edges array
-/*static void FreeEdgesArray(Edge * edges , int NEdges) {
-	for(int i = 0; i < NEdges; i++) {
-		free(edges[i]);
-	}
-}*/
 
 // Free all the memory associated with the graph
 void freeGraph(Graph g) {

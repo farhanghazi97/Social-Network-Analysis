@@ -36,8 +36,6 @@ AdjList outIncident(Graph g, Vertex v);
 **/
 AdjList inIncident(Graph g, Vertex v);
 
-int outIncidentsize(Graph g , Vertex v);
-
 void  showGraph(Graph g);
 void  freeGraph(Graph g);
 
