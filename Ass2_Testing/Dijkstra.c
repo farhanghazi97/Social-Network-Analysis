@@ -11,7 +11,10 @@
 typedef struct PredNode * PNode;
 
 static PNode NewPredNode (int val);
-
+/*
+static PNode SelectionSort(PNode head);
+static void swap(PNode p1 , PNode p2);
+*/
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
 	PQ new_PQ = newPQ();
@@ -81,26 +84,49 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 			static_SP.dist[i] = 0;
 		}
 	}
+	
+	free(visited);
 
 	return static_SP;
 }
 
 void showShortestPaths(ShortestPaths paths) {
-
+	int i = 0;
+	printf("Node %d\n",paths.src);
+	printf("  Distance\n");
+	for (i = 0; i < paths.noNodes; i++) {
+		if(i == paths.src) {
+	    	printf("    %d : X\n",i);
+		} else {
+			printf("    %d : %d\n", i , paths.dist[i]);
+		}
+	}
+	printf("  Preds\n");
+	for (i = 0; i < paths.noNodes; i++) {
+		printf("    %d : ",i);
+		PNode curr = paths.pred[i];
+		while(curr!=NULL) {
+			printf("[%d]->",curr->v);
+			curr = curr->next;
+		}
+		printf("NULL\n");
+	}
 }
 
 
 void  freeShortestPaths(ShortestPaths paths) {
-	/*free(paths.dist);
+	free(paths.dist);
 	for(int i = 0; i < paths.noNodes; i++) {
 		PNode curr = paths.pred[i];
-		while(curr != NULL) {
-			PNode temp = curr;
-			free(temp);
-			curr = curr->next;
+		if(curr != NULL) {
+			while(curr->next != NULL) {
+				PNode temp = curr;
+				free(temp);
+				curr = curr->next;
+			}
 		}
 	}
-	free(paths.pred);*/
+	free(paths.pred);
 }
 
 static PNode NewPredNode (int val){
@@ -109,3 +135,32 @@ static PNode NewPredNode (int val){
 	new_node->next = NULL;
 	return new_node;
 }
+/*
+static PNode SelectionSort(PNode head) {
+	
+	PNode start = head;
+	PNode traverse;
+	PNode min;
+	
+	while(start->next != NULL) {
+		min = start;
+		traverse = start->next;
+		while(traverse != NULL) {
+			if(min->v > traverse->v) {
+				min = traverse;
+			} 
+			traverse = traverse->next;
+		}
+		swap(start , min);
+		start = start->next;
+	}
+	
+	return head;
+}
+
+static void swap(PNode p1 , PNode p2) {
+	int temp = p1->v;
+	p1->v = p2->v;
+	p2->v = temp;
+}
+*/

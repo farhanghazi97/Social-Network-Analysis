@@ -4,7 +4,7 @@
 #include <string.h>
 #include "Graph.h"
 
-#define MAX_NODES 50
+#define MAX_NODES 150
 
 typedef struct _adjList     *AdjNode;
 
@@ -100,7 +100,7 @@ int numVerticies(Graph g) {
 // Display graph structure
 void showGraph(Graph g) {
 
-	for(int i = 0; i <= g->nV; i++) {
+	for(int i = 0; i < g->nV; i++) {
 		AdjList curr_out = g->OutLinks[i];
 		if(curr_out != NULL) {
 			printf("OutLinks: ");

@@ -7,6 +7,7 @@
 #include "Graph.h"
 #include "GraphVis.h"
 #include "BSTree.h"
+#include "GraphRead.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -29,6 +30,10 @@ void printSortedAdjList(AdjList list){
 
 int main(int argc, char* argv[]){
 
+    //Graph g = readGraph(argv[1]);
+    
+    //showGraph(g);
+    
     Graph g = newGraph(10);
 	insertEdge(g,0,1,2);
 	insertEdge(g,0,2,5);
