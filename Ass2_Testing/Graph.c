@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
 #include "Graph.h"
 
+#define MAX_NODES 50
+
 typedef struct _adjList     *AdjNode;
-typedef struct  EdgeRep     *Edge;
 
 // Struct representing Graph
 typedef struct GraphRep {
 	int nV;
-	AdjNode L [MAX_NODES];
+	AdjNode L        [MAX_NODES];
 	AdjList OutLinks [MAX_NODES];
 	AdjList InLinks  [MAX_NODES];
 } GraphRep;

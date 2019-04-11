@@ -2,6 +2,7 @@
 #include "GraphVis.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 Graph readGraph(char* file) {
 	// ugly count
@@ -40,16 +41,20 @@ Graph readGraph(char* file) {
 		nums[i][2] = c;
 		i++;
 	}
+	//printf("MaxVert: %d\n" , maxVert);
 	fclose(f);
 
 	Graph g = newGraph(maxVert+1);
+	
 	i = 0;
 	while(i < lines) {
 		insertEdge(g,nums[i][0],nums[i][1],nums[i][2]);
 		i++;
 	}
+	
 	for(i=0;i<lines;i++) free(nums[i]);
 	free(nums);
+	
 	return g;
 }
 
@@ -57,7 +62,6 @@ void displayShortestPathsStruct(ShortestPaths sps){
 	int i = 0;
 	printf("Node %d\n",sps.src);
 	printf("  Distance\n");
-	//printf("Number of nodes: %d\n" , sps.noNodes);
 	for (i = 0; i < sps.noNodes; i++) {
 		if(i == sps.src) {
 	    	printf("    %d : X\n",i);
