@@ -83,8 +83,6 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 		}
 	}
 
-	//Throwing error!
-	freePQ(new_PQ);
 	return static_SP;
 }
 
