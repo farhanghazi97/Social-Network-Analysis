@@ -15,7 +15,7 @@ NodeValues outDegreeCentrality(Graph g){
 
 	for(int i = 0; i < new_NV.noNodes; i++) {
 		AdjList curr = outIncident(g , i);
-		int count = 0;
+		float count = 0;
 		if(curr != NULL) {
 			while(curr != NULL) {
 				count++;
@@ -35,7 +35,7 @@ NodeValues inDegreeCentrality(Graph g){
 
 	for(int i = 0; i < new_NV.noNodes; i++) {
 		AdjList curr = inIncident(g , i);
-		int count = 0;
+		float count = 0;
 		if(curr != NULL) {
 			while(curr != NULL) {
 				count++;
@@ -48,8 +48,34 @@ NodeValues inDegreeCentrality(Graph g){
 
 }
 NodeValues degreeCentrality(Graph g) {
-	NodeValues throwAway = {0};
-	return throwAway;
+
+	NodeValues new_NV;
+	new_NV.noNodes = numVerticies(g);
+	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
+	assert(new_NV.values != NULL);
+
+	for(int i = 0; i < new_NV.noNodes; i++) {
+		AdjList out_curr = outIncident(g , i);
+		float out_count = 0;
+		if(out_curr != NULL) {
+			while(out_curr != NULL) {
+				out_count++;
+				out_curr = out_curr->next;
+			}
+		}
+		AdjList in_curr = inIncident(g , i);
+		float in_count = 0;
+		if(in_curr != NULL) {
+			while(in_curr != NULL) {
+				in_count++;
+				in_curr = in_curr->next;
+			}
+		}
+		float total_count = out_count + in_count;
+		new_NV.values[i] = total_count;
+	}
+
+	return new_NV;
 }
 
 NodeValues closenessCentrality(Graph g){
