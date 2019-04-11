@@ -15,7 +15,7 @@ typedef struct  EdgeRep     *Edge;
 AdjNode newAdjNode  (Vertex vertex, int weight);
 
 // Create graph by using data from egdes array
-Graph newGraph  (Edge * edges, int no_of_edges);
+Graph newGraph  (Edge * edges, int no_of_edges , int noNodes);
 
 // Allocate a new Edge structure
 Edge newEdge    (Vertex source, Vertex dest, int weight);
