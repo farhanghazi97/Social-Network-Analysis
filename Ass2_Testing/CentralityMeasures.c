@@ -7,6 +7,9 @@
 #include <assert.h>
 #include "GraphVis.h"
 
+static double numPathThroughV(int s,int t, int v, PredNode **pred);
+static double numPath(int s,int t, PredNode **pred);
+
 NodeValues outDegreeCentrality(Graph g){
 
 	NodeValues new_NV;
@@ -105,27 +108,23 @@ NodeValues betweennessCentrality(Graph g){
 	//int *pathCountArr = calloc(numVerticies(g),sizeof(int));
 	assert(new_NV.values != NULL);
 	graphVis(g,0);
-	for (int i = 0; i < new_NV.noNodes; i++){
-		ShortestPaths paths = dijkstra(g,i);
-		for (int j = 0; j <paths.noNodes; j++){
-			struct PredNode * curr = paths.pred[j];
-			if(curr!=NULL) {
-				int pathCount = 0;
-				while(curr!=NULL){
-					curr = curr->next;
-					pathCount++;
+	for (int v = 0; v < new_NV.noNodes; v++){
+		for (int s = 0; s < new_NV.noNodes; s++){
+			if(v == s){
+				continue;
+			}
+			ShortestPaths paths = dijkstra(g,s);
+			for (int t = 0; t <paths.noNodes; t++){
+				if(s == t || v == t){
+					continue;
 				}
-				printf("Path Count for Pair %d,%d is %d\n",i,j,pathCount);
-				struct PredNode * curr = paths.pred[j];
-				while(curr!=NULL) {
-					if(curr->v != i){
-						printf("Path count is %d\n",pathCount);
-						printf("Updating %d from %f to ",curr->v,new_NV.values[curr->v]);
-						new_NV.values[curr->v] =  new_NV.values[curr->v]+1.0/(float)pathCount;
-						printf("%lf\n",new_NV.values[curr->v]);
-					}
-					curr = curr->next;
+				double npv = numPathThroughV(s,t,v,paths.pred);
+				double n = numPath(s,t,paths.pred);
+				printf("%f~~%f~~s~%d~t~%d~v~%d\n",npv,n,s,t,v);
+				if(n){
+					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
+				
 			}
 		}
 	}
@@ -159,4 +158,42 @@ void freeNodeValues(NodeValues values){
 	free(values.values);
 }
 
-//static void fillBetween(double value[],)
+static double numPathThroughV(int s,int t, int v, PredNode **pred){
+	double count = 0;
+	struct PredNode *curr = pred[t];
+	if(!curr){
+		return 0;
+	}
+	// if(curr->v == s){
+	// 	//count = 1;
+	// 	curr = curr->next;
+	// }
+	if(curr->v == v){
+		count = 1;
+		curr = curr->next;
+	}
+	while(curr!=NULL) {
+		t = curr->v;
+		count = numPathThroughV(s,t,v,pred) + count;
+		curr = curr->next;
+	}
+	return count;
+}
+
+static double numPath(int s,int t, PredNode **pred){
+	double count = 0;
+	if(pred[t]==NULL){
+		return 0;
+	}
+	struct PredNode *curr = pred[t];
+	if(curr->v == s){
+		count = 1;
+		curr = curr->next;
+	}
+	while(curr!=NULL){
+		t = curr->v;
+		count = numPath(s,t,pred) + count;
+		curr = curr->next;
+	}
+	return count;
+}
