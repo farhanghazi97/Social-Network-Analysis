@@ -282,5 +282,5 @@ void freeGraph(Graph g) {
 		}
 	}
 	// Free graph
-	free(g);
+	//free(g);
 }

@@ -98,8 +98,28 @@ NodeValues closenessCentrality(Graph g){
 
 
 NodeValues betweennessCentrality(Graph g){
-	NodeValues throwAway = {0};
-	return throwAway;
+	NodeValues new_NV;
+	new_NV.noNodes = numVerticies(g);
+	new_NV.values = calloc(numVerticies(g),sizeof(double));
+	assert(new_NV.values != NULL);
+	for (int i = 0; i < new_NV.noNodes; i++){
+		ShortestPaths paths = dijkstra(g,i);
+		for (int i = 0; i <paths.noNodes; i++){
+			struct PredNode * curr = paths.pred[i];
+			if(curr!=NULL) {
+				while(curr!=NULL) {
+					if(curr->v != i){
+						new_NV.values[curr->v]++;
+					}
+					curr = curr->next;
+				}
+			}
+		}
+	}
+	for (int i = 0; i<new_NV.noNodes; i++){
+		new_NV.values[i] = new_NV.values[i]/(numVerticies(g)-1); 
+	}
+	return new_NV;
 }
 
 NodeValues betweennessCentralityNormalised(Graph g){
