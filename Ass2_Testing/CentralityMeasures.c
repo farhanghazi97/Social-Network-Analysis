@@ -105,9 +105,7 @@ NodeValues betweennessCentrality(Graph g){
 	NodeValues new_NV;
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g),sizeof(double));
-	//int *pathCountArr = calloc(numVerticies(g),sizeof(int));
 	assert(new_NV.values != NULL);
-	graphVis(g,0);
 	for (int v = 0; v < new_NV.noNodes; v++){
 		for (int s = 0; s < new_NV.noNodes; s++){
 			if(v == s){
@@ -120,7 +118,6 @@ NodeValues betweennessCentrality(Graph g){
 				}
 				double npv = numPathThroughV(s,t,v,paths.pred);
 				double n = numPath(s,t,paths.pred);
-				printf("%f~~%f~~s~%d~t~%d~v~%d\n",npv,n,s,t,v);
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
@@ -128,18 +125,6 @@ NodeValues betweennessCentrality(Graph g){
 			}
 		}
 	}
-	//Counting done;
-	//Now we scale
-	// for (int i = 0; i<new_NV.noNodes; i++){
-	// 	new_NV.values[i] = new_NV.values[i]/(numVerticies(g)-1); 
-	// }
-	// for (int i = 0; i<new_NV.noNodes; i++){
-	// 	if(new_NV.values[i]!=0){
-	// 		printf("Value before scale = %lf\n",new_NV.values[i]);
-	// 		new_NV.values[i] = new_NV.values[i]/(double)pathCountArr[i]; 
-	// 	}
-		
-	// }
 	return new_NV;
 }
 
@@ -164,13 +149,8 @@ static double numPathThroughV(int s,int t, int v, PredNode **pred){
 	if(!curr){
 		return 0;
 	}
-	// if(curr->v == s){
-	// 	//count = 1;
-	// 	curr = curr->next;
-	// }
-	if(curr->v == v){
-		count = 1;
-		curr = curr->next;
+	if(t == v ){
+		{count = 1;}
 	}
 	while(curr!=NULL) {
 		t = curr->v;
