@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "GraphVis.h"
 
 NodeValues outDegreeCentrality(Graph g){
 
@@ -101,23 +102,47 @@ NodeValues betweennessCentrality(Graph g){
 	NodeValues new_NV;
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g),sizeof(double));
+	int *pathCountArr = calloc(numVerticies(g),sizeof(int));
 	assert(new_NV.values != NULL);
+	graphVis(g,0);
 	for (int i = 0; i < new_NV.noNodes; i++){
 		ShortestPaths paths = dijkstra(g,i);
-		for (int i = 0; i <paths.noNodes; i++){
-			struct PredNode * curr = paths.pred[i];
+		for (int j = 0; j <paths.noNodes; j++){
+			struct PredNode * curr = paths.pred[j];
 			if(curr!=NULL) {
+				int pathCount = 0;
 				while(curr!=NULL) {
 					if(curr->v != i){
 						new_NV.values[curr->v]++;
+						printf("Vertex %d Found\n",curr->v);
+					}
+					curr = curr->next;
+					pathCount++;
+				}
+				printf("Pair %d and %d = %d\n",i,j,pathCount);
+				//Gotta reset curr pointer back to update pathCountArr
+				struct PredNode * curr = paths.pred[j];
+				while(curr!=NULL){
+					if(curr->v != i){
+						pathCountArr[curr->v]+=pathCount;
+						printf("Update path array of %d to %d\n",curr->v,pathCountArr[curr->v]);
+						
 					}
 					curr = curr->next;
 				}
 			}
 		}
 	}
+	//Counting done;
+	//Now we scale
+	// for (int i = 0; i<new_NV.noNodes; i++){
+	// 	new_NV.values[i] = new_NV.values[i]/(numVerticies(g)-1); 
+	// }
 	for (int i = 0; i<new_NV.noNodes; i++){
-		new_NV.values[i] = new_NV.values[i]/(numVerticies(g)-1); 
+		if(new_NV.values[i]!=0){
+			new_NV.values[i] = new_NV.values[i]/(double)pathCountArr[i]; 
+		}
+		
 	}
 	return new_NV;
 }
@@ -136,3 +161,5 @@ void showNodeValues(NodeValues values){
 void freeNodeValues(NodeValues values){
 	free(values.values);
 }
+
+//static void fillBetween(double value[],)
