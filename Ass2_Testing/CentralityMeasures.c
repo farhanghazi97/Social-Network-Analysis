@@ -79,9 +79,23 @@ NodeValues degreeCentrality(Graph g) {
 }
 
 NodeValues closenessCentrality(Graph g){
-	NodeValues throwAway = {0};
-	return throwAway;
+
+	NodeValues new_NV;
+	new_NV.noNodes = numVerticies(g);
+	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
+	assert(new_NV.values != NULL);
+
+	for(int i = 0; i < new_NV.noNodes; i++) {
+		ShortestPaths paths = dijkstra(g , i);
+		double sum_of_paths = 0;
+		for(int i = 0; i < paths.noNodes; i++) {
+			sum_of_paths += paths.dist[i];
+		}
+		new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
+	}
+	return new_NV;
 }
+
 
 NodeValues betweennessCentrality(Graph g){
 	NodeValues throwAway = {0};
