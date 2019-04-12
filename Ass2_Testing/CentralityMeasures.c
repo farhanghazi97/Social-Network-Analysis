@@ -102,7 +102,7 @@ NodeValues betweennessCentrality(Graph g){
 	NodeValues new_NV;
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g),sizeof(double));
-	int *pathCountArr = calloc(numVerticies(g),sizeof(int));
+	//int *pathCountArr = calloc(numVerticies(g),sizeof(int));
 	assert(new_NV.values != NULL);
 	graphVis(g,0);
 	for (int i = 0; i < new_NV.noNodes; i++){
@@ -111,22 +111,18 @@ NodeValues betweennessCentrality(Graph g){
 			struct PredNode * curr = paths.pred[j];
 			if(curr!=NULL) {
 				int pathCount = 0;
-				while(curr!=NULL) {
-					if(curr->v != i){
-						new_NV.values[curr->v]++;
-						printf("Vertex %d Found\n",curr->v);
-					}
+				while(curr!=NULL){
 					curr = curr->next;
 					pathCount++;
 				}
-				printf("Pair %d and %d = %d\n",i,j,pathCount);
-				//Gotta reset curr pointer back to update pathCountArr
+				printf("Path Count for Pair %d,%d is %d\n",i,j,pathCount);
 				struct PredNode * curr = paths.pred[j];
-				while(curr!=NULL){
+				while(curr!=NULL) {
 					if(curr->v != i){
-						pathCountArr[curr->v]+=pathCount;
-						printf("Update path array of %d to %d\n",curr->v,pathCountArr[curr->v]);
-						
+						printf("Path count is %d\n",pathCount);
+						printf("Updating %d from %f to ",curr->v,new_NV.values[curr->v]);
+						new_NV.values[curr->v] =  new_NV.values[curr->v]+1.0/(float)pathCount;
+						printf("%lf\n",new_NV.values[curr->v]);
 					}
 					curr = curr->next;
 				}
@@ -138,12 +134,13 @@ NodeValues betweennessCentrality(Graph g){
 	// for (int i = 0; i<new_NV.noNodes; i++){
 	// 	new_NV.values[i] = new_NV.values[i]/(numVerticies(g)-1); 
 	// }
-	for (int i = 0; i<new_NV.noNodes; i++){
-		if(new_NV.values[i]!=0){
-			new_NV.values[i] = new_NV.values[i]/(double)pathCountArr[i]; 
-		}
+	// for (int i = 0; i<new_NV.noNodes; i++){
+	// 	if(new_NV.values[i]!=0){
+	// 		printf("Value before scale = %lf\n",new_NV.values[i]);
+	// 		new_NV.values[i] = new_NV.values[i]/(double)pathCountArr[i]; 
+	// 	}
 		
-	}
+	// }
 	return new_NV;
 }
 
