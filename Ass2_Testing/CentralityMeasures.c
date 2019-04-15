@@ -96,26 +96,30 @@ NodeValues closenessCentrality(Graph g){
 
 		ShortestPaths paths = dijkstra(g , i);
 		double sum_of_paths = 0;
-
+		
+		double count = 0.0;
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
+			if(paths.dist[i]){
+				count++;
+			}
 		}
 
-		double count = 0.0;
-		AdjList curr = outIncident(g, i);
-		while(curr != NULL) {
-			count++;
-			curr = curr->next;
-		}
+		
+		//AdjList curr = outIncident(g, i);
+		// while(curr != NULL) {
+		// 	count++;
+		// 	curr = curr->next;
+		// }
 
-		printf("Vertx %d | Outlinks %lf | SOP %lf\n" , i , count , sum_of_paths);
+		//printf("Vertx %d | Outlinks %lf | SOP %lf\n" , i , count , sum_of_paths);
 
 		if(sum_of_paths <= 0.0) {
 			new_NV.values[i] = 0.0;
 		} else if(is_connected) {
 			new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
 		} else {
-			new_NV.values[i] = (count * count) / ((numVerticies(g) - 1) * sum_of_paths);
+			new_NV.values[i] = ((count) * (count)) / ((numVerticies(g) - 1) * sum_of_paths);
 		}
 
 
