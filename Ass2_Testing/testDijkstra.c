@@ -2,7 +2,6 @@
 #include "GraphVis.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
 
 Graph readGraph(char* file) {
 	// ugly count
@@ -41,20 +40,16 @@ Graph readGraph(char* file) {
 		nums[i][2] = c;
 		i++;
 	}
-	//printf("MaxVert: %d\n" , maxVert);
 	fclose(f);
 
 	Graph g = newGraph(maxVert+1);
-	
 	i = 0;
 	while(i < lines) {
 		insertEdge(g,nums[i][0],nums[i][1],nums[i][2]);
 		i++;
 	}
-	
 	for(i=0;i<lines;i++) free(nums[i]);
 	free(nums);
-	
 	return g;
 }
 
@@ -63,19 +58,35 @@ void displayShortestPathsStruct(ShortestPaths sps){
 	printf("Node %d\n",sps.src);
 	printf("  Distance\n");
 	for (i = 0; i < sps.noNodes; i++) {
-		if(i == sps.src) {
+			if(i == sps.src)
 	    	printf("    %d : X\n",i);
-		} else {
-			printf("    %d : %d\n",i,sps.dist[i]);
-		}
+			else
+				printf("    %d : %d\n",i,sps.dist[i]);
 	}
 	printf("  Preds\n");
 	for (i = 0; i < sps.noNodes; i++) {
+		int numPreds = 0;
+		int preds[sps.noNodes];
 		printf("    %d : ",i);
-		PredNode* curr = sps.pred[i];
-		while(curr!=NULL) {
-			printf("[%d]->",curr->v);
+		PredNode *curr = sps.pred[i];
+		while (curr != NULL && numPreds < sps.noNodes) {
+			preds[numPreds++] = curr->v;
 			curr = curr->next;
+		}
+		
+		// Insertion sort
+		for (int j = 1; j < numPreds; j++) {
+			int temp = preds[j];
+			int k = j;
+			while (preds[k - 1] > temp && k > 0) {
+				preds[k] = preds[k - 1];
+				k--;
+			}
+			preds[k] = temp;
+		}
+		
+		for (int j = 0; j < numPreds; j++) {
+			printf("[%d]->", preds[j]);
 		}
 		printf("NULL\n");
 	}
