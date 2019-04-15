@@ -93,10 +93,8 @@ NodeValues closenessCentrality(Graph g){
 
 	bool is_connected = isConnected(g);
 	for(int i = 0; i < new_NV.noNodes; i++) {
-
 		ShortestPaths paths = dijkstra(g , i);
 		double sum_of_paths = 0;
-		
 		double count = 0.0;
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
@@ -104,16 +102,6 @@ NodeValues closenessCentrality(Graph g){
 				count++;
 			}
 		}
-
-		
-		//AdjList curr = outIncident(g, i);
-		// while(curr != NULL) {
-		// 	count++;
-		// 	curr = curr->next;
-		// }
-
-		//printf("Vertx %d | Outlinks %lf | SOP %lf\n" , i , count , sum_of_paths);
-
 		if(sum_of_paths <= 0.0) {
 			new_NV.values[i] = 0.0;
 		} else if(is_connected) {
@@ -121,8 +109,6 @@ NodeValues closenessCentrality(Graph g){
 		} else {
 			new_NV.values[i] = ((count) * (count)) / ((numVerticies(g) - 1) * sum_of_paths);
 		}
-
-
 	}
 	return new_NV;
 }
