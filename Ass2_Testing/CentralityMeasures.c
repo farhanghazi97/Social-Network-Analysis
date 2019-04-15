@@ -9,6 +9,8 @@
 
 static double numPathThroughV(int s,int t, int v, PredNode **pred);
 static double numPath(int s,int t, PredNode **pred);
+static bool isConnected(Graph g);
+static void DFS(Graph g , Vertex v , int * visited);
 
 NodeValues outDegreeCentrality(Graph g){
 
@@ -89,19 +91,41 @@ NodeValues closenessCentrality(Graph g){
 	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
 	assert(new_NV.values != NULL);
 
+	bool is_connected = isConnected(g);
 	for(int i = 0; i < new_NV.noNodes; i++) {
+
 		ShortestPaths paths = dijkstra(g , i);
 		double sum_of_paths = 0;
+
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
 		}
-		new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
+
+		double count = 0.0;
+		AdjList curr = outIncident(g, i);
+		while(curr != NULL) {
+			count++;
+			curr = curr->next;
+		}
+
+		printf("Vertx %d | Outlinks %lf | SOP %lf\n" , i , count , sum_of_paths);
+
+		if(sum_of_paths <= 0.0) {
+			new_NV.values[i] = 0.0;
+		} else if(is_connected) {
+			new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
+		} else {
+			new_NV.values[i] = (count * count) / ((numVerticies(g) - 1) * sum_of_paths);
+		}
+
+
 	}
 	return new_NV;
 }
 
 
 NodeValues betweennessCentrality(Graph g){
+
 	NodeValues new_NV;
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g),sizeof(double));
@@ -121,7 +145,7 @@ NodeValues betweennessCentrality(Graph g){
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
-				
+
 			}
 		}
 	}
@@ -176,4 +200,29 @@ static double numPath(int s,int t, PredNode **pred){
 		curr = curr->next;
 	}
 	return count;
+}
+
+static bool isConnected(Graph g) {
+	for(int i = 0; i < numVerticies(g); i++) {
+		int * visited = calloc(numVerticies(g) , sizeof(int));
+		DFS(g , i , visited);
+		for(int i = 0; i < numVerticies(g); i++) {
+			bool flag = visited[i];
+			if(flag  == 0) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+static void DFS(Graph g , Vertex v , int * visited) {
+	visited[v] = 1;
+	AdjList curr = outIncident(g , v);
+	while(curr != NULL) {
+		if(!visited[curr->w]) {
+			DFS(g , curr->w , visited);
+		}
+		curr = curr->next;
+	}
 }
