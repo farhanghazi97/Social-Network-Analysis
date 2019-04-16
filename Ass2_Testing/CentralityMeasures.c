@@ -51,8 +51,8 @@ NodeValues inDegreeCentrality(Graph g){
 		new_NV.values[i] = count;
 	}
 	return new_NV;
-
 }
+
 NodeValues degreeCentrality(Graph g) {
 
 	NodeValues new_NV;
