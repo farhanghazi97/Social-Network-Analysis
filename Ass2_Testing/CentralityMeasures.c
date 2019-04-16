@@ -142,6 +142,9 @@ NodeValues betweennessCentrality(Graph g){
 				}
 				double npv = numPathThroughV(s, t, v, paths.pred);
 				double n = numPath(s,t,paths.pred);
+				double nv1 = numPath(s,v,paths.pred);
+				double nv2 = numPath(v,t,paths.pred);
+				npv = nv1*nv2;			//apparently this works.
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
@@ -199,6 +202,9 @@ static double numPath(int s,int t, PredNode **pred){
 	}
 	while(curr!=NULL){
 		t = curr->v;
+		if(t==s){
+			count++;
+		}
 		count = numPath(s,t,pred) + count;
 		curr = curr->next;
 	}
