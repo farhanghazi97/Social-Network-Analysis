@@ -1,6 +1,6 @@
 /*
  * testCentralityMeasures.c
- * Written By Zain Afzal for cs2521 
+ * Written By Zain Afzal for cs2521
  *
  * Includes basic interface to read a graph in from
  * a file and a measure and calls the related functions

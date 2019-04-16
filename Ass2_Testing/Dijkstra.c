@@ -11,10 +11,7 @@
 typedef struct PredNode * PNode;
 
 static PNode NewPredNode (int val);
-/*
-static PNode SelectionSort(PNode head);
-static void swap(PNode p1 , PNode p2);
-*/
+
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
 	PQ new_PQ = newPQ();
@@ -84,9 +81,8 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 			static_SP.dist[i] = 0;
 		}
 	}
-	
-	free(visited);
 
+	free(visited);
 	return static_SP;
 }
 
@@ -114,7 +110,7 @@ void showShortestPaths(ShortestPaths paths) {
 }
 
 
-void  freeShortestPaths(ShortestPaths paths) {
+void freeShortestPaths(ShortestPaths paths) {
 	free(paths.dist);
 	for(int i = 0; i < paths.noNodes; i++) {
 		PNode curr = paths.pred[i];
@@ -135,32 +131,3 @@ static PNode NewPredNode (int val){
 	new_node->next = NULL;
 	return new_node;
 }
-/*
-static PNode SelectionSort(PNode head) {
-	
-	PNode start = head;
-	PNode traverse;
-	PNode min;
-	
-	while(start->next != NULL) {
-		min = start;
-		traverse = start->next;
-		while(traverse != NULL) {
-			if(min->v > traverse->v) {
-				min = traverse;
-			} 
-			traverse = traverse->next;
-		}
-		swap(start , min);
-		start = start->next;
-	}
-	
-	return head;
-}
-
-static void swap(PNode p1 , PNode p2) {
-	int temp = p1->v;
-	p1->v = p2->v;
-	p2->v = temp;
-}
-*/

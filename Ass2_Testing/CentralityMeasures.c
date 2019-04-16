@@ -93,20 +93,29 @@ NodeValues closenessCentrality(Graph g){
 
 	bool is_connected = isConnected(g);
 	for(int i = 0; i < new_NV.noNodes; i++) {
+
 		ShortestPaths paths = dijkstra(g , i);
+
 		double sum_of_paths = 0;
 		double count = 0.0;
+
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
 			if(paths.dist[i]){
 				count++;
 			}
 		}
+
+		// If sum of paths is 0 , closeness is set to 0
 		if(sum_of_paths <= 0.0) {
 			new_NV.values[i] = 0.0;
 		} else if(is_connected) {
+			// If graph is a strongly connected graph (i.e every node can reach every other
+			// node in graph) , we use the default closeness formula
 			new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
 		} else {
+			// If the graph has isolated vertices, we use the Wasserman and Faust formula
+			// for closeness
 			new_NV.values[i] = ((count) * (count)) / ((numVerticies(g) - 1) * sum_of_paths);
 		}
 	}
@@ -120,17 +129,18 @@ NodeValues betweennessCentrality(Graph g){
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g),sizeof(double));
 	assert(new_NV.values != NULL);
+
 	for (int v = 0; v < new_NV.noNodes; v++){
 		for (int s = 0; s < new_NV.noNodes; s++){
 			if(v == s){
 				continue;
 			}
 			ShortestPaths paths = dijkstra(g,s);
-			for (int t = 0; t <paths.noNodes; t++){
+			for (int t = 0; t < paths.noNodes; t++){
 				if(s == t || v == t){
 					continue;
 				}
-				double npv = numPathThroughV(s,t,v,paths.pred);
+				double npv = numPathThroughV(s, t, v, paths.pred);
 				double n = numPath(s,t,paths.pred);
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
@@ -143,8 +153,11 @@ NodeValues betweennessCentrality(Graph g){
 }
 
 NodeValues betweennessCentralityNormalised(Graph g){
-	NodeValues throwAway = {0};
-	return throwAway;
+	NodeValues new_NV = betweennessCentrality(g);
+	for(int i = 0; i < new_NV.noNodes; i++) {
+		new_NV.values[i] = new_NV.values[i] / ((numVerticies(g) - 1) * (numVerticies(g) - 2));
+	}
+	return new_NV;
 }
 
 void showNodeValues(NodeValues values){
@@ -202,6 +215,7 @@ static bool isConnected(Graph g) {
 				return false;
 			}
 		}
+		free(visited);
 	}
 	return true;
 }

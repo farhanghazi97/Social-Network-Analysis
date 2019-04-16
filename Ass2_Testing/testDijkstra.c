@@ -73,7 +73,7 @@ void displayShortestPathsStruct(ShortestPaths sps){
 			preds[numPreds++] = curr->v;
 			curr = curr->next;
 		}
-		
+
 		// Insertion sort
 		for (int j = 1; j < numPreds; j++) {
 			int temp = preds[j];
@@ -84,7 +84,7 @@ void displayShortestPathsStruct(ShortestPaths sps){
 			}
 			preds[k] = temp;
 		}
-		
+
 		for (int j = 0; j < numPreds; j++) {
 			printf("[%d]->", preds[j]);
 		}
