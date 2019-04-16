@@ -14,26 +14,32 @@ static PNode NewPredNode (int val);
 
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
+	// Initialize priority queue for Dijkstra
 	PQ new_PQ = newPQ();
 	ItemPQ item;
 
+	// Visited array for Dijkstra
 	int *visited = calloc(numVerticies(g),sizeof(int));
 
+	// Initialize struct
 	ShortestPaths static_SP;
 	static_SP.noNodes = numVerticies(g);
 	static_SP.src = v;
 
+	// Set dist values to a very large value mimicking infinity
 	static_SP.dist = malloc(numVerticies(g)*sizeof(int));
 	for(int i = 0; i < static_SP.noNodes; i++) {
 		static_SP.dist[i] = 1000000;
 	}
 
+	// Initialize all pred pointers to intially point to NULL
 	static_SP.pred = malloc(numVerticies(g)*sizeof(struct PredNode*));
 	for (int i=0; i<numVerticies(g);i++){
 		static_SP.pred[i]=NULL;
 	}
 
 	// Add souce vertex to priority queue with shortest distance 0
+
 	static_SP.dist[v] = 0;
 	item.key = v;
 	item.value = 0;
@@ -42,46 +48,42 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	// While the priority queue is not empty, grab highest priority vertex and
 	// find all its neighbours. Calculate distance between source and egdes and
 	// update the array if shortest path is found.
+
 	ItemPQ temp;
 	while(!(PQEmpty(new_PQ))) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
-		//printf("Pop %d\n",vertex.key);
 		if (!visited[vertex.key]) {
-			visited[vertex.key] = 1;					//mark as visited first
-			AdjList curr = outIncident(g , vertex.key); //grab outIncident List
+			visited[vertex.key] = 1;
+			AdjList curr = outIncident(g , vertex.key);
 			while(curr) {
-				//printf("%d\n" , curr->w);
 				temp.key = curr->w;
 				temp.value = curr->weight;
-				//printf("Check %d\n",curr->w);
 				if(static_SP.dist[temp.key] >= static_SP.dist[vertex.key] + temp.value) {
 					if (static_SP.dist[temp.key] == static_SP.dist[vertex.key] + temp.value){
 						PNode curr1 = static_SP.pred[temp.key];
 						while(curr1->next != NULL){
-							//printf("Curr is %d\n",curr1->v);
 							curr1 = curr1->next;
 						}
 						curr1->next = NewPredNode(vertex.key);
 					} else {
 						static_SP.pred[temp.key] = NewPredNode(vertex.key);
 						static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
-						//printf("Update %d dist to %d\n",temp.key,static_SP.dist[temp.key]);
 						addPQ(new_PQ , temp);
-						//printf("Add %d to Q\n",temp.key);
 					}
 				}
 				curr = curr->next;
 			}
-			//printf("End while\n");
 		}
 	}
 
+	// Account for nodes that are unreachable
 	for(int i = 0; i < numVerticies(g); i++) {
 		if (!visited[i]) {
 			static_SP.dist[i] = 0;
 		}
 	}
 
+	// Free memory needed for visited array
 	free(visited);
 	return static_SP;
 }
