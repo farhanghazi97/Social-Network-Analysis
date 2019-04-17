@@ -4,10 +4,6 @@
 //static int EdgeWeight (Edge e);
 
 /*
-static int NodeWeight (AdjList L) {
-	return L->weight;
-}
-
 static int EdgeSource (Edge e) {
 	return e->source;
 }
@@ -96,7 +92,7 @@ static AdjList * GetConnectionsArray(Graph g) {
 		//Set first to point to head of each adjacency list that is updated
 		new_graph->L[src]->first = new_node_out;
 	}*/
-	
+
 //}
 
 /*
