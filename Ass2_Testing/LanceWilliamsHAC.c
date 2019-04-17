@@ -10,6 +10,12 @@
 #include "Graph.h"
 #define numVertices numVerticies
 
+typedef struct Cluster {
+
+} Cluster;
+
+static double ** InitializeDistArray(Graph g);
+
 /*
  * Finds Dendrogram using Lance-Williams algorithm (as discussed in the specs)
    for the given graph g and the specified method for agglomerative clustering.
@@ -20,6 +26,23 @@
  *
  */
 Dendrogram LanceWilliamsHAC(Graph g, int method) {
+
+    double ** dist_array = InitializeDistArray(g);
+
+    // Pretty print array
+    for(int i = 0; i < numVertices(g); i++) {
+        for(int j = 0; j < numVertices(g); j++) {
+            printf("%.3lf\t" , dist_array[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Free array
+    free(dist_array);
+    return NULL;
+}
+
+static double ** InitializeDistArray(Graph g) {
 
     // Create 2D array
     double ** dist = calloc(numVertices(g) , sizeof(double *));
@@ -47,22 +70,9 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             curr = curr->next;
         }
     }
-
-    // Pretty print array
-    for(int i = 0; i < numVertices(g); i++) {
-        for(int j = 0; j < numVertices(g); j++) {
-            printf("%.3lf\t" , dist[i][j]);
-        }
-        printf("\n");
-    }
-
-    // Free array
-    free(dist);
-    return NULL;
+    return dist;
 }
 
-
 void freeDendrogram(Dendrogram d) {
-
 	return;
 }
