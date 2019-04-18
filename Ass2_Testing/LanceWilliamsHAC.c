@@ -14,6 +14,7 @@
 static double ** InitializeDistArray(Graph g);
 static Dendrogram MakeDNode (Vertex v);
 static void PrintDendArray (Dendrogram * D , int size);
+static void PrintDistArray (double ** dist_array , int size);
 
 /*
  * Finds Dendrogram using Lance-Williams algorithm (as discussed in the specs)
@@ -33,42 +34,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         List[i] = MakeDNode(i);
     }
     
+    PrintDistArray(dist_array , numVertices(g));
     PrintDendArray(List , numVertices(g));
-
-    free(List[1]);
-
-    PrintDendArray(List , numVertices(g));
-    
-    Dendrogram * temp_list = realloc(List , (numVertices(g) - 2)*sizeof(DNode) );
-    List = temp_list;
-    PrintDendArray(List, numVerticies(g));
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Pretty print array
-    /*for(int i = 0; i < numVertices(g); i++) {
-        for(int j = 0; j < numVertices(g); j++) {
-            printf("%.3lf\t" , dist_array[i][j]);
-        }
-        printf("\n");
-    }*/
 
     // Free array
     free(dist_array);
@@ -117,6 +84,16 @@ static Dendrogram MakeDNode (Vertex v) {
 static void PrintDendArray (Dendrogram * D , int size) {
     for(int i = 0; i < size; i++) {
         printf("VERTEX : %d\n" , D[i]->vertex);
+    }
+}
+
+static void PrintDistArray (double ** dist_array , int size) {
+    // Pretty print array
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            printf("%.3lf\t" , dist_array[i][j]);
+        }
+        printf("\n");
     }
 }
 
