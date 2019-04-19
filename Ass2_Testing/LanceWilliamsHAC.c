@@ -38,7 +38,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
     PrintDistArray(dist_array , N);
     PrintDendArray(dendA , N);
     int matSize = N;
-    for(int s = 1; s < N-1; s++){
+    for(int s = 0; s < N-1; s++){
         // Find closest clusters and grab those indices
         float minimum = INFINITY;
         int index1 = 0;
@@ -57,22 +57,31 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         //int backup1 = index1;
        // int backup2 = index2;
         // By now we would know which clusters to merge
-        Dendrogram newCluster = MakeEmptyDNode();
-        newCluster->left = dendA[index1];
-        newCluster->right = dendA[index2];
+        // Dendrogram newCluster = MakeEmptyDNode();
+        // newCluster->left = dendA[index1];
+        // newCluster->right = dendA[index2];
         // Need to remove items/clean the dendA
+        printf("Minimum: %lf\n",minimum);
+        printf("Index 1: %d\n",index1);
+        printf("Index 2: %d\n",index2);
         if(index1>index2){
             // I want index1 to be less than index2
             int temp = index1;
             index1 = index2;
             index2 = temp;
         }
+        printf("Index 1: %d\n",index1);
+        printf("Index 2: %d\n",index2);
+        Dendrogram newCluster = MakeEmptyDNode();
+        newCluster->left = dendA[index1];
+        newCluster->right = dendA[index2];
         // Begin resizing dendA
         dendA[index1] = newCluster;
         dendA[index2] = NULL;
         for(int i = 0; i < matSize;i++){
             //Wanna keep all cells before index1 intact only moving cells after
-            if(i>index1){
+            printf("Updating dendA\n");
+            if(i>=index2){
                 if (i==matSize-1) {
                     dendA[i] = NULL;
                 } else {
@@ -151,7 +160,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
     
     // Free array
     free(dist_array);
-    return dendA[2];
+    return dendA[0];
 }
 
 static double ** InitializeDistArray(Graph g) {
