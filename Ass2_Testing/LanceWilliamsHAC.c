@@ -13,8 +13,8 @@
 
 static double ** InitializeDistArray(Graph g);
 static Dendrogram MakeDNode (Vertex v);
-static void PrintDendArray (Dendrogram * D , int size);
-static void PrintDistArray (double ** dist_array , int size);
+//static void PrintDendArray (Dendrogram * D , int size);
+//static void PrintDistArray (double ** dist_array , int size);
 static Dendrogram MakeEmptyDNode ();
 static double ** MakeNewDistArray(int size);
 /*
@@ -35,8 +35,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dendA[i] = MakeDNode(i);
     }
     
-    PrintDistArray(dist_array , N);
-    PrintDendArray(dendA , N);
+    //PrintDistArray(dist_array , N);
+    //PrintDendArray(dendA , N);
     int matSize = N;
     for(int s = 0; s < N-1; s++){
         // Find closest clusters and grab those indices
@@ -61,17 +61,17 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         // newCluster->left = dendA[index1];
         // newCluster->right = dendA[index2];
         // Need to remove items/clean the dendA
-        printf("Minimum: %lf\n",minimum);
-        printf("Index 1: %d\n",index1);
-        printf("Index 2: %d\n",index2);
+       // printf("Minimum: %lf\n",minimum);
+       // printf("Index 1: %d\n",index1);
+        //printf("Index 2: %d\n",index2);
         if(index1>index2){
             // I want index1 to be less than index2
             int temp = index1;
             index1 = index2;
             index2 = temp;
         }
-        printf("Index 1: %d\n",index1);
-        printf("Index 2: %d\n",index2);
+        //printf("Index 1: %d\n",index1);
+        //printf("Index 2: %d\n",index2);
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
@@ -80,7 +80,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dendA[index2] = NULL;
         for(int i = 0; i < matSize;i++){
             //Wanna keep all cells before index1 intact only moving cells after
-            printf("Updating dendA\n");
+            //printf("Updating dendA\n");
             if(i>=index2){
                 if (i==matSize-1) {
                     dendA[i] = NULL;
@@ -155,7 +155,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dist_array = updatedDist;
         free(temp);
         matSize--;
-        PrintDistArray(dist_array , matSize);
+        //PrintDistArray(dist_array , matSize);
     }
     
     // Free array
@@ -209,21 +209,21 @@ static Dendrogram MakeEmptyDNode () {
     return new_DNode;
 }
 
-static void PrintDendArray (Dendrogram * D , int size) {
-    for(int i = 0; i < size; i++) {
-        printf("VERTEX : %d\n" , D[i]->vertex);
-    }
-}
+// static void PrintDendArray (Dendrogram * D , int size) {
+//     for(int i = 0; i < size; i++) {
+//         printf("VERTEX : %d\n" , D[i]->vertex);
+//     }
+// }
 
-static void PrintDistArray (double ** dist_array , int size) {
-    // Pretty print array
-    for(int i = 0; i < size; i++) {
-        for(int j = 0; j < size; j++) {
-            printf("%.3lf\t" , dist_array[i][j]);
-        }
-        printf("\n");
-    }
-}
+// static void PrintDistArray (double ** dist_array , int size) {
+//     // Pretty print array
+//     for(int i = 0; i < size; i++) {
+//         for(int j = 0; j < size; j++) {
+//             printf("%.3lf\t" , dist_array[i][j]);
+//         }
+//         printf("\n");
+//     }
+// }
 
 void freeDendrogram(Dendrogram d) {
 	return;
