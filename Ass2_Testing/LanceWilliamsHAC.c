@@ -226,7 +226,11 @@ static Dendrogram MakeEmptyDNode () {
 // }
 
 void freeDendrogram(Dendrogram d) {
-	return;
+    if(d != NULL) {
+        freeDendrogram(d->left);
+        freeDendrogram(d->right);
+        free(d);
+    }
 }
 
 static double ** MakeNewDistArray(int size) {
