@@ -35,8 +35,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dendA[i] = MakeDNode(i);
     }
     
-    //PrintDistArray(dist_array , N);
-    //PrintDendArray(dendA , N);
+    // PrintDistArray(dist_array , N);
+    // PrintDendArray(dendA , N);
     int matSize = N;
     for(int s = 0; s < N-1; s++){
         // Find closest clusters and grab those indices
@@ -53,25 +53,20 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                 }
             }
         }
-        // Backup numbers, just in case I need them
-        //int backup1 = index1;
-       // int backup2 = index2;
+
         // By now we would know which clusters to merge
-        // Dendrogram newCluster = MakeEmptyDNode();
-        // newCluster->left = dendA[index1];
-        // newCluster->right = dendA[index2];
         // Need to remove items/clean the dendA
-       // printf("Minimum: %lf\n",minimum);
-       // printf("Index 1: %d\n",index1);
-        //printf("Index 2: %d\n",index2);
+        // printf("Minimum: %lf\n",minimum);
+        // printf("Index 1: %d\n",index1);
+        // printf("Index 2: %d\n",index2);
         if(index1>index2){
             // I want index1 to be less than index2
             int temp = index1;
             index1 = index2;
             index2 = temp;
         }
-        //printf("Index 1: %d\n",index1);
-        //printf("Index 2: %d\n",index2);
+        // printf("Index 1: %d\n",index1);
+        // printf("Index 2: %d\n",index2);
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
@@ -104,20 +99,6 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     double num2 = dist_array[index2][i];
                     if(!(num1 < INFINITY)){ num1 = dist_array[i][index1];}
                     if(!(num2 < INFINITY)){ num2 = dist_array[i][index2];}
-                    // if(index2 > i && index1 > i){
-                    //     num1 = dist_array[index1][i];
-                    //     num2 = dist_array[index2][i];
-                    // } else if (i > index2 && i < index1){
-                    //     num1 = dist_array[i][index2];
-                    //     num2 = dist_array[index1][i];
-                    // } else if ()
-                    // if(index1>i){
-                    //     if(dist_array[index1][i] < dist_array[index2][i]){
-                    //         updatedDist[j][i] = dist_array[index1][i];
-                    //     } else {
-                    //         updatedDist[j][i] = dist_array[index2][i];
-                    //     }
-                    // }
                     if (num1<num2){
                         updatedDist[j][i] = num1;
                     } else {
@@ -125,10 +106,14 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     }
                 } else if (i == index1) {
                     // Updating vertically using Lance Will
-                    double num1 = dist_array[index1][j];
-                    double num2 = dist_array[index2][j];
-                    if(!(num1 < INFINITY)){ num1 = dist_array[j][index1];}
-                    if(!(num2 < INFINITY)){ num2 = dist_array[j][index2];}
+                    int accessIndex = j;
+                    if (j >= index2){
+                        accessIndex++;
+                    }
+                    double num1 = dist_array[index1][accessIndex];
+                    double num2 = dist_array[index2][accessIndex];
+                    if(!(num1 < INFINITY)){ num1 = dist_array[accessIndex][index1];}
+                    if(!(num2 < INFINITY)){ num2 = dist_array[accessIndex][index2];}
                     if (num1<num2){
                         updatedDist[j][i] = num1;
                     } else {
@@ -144,13 +129,14 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                         updatedDist[j][i] = dist_array[j][i+1];
                     } else {
                         updatedDist[j][i] = dist_array[j+1][i+1];
+                        //assert(0);
                     }
                 }
                 
             }
         }
         //PrintDistArray(dist_array , N);
-       // PrintDendArray(dendA , N);
+        //PrintDendArray(dendA , N);
         double ** temp = dist_array;
         dist_array = updatedDist;
         free(temp);
@@ -219,7 +205,7 @@ static Dendrogram MakeEmptyDNode () {
 //     // Pretty print array
 //     for(int i = 0; i < size; i++) {
 //         for(int j = 0; j < size; j++) {
-//             printf("%.3lf\t" , dist_array[i][j]);
+//             printf("%.4lf\t" , dist_array[i][j]);
 //         }
 //         printf("\n");
 //     }
