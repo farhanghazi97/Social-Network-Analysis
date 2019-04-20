@@ -35,7 +35,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dendA[i] = MakeDNode(i);
     }
     
-    //PrintDistArray(dist_array , N);
+    // PrintDistArray(dist_array , N);
     // PrintDendArray(dendA , N);
     int matSize = N;
     for(int s = 0; s < N-1; s++){
@@ -56,78 +56,88 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
 
         // By now we would know which clusters to merge
         // Need to remove items/clean the dendA
-        // printf("Minimum: %lf\n",minimum);
-        // printf("Index 1: %d\n",index1);
-        // printf("Index 2: %d\n",index2);
+        //printf("Minimum: %lf\n",minimum);
+        //printf("Index 1: %d\n",index1);
+        //printf("Index 2: %d\n",index2);
         if(index1>index2){
             // I want index1 to be less than index2
             int temp = index1;
             index1 = index2;
             index2 = temp;
         }
-        // printf("Index 1: %d\n",index1);
-        // printf("Index 2: %d\n",index2);
+        //printf("Index 1: %d\n",index1);
+        //printf("Index 2: %d\n",index2);
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
         // Begin resizing dendA
-        matSize--;
-        for(int i = 0; i < matSize; i++){
+        dendA[index1] = newCluster;
+        dendA[index2] = NULL;
+        for(int i = 0; i < matSize;i++){
             //Wanna keep all cells before index1 intact only moving cells after
-            if(i == matSize -1) {
-                dendA[i] = newCluster;
-            } else {
-                if(i >= index1) { dendA[i] = dendA[i+1]; }
-                if(i >= index2-1) { dendA[i] = dendA[i+2]; }
+            //printf("Updating dendA\n");
+            if(i>=index2){
+                if (i==matSize-1) {
+                    dendA[i] = NULL;
+                } else {
+                    dendA[i] = dendA[i+1];
+                }
             }
-
         }
-        //printf("Hello\n");
         //By now we would have the new dendA array
         //Create new dist array and perform calculation
-        double ** updatedDist = MakeNewDistArray(matSize);
-        for(int i = 0; i < matSize;i++){
-            for(int j = i; j < matSize;j++){
-                if (j == i) {
+        double ** updatedDist = MakeNewDistArray(matSize - 1);
+        for(int i = 0; i < matSize-1;i++){
+            
+            for(int j = i; j < matSize-1;j++){
+                if (j == i){
                     continue;
                 }
-                if (j == matSize-1){
-                    int grabIndex = i;
-                    if( i>= index1){
-                        grabIndex++;
+                if(j == index1){ //index1 guarantee to be less than index 2 cuz' we swapped them
+                    // Updating horizonally using Lance Will
+                    int accessIndex = i;
+                    if (i >= index2){
+                        accessIndex++;
+                        assert(0);
                     }
-                    if( i>= index2-1 ){
-                        grabIndex++;
-                    }
-                    double num1 = dist_array[index1][grabIndex];
-                    double num2 = dist_array[index2][grabIndex];
-                    if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
-                    if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
-                    
+                    double num1 = dist_array[index1][accessIndex];
+                    double num2 = dist_array[index2][accessIndex];
+                    if(!(num1 < INFINITY)){ num1 = dist_array[accessIndex][index1];}
+                    if(!(num2 < INFINITY)){ num2 = dist_array[accessIndex][index2];}
                     if (num1<num2){
                         updatedDist[j][i] = num1;
                     } else {
                         updatedDist[j][i] = num2;
                     }
-                    continue;
+                } else if (i == index1) {
+                    // Updating vertically using Lance Will
+                    int accessIndex = j;
+                    if (j >= index2){
+                        accessIndex++;
+                    }
+                    double num1 = dist_array[index1][accessIndex];
+                    double num2 = dist_array[index2][accessIndex];
+                    if(!(num1 < INFINITY)){ num1 = dist_array[accessIndex][index1];}
+                    if(!(num2 < INFINITY)){ num2 = dist_array[accessIndex][index2];}
+                    if (num1<num2){
+                        updatedDist[j][i] = num1;
+                    } else {
+                        updatedDist[j][i] = num2;
+                    }
+                } else {
+                    // might need more case here for vertical and horizontal
+                    if(j < index2 && i < index2){
+                        updatedDist[j][i] = dist_array[j][i];
+                    } else if (j >= index2 && i < index2) {
+                        updatedDist[j][i] = dist_array[j+1][i];
+                    } else if (j < index2 && i >= index2) {
+                        updatedDist[j][i] = dist_array[j][i+1];
+                    } else {
+                        updatedDist[j][i] = dist_array[j+1][i+1];
+                        //assert(0);
+                    }
                 }
-
-                if (i < index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; }
-                } 
-                if (i >= index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; }
-                }
-
-                if (i >= index2-1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+2]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+2]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+2]; }
-                }
+                
             }
         }
         //PrintDistArray(dist_array , N);
@@ -135,6 +145,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         double ** temp = dist_array;
         dist_array = updatedDist;
         free(temp);
+        matSize--;
         //PrintDistArray(dist_array , matSize);
     }
     
