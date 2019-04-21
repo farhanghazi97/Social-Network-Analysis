@@ -44,7 +44,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         int index1 = 0;
         int index2 = 0; 
         for(int i = 0; i < matSize;i++){
-            for(int j = i; j < matSize;j++){
+            for(int j = 0; j < matSize;j++){
                 if(dist_array[j][i] <= minimum){
                     //grabbing these indices
                     minimum = dist_array[j][i];
@@ -106,27 +106,29 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     
                     if (num1<num2){
                         updatedDist[j][i] = num1;
+                        updatedDist[i][j] = num1;
                     } else {
                         updatedDist[j][i] = num2;
+                        updatedDist[i][j] = num2;
                     }
                     continue;
                 }
 
                 if (i < index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; }
+                    if (j < index1) { updatedDist[j][i] = dist_array[j][i]; updatedDist[i][j] = dist_array[j][i]; }
+                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; updatedDist[i][j] = dist_array[j+1][i]; }
+                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; updatedDist[i][j] = dist_array[j+2][i]; }
                 } 
                 if (i >= index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; }
+                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; updatedDist[i][j] = dist_array[j][i+1]; }
+                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; updatedDist[i][j] = dist_array[j+1][i+1]; }
+                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; updatedDist[i][j] = dist_array[j+2][i+1]; }
                 }
 
                 if (i >= index2-1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+2]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+2]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+2]; }
+                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+2]; updatedDist[i][j] = dist_array[j][i+2]; }
+                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+2]; updatedDist[i][j] = dist_array[j+1][i+2]; }
+                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+2]; updatedDist[i][j] = dist_array[j+2][i+2]; }
                 }
             }
         }
@@ -161,7 +163,8 @@ static double ** InitializeDistArray(Graph g) {
     // Calculate distance between vertices i-j
     // according to given distance matrix
     for(int i = 0; i < numVertices(g); i++) {
-        AdjList curr = outIncident(g , i);
+        AdjList curr = outIncident(g,i);
+        AdjList curr1 = inIncident(g,i);
         while(curr != NULL) {
             float distance =  1 / (float) curr->weight;
             if(dist[i][curr->w] > distance || dist[curr->w][i] > distance) {
@@ -169,6 +172,14 @@ static double ** InitializeDistArray(Graph g) {
                 dist[curr->w][i] = distance;
             }
             curr = curr->next;
+        }
+        while(curr1 != NULL) {
+            float distance =  1 / (float) curr1->weight;
+            if(dist[i][curr1->w] > distance || dist[curr1->w][i] > distance) {
+                dist[i][curr1->w] = distance;
+                dist[curr1->w][i] = distance;
+            }
+            curr1 = curr1->next;
         }
     }
     return dist;
