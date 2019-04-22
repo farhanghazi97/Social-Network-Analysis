@@ -110,13 +110,22 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     double num2 = dist_array[index2][grabIndex];
                     if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
                     if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
-                    
-                    if (num1<num2){
-                        updatedDist[j][i] = num1;
-                        updatedDist[i][j] = num1;
-                    } else {
-                        updatedDist[j][i] = num2;
-                        updatedDist[i][j] = num2;
+                    if (method == 1){
+                        if (num1<num2){
+                            updatedDist[j][i] = num1;
+                            updatedDist[i][j] = num1;
+                        } else {
+                            updatedDist[j][i] = num2;
+                            updatedDist[i][j] = num2;
+                        } 
+                    } else if (method == 2) {
+                        if (num1>num2){
+                            updatedDist[j][i] = num1;
+                            updatedDist[i][j] = num1;
+                        } else {
+                            updatedDist[j][i] = num2;
+                            updatedDist[i][j] = num2;
+                        } 
                     }
                     continue;
                 }
@@ -148,7 +157,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             free(updatedDist[i]);
         }
         free(updatedDist);
-        //PrintDistArray(dist_array , matSize);
+       // PrintDistArray(dist_array , matSize);
     }
     
     // Free array
