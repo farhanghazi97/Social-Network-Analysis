@@ -23,7 +23,7 @@ static void PrintDistArray (double ** dist_array , int size) {
         printf("\n");
     }
 }
-static void PrintDistArray (double ** dist_array , int size);
+//static void PrintDistArray (double ** dist_array , int size);
 static Dendrogram MakeEmptyDNode ();
 static double ** MakeNewDistArray(int size);
 /*
@@ -75,12 +75,14 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             index1 = index2;
             index2 = temp;
         }
+
         printf("Index 1: %d\n",index1);
         printf("Index 2: %d\n",index2);
         printf("Count: %d & MatSize: %d\n",count,matSize);
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
+        printf("Merging %d & %d\n",dendA[index1]->vertex,dendA[index2]->vertex);
         // Begin resizing dendA
         matSize--;
         for(int i = 0; i < matSize; i++){
@@ -111,8 +113,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     }
                     double num1 = dist_array[index1][grabIndex];
                     double num2 = dist_array[index2][grabIndex];
-                    if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
-                    if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
+                    //if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
+                    //if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
                     if (method == 1){
                         if (num1<num2){
                             updatedDist[j][i] = num1;
@@ -138,16 +140,14 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; updatedDist[i][j] = dist_array[j+1][i]; }
                     if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; updatedDist[i][j] = dist_array[j+2][i]; }
                 } 
-                if (i >= index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; updatedDist[i][j] = dist_array[j][i+1]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; updatedDist[i][j] = dist_array[j+1][i+1]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; updatedDist[i][j] = dist_array[j+2][i+1]; }
-                }
-
                 if (i >= index2-1) {
                     if (j < index1) { updatedDist[j][i] = dist_array[j][i+2]; updatedDist[i][j] = dist_array[j][i+2]; }
                     if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+2]; updatedDist[i][j] = dist_array[j+1][i+2]; }
                     if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+2]; updatedDist[i][j] = dist_array[j+2][i+2]; }
+                } else if (i >= index1) {
+                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; updatedDist[i][j] = dist_array[j][i+1]; }
+                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; updatedDist[i][j] = dist_array[j+1][i+1]; }
+                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; updatedDist[i][j] = dist_array[j+2][i+1]; }
                 }
             }
         }
@@ -160,7 +160,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             free(updatedDist[i]);
         }
         free(updatedDist);
-       //PrintDistArray(dist_array , matSize);
+       PrintDistArray(dist_array , matSize);
     }
     
     // Free array
@@ -198,7 +198,14 @@ static double ** InitializeDistArray(Graph g) {
                 dist[curr->w][i] = distance;
             }
             curr = curr->next;
-        
+        }
+        while(curr1 != NULL) {
+            float distance =  1 / (float) curr1->weight;
+            if(dist[i][curr1->w] > distance || dist[curr1->w][i] > distance) {
+                dist[i][curr1->w] = distance;
+                dist[curr1->w][i] = distance;
+            }
+            curr1 = curr1->next;
         }
     }
     return dist;
