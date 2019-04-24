@@ -23,9 +23,13 @@ static void PrintDistArray (double ** dist_array , int size) {
         printf("\n");
     }
 }
-//static void PrintDistArray (double ** dist_array , int size);
 static Dendrogram MakeEmptyDNode ();
 static double ** MakeNewDistArray(int size);
+static void printTree(Dendrogram A) {
+    if(A->vertex != -1){ printf("%d ",A->vertex); }
+    if(A->left != NULL) { printTree(A->left); }
+    if(A->right != NULL) { printTree(A->right); }
+}
 /*
  * Finds Dendrogram using Lance-Williams algorithm (as discussed in the specs)
    for the given graph g and the specified method for agglomerative clustering.
@@ -82,7 +86,12 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
-        printf("Merging %d & %d\n",dendA[index1]->vertex,dendA[index2]->vertex);
+        // printf("Merging %d & %d\n",dendA[index1]->vertex,dendA[index2]->vertex);
+        printf("Merging ( ");
+        printTree(dendA[index1]);
+        printf(") & ( ");
+        printTree(dendA[index2]);
+        printf(")\n");
         // Begin resizing dendA
         matSize--;
         for(int i = 0; i < matSize; i++){
@@ -113,8 +122,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     }
                     double num1 = dist_array[index1][grabIndex];
                     double num2 = dist_array[index2][grabIndex];
-                    //if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
-                    //if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
+                    if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
+                    if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
                     if (method == 1){
                         if (num1<num2){
                             updatedDist[j][i] = num1;
@@ -140,14 +149,15 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                     if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; updatedDist[i][j] = dist_array[j+1][i]; }
                     if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; updatedDist[i][j] = dist_array[j+2][i]; }
                 } 
+                if (i >= index1) {
+                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; updatedDist[i][j] = dist_array[j][i+1]; }
+                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; updatedDist[i][j] = dist_array[j+1][i+1]; }
+                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; updatedDist[i][j] = dist_array[j+2][i+1]; }
+                }
                 if (i >= index2-1) {
                     if (j < index1) { updatedDist[j][i] = dist_array[j][i+2]; updatedDist[i][j] = dist_array[j][i+2]; }
                     if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+2]; updatedDist[i][j] = dist_array[j+1][i+2]; }
                     if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+2]; updatedDist[i][j] = dist_array[j+2][i+2]; }
-                } else if (i >= index1) {
-                    if (j < index1) { updatedDist[j][i] = dist_array[j][i+1]; updatedDist[i][j] = dist_array[j][i+1]; }
-                    if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i+1]; updatedDist[i][j] = dist_array[j+1][i+1]; }
-                    if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i+1]; updatedDist[i][j] = dist_array[j+2][i+1]; }
                 }
             }
         }
@@ -221,6 +231,7 @@ static Dendrogram MakeDNode (Vertex v) {
 
 static Dendrogram MakeEmptyDNode () {
     Dendrogram new_DNode = malloc(sizeof(struct DNode));
+    new_DNode->vertex = -1;
     new_DNode->left = NULL;
     new_DNode->right = NULL;
     return new_DNode;
