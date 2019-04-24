@@ -36,7 +36,7 @@ Minimum: 0.100000
 Index 1: 31
 Index 2: 33
 Count: 11 & MatSize: 34
-Merging 31 & 33
+Merging ( 31 ) & ( 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	inf	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1429	0.2000	inf	inf	0.2000	inf	
@@ -74,7 +74,7 @@ Minimum: 0.100000
 Index 1: 30
 Index 2: 32
 Count: 10 & MatSize: 33
-Merging 30 & 1425534256
+Merging ( 30 ) & ( 31 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1429	0.2000	inf	0.2000	inf	
@@ -111,7 +111,7 @@ Minimum: 0.100000
 Index 1: 29
 Index 2: 31
 Count: 9 & MatSize: 32
-Merging 29 & 1425534288
+Merging ( 29 ) & ( 30 31 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1429	0.2000	0.2000	inf	
@@ -147,7 +147,7 @@ Minimum: 0.100000
 Index 1: 28
 Index 2: 30
 Count: 8 & MatSize: 31
-Merging 28 & 1425534320
+Merging ( 28 ) & ( 29 30 31 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	inf	inf	1.0000	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1429	0.2000	0.2000	
@@ -182,7 +182,7 @@ Minimum: 0.100000
 Index 1: 24
 Index 2: 29
 Count: 7 & MatSize: 30
-Merging 24 & 1425534352
+Merging ( 24 ) & ( 28 29 30 31 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	inf	1.0000	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1429	0.2000	0.2000	
@@ -216,7 +216,7 @@ Minimum: 0.100000
 Index 1: 26
 Index 2: 28
 Count: 6 & MatSize: 29
-Merging 27 & 0
+Merging ( 27 ) & ( 24 28 29 30 31 33 )
 inf	0.3333	0.3333	0.1000	0.1429	1.0000	0.5000	0.1667	0.3333	inf	0.3333	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	0.1667	
 0.3333	inf	0.1000	0.2000	inf	inf	inf	0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	1.0000	
 0.3333	0.1000	inf	0.2500	inf	inf	inf	0.3333	0.2000	0.1667	inf	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	0.1429	
@@ -249,7 +249,7 @@ Minimum: 0.100000
 Index 1: 4
 Index 2: 10
 Count: 5 & MatSize: 28
-Merging 4 & 10
+Merging ( 4 ) & ( 10 )
 inf	0.3333	0.3333	0.1000	1.0000	0.5000	0.1667	0.3333	inf	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	0.1667	0.1429	
 0.3333	inf	0.1000	0.2000	inf	inf	0.1667	inf	inf	inf	inf	0.2000	inf	inf	inf	0.5000	inf	0.1667	inf	0.1250	inf	inf	inf	inf	inf	1.0000	inf	
 0.3333	0.1000	inf	0.2500	inf	inf	0.3333	0.2000	0.1667	inf	inf	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	0.1429	inf	
@@ -281,7 +281,7 @@ Minimum: 0.100000
 Index 1: 1
 Index 2: 2
 Count: 4 & MatSize: 27
-Merging 1 & 2
+Merging ( 1 ) & ( 2 )
 inf	0.1000	1.0000	0.5000	0.1667	0.3333	inf	0.5000	0.3333	1.0000	inf	inf	inf	0.1667	inf	0.5000	inf	0.1111	inf	inf	inf	inf	inf	0.1667	0.1429	0.3333	
 0.1000	inf	inf	inf	0.5000	inf	inf	inf	1.0000	0.2500	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	
 1.0000	inf	inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	
@@ -312,7 +312,7 @@ Minimum: 0.100000
 Index 1: 0
 Index 2: 1
 Count: 1 & MatSize: 26
-Merging 0 & 3
+Merging ( 0 ) & ( 3 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	1.0000	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1250	inf	0.5000	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	0.1667	
@@ -342,7 +342,7 @@ Minimum: 0.111111
 Index 1: 20
 Index 2: 21
 Count: 12 & MatSize: 25
-Merging 32 & -1536287440
+Merging ( 32 ) & ( 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1250	inf	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	0.1667	inf	
@@ -371,7 +371,7 @@ Minimum: 0.111111
 Index 1: 19
 Index 2: 23
 Count: 9 & MatSize: 24
-Merging 26 & -1536287568
+Merging ( 26 ) & ( 32 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	inf	0.1250	inf	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	0.1667	inf	
@@ -399,7 +399,7 @@ Minimum: 0.111111
 Index 1: 15
 Index 2: 21
 Count: 8 & MatSize: 23
-Merging 21 & -1536287536
+Merging ( 21 ) & ( 0 3 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	inf	1.0000	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	inf	inf	0.5000	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	0.1667	
@@ -426,7 +426,7 @@ Minimum: 0.125000
 Index 1: 19
 Index 2: 21
 Count: 7 & MatSize: 22
-Merging -1536287504 & -1536287360
+Merging ( 1 2 ) & ( 21 0 3 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	1.0000	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	inf	0.5000	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
@@ -452,7 +452,7 @@ Minimum: 0.125000
 Index 1: 9
 Index 2: 19
 Count: 6 & MatSize: 21
-Merging 15 & -1536287328
+Merging ( 15 ) & ( 26 32 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	
@@ -477,7 +477,7 @@ Minimum: 0.125000
 Index 1: 8
 Index 2: 19
 Count: 5 & MatSize: 20
-Merging 14 & -1536287584
+Merging ( 14 ) & ( 15 26 32 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	
@@ -501,7 +501,7 @@ Minimum: 0.125000
 Index 1: 4
 Index 2: 18
 Count: 4 & MatSize: 19
-Merging 9 & -1536287456
+Merging ( 9 ) & ( 14 15 26 32 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	
@@ -524,7 +524,7 @@ Minimum: 0.125000
 Index 1: 3
 Index 2: 17
 Count: 3 & MatSize: 18
-Merging 8 & -1536287488
+Merging ( 8 ) & ( 9 14 15 26 32 27 24 28 29 30 31 33 )
 inf	0.1667	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	1.0000	inf	
 0.1667	inf	inf	inf	inf	inf	0.2000	inf	inf	inf	inf	inf	inf	inf	0.1250	0.5000	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	
@@ -546,7 +546,7 @@ Minimum: 0.125000
 Index 1: 1
 Index 2: 14
 Count: 2 & MatSize: 17
-Merging 6 & -1536287472
+Merging ( 6 ) & ( 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	1.0000	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	inf	inf	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	inf	inf	
@@ -567,7 +567,7 @@ Minimum: 0.142857
 Index 1: 13
 Index 2: 15
 Count: 13 & MatSize: 16
-Merging -1536287584 & -1536287552
+Merging ( 1 2 21 0 3 ) & ( 6 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -587,7 +587,7 @@ Minimum: 0.142857
 Index 1: 13
 Index 2: 14
 Count: 12 & MatSize: 15
-Merging -1536287520 & -1536287440
+Merging ( 8 9 14 15 26 32 27 24 28 29 30 31 33 ) & ( 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -606,7 +606,7 @@ Minimum: 0.142857
 Index 1: 12
 Index 2: 13
 Count: 11 & MatSize: 14
-Merging 25 & 1610612736
+Merging ( 25 ) & ( 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -624,7 +624,7 @@ Minimum: 0.142857
 Index 1: 11
 Index 2: 12
 Count: 10 & MatSize: 13
-Merging 23 & 0
+Merging ( 23 ) & ( 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -641,7 +641,7 @@ Minimum: 0.142857
 Index 1: 7
 Index 2: 11
 Count: 9 & MatSize: 12
-Merging 18 & 0
+Merging ( 18 ) & ( 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	inf	0.3333	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -657,7 +657,7 @@ Minimum: 0.142857
 Index 1: 4
 Index 2: 10
 Count: 8 & MatSize: 11
-Merging 13 & 0
+Merging ( 13 ) & ( 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	0.3333	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -672,7 +672,7 @@ Minimum: 0.166667
 Index 1: 6
 Index 2: 9
 Count: 8 & MatSize: 10
-Merging 19 & 0
+Merging ( 19 ) & ( 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	0.3333	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -686,7 +686,7 @@ Minimum: 0.166667
 Index 1: 5
 Index 2: 8
 Count: 7 & MatSize: 9
-Merging 17 & 0
+Merging ( 17 ) & ( 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	0.3333	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	inf	0.5000	
@@ -699,7 +699,7 @@ Minimum: 0.166667
 Index 1: 1
 Index 2: 7
 Count: 6 & MatSize: 8
-Merging 7 & 0
+Merging ( 7 ) & ( 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	0.3333	inf	inf	0.1667	
 inf	inf	inf	inf	inf	inf	0.5000	
 inf	inf	inf	inf	inf	inf	0.3333	
@@ -711,7 +711,7 @@ Minimum: 0.166667
 Index 1: 0
 Index 2: 6
 Count: 4 & MatSize: 7
-Merging 5 & 0
+Merging ( 5 ) & ( 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	inf	0.5000	
 inf	inf	inf	inf	inf	0.3333	
 inf	inf	inf	inf	inf	0.2000	
@@ -722,7 +722,7 @@ Minimum: 0.200000
 Index 1: 2
 Index 2: 5
 Count: 7 & MatSize: 6
-Merging 16 & 0
+Merging ( 16 ) & ( 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	inf	0.5000	
 inf	inf	inf	inf	0.3333	
 inf	inf	inf	inf	0.2500	
@@ -732,7 +732,7 @@ Minimum: 0.250000
 Index 1: 3
 Index 2: 4
 Count: 7 & MatSize: 5
-Merging 22 & 0
+Merging ( 22 ) & ( 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	inf	0.5000	
 inf	inf	inf	0.3333	
 inf	inf	inf	0.2500	
@@ -741,7 +741,7 @@ Minimum: 0.250000
 Index 1: 2
 Index 2: 3
 Count: 5 & MatSize: 4
-Merging 20 & 0
+Merging ( 20 ) & ( 22 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	inf	0.5000	
 inf	inf	0.3333	
 0.5000	0.3333	inf	
@@ -749,20 +749,20 @@ Minimum: 0.333333
 Index 1: 1
 Index 2: 2
 Count: 3 & MatSize: 3
-Merging 12 & 0
+Merging ( 12 ) & ( 20 22 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	0.5000	
 0.5000	inf	
 Minimum: 0.500000
 Index 1: 0
 Index 2: 1
 Count: 1 & MatSize: 2
-Merging 11 & 1425582192
+Merging ( 11 ) & ( 12 20 22 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 inf	
 Minimum: inf
 Index 1: 0
 Index 2: 0
 Count: 0 & MatSize: 1
-Merging 1425582288 & 1425582288
+Merging ( 11 12 20 22 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 ) & ( 11 12 20 22 16 5 7 17 19 13 18 23 25 8 9 14 15 26 32 27 24 28 29 30 31 33 1 2 21 0 3 6 4 10 )
 1: {11} (leaf)
 2: {12} (leaf)
 3: {20} (leaf)

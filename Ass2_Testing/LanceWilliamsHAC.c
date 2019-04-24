@@ -14,6 +14,7 @@
 static double ** InitializeDistArray(Graph g);
 static Dendrogram MakeDNode (Vertex v);
 //static void PrintDendArray (Dendrogram * D , int size);
+
 static void PrintDistArray (double ** dist_array , int size) {
     // Pretty print array
     for(int i = 0; i < size; i++) {
@@ -23,6 +24,7 @@ static void PrintDistArray (double ** dist_array , int size) {
         printf("\n");
     }
 }
+
 static Dendrogram MakeEmptyDNode ();
 static double ** MakeNewDistArray(int size);
 static void printTree(Dendrogram A) {
@@ -48,7 +50,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
         dendA[i] = MakeDNode(i);
     }
     
-    PrintDistArray(dist_array , N);
+    //PrintDistArray(dist_array , N);
     int matSize = N;
     for(int s = 0; s < N; s++){
         // Find closest clusters and grab those indices
@@ -60,12 +62,25 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             for(int j = i+1; j < matSize;j++){
                 if(dist_array[j][i] <= minimum){
                     //grabbing these indices
+
                     minimum = dist_array[j][i];
                     index1 = j;
                     index2 = i;
+                    if(matSize == 15){
+                        if(index1 == 12 || index2 == 12){
+                            printf("Hello\n");
+                            break;
+                        }                                
+                    }
                     count++;
                 }
             }
+                    if(matSize == 15){
+                        if(index1 == 12 || index2 == 12){
+                            printf("Hello\n");
+                            break;
+                        }                                
+                    }
         }
 
         // By now we would know which clusters to merge
@@ -170,7 +185,7 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
             free(updatedDist[i]);
         }
         free(updatedDist);
-       PrintDistArray(dist_array , matSize);
+        PrintDistArray(dist_array , matSize);
     }
     
     // Free array
