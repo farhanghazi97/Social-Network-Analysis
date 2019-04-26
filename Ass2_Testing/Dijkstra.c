@@ -21,7 +21,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	// Visited array for Dijkstra
 	int *visited = calloc(numVerticies(g),sizeof(int));
 
-	// Initialize struct
+	// Initialize static struct and initialize data associated with it
 	ShortestPaths static_SP;
 	static_SP.noNodes = numVerticies(g);
 	static_SP.src = v;
@@ -88,6 +88,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	return static_SP;
 }
 
+// Helper function to display information related to ShortestPaths struct
 void showShortestPaths(ShortestPaths paths) {
 	int i = 0;
 	printf("Node %d\n",paths.src);
@@ -111,7 +112,7 @@ void showShortestPaths(ShortestPaths paths) {
 	}
 }
 
-
+// Helper function to free all data associated with ShortestPath struct
 void freeShortestPaths(ShortestPaths paths) {
 	free(paths.dist);
 	for(int i = 0; i < paths.noNodes; i++) {
@@ -127,6 +128,7 @@ void freeShortestPaths(ShortestPaths paths) {
 	free(paths.pred);
 }
 
+// Helper function to make a new PredNode struct
 static PNode NewPredNode (int val){
 	struct PredNode * new_node = malloc(sizeof(struct PredNode));
 	new_node->v = val;
