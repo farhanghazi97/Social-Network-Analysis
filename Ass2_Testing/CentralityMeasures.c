@@ -7,11 +7,14 @@
 #include <assert.h>
 #include "GraphVis.h"
 
+// ---------- STATIC FUNCTIONS START ---------- //
+
 static double numPathThroughV(int s,int t, int v, PredNode **pred);
 static double numPath(int s,int t, PredNode **pred);
-static bool isConnected(Graph g);
-static void DFS(Graph g , Vertex v , int * visited);
 
+// ---------- STATIC FUNCTIONS END ---------- //
+
+// Function to calculate outDegree centrality
 NodeValues outDegreeCentrality(Graph g){
 
 	NodeValues new_NV;
@@ -32,6 +35,8 @@ NodeValues outDegreeCentrality(Graph g){
 	}
 	return new_NV;
 }
+
+// Function to calculate inDegree centrality
 NodeValues inDegreeCentrality(Graph g){
 
 	NodeValues new_NV;
@@ -53,6 +58,7 @@ NodeValues inDegreeCentrality(Graph g){
 	return new_NV;
 }
 
+// Function to calculate degree centrality 
 NodeValues degreeCentrality(Graph g) {
 
 	NodeValues new_NV;
@@ -84,21 +90,25 @@ NodeValues degreeCentrality(Graph g) {
 	return new_NV;
 }
 
+// Function to calculate closeness centrality
 NodeValues closenessCentrality(Graph g){
 
+	// Initialize static NodeValues struct
 	NodeValues new_NV;
 	new_NV.noNodes = numVerticies(g);
 	new_NV.values = calloc(numVerticies(g)  , sizeof(double));
 	assert(new_NV.values != NULL);
 
-	bool is_connected = isConnected(g);
 	for(int i = 0; i < new_NV.noNodes; i++) {
 
+		// Perform Dijkstra on current vertex to obtain ShortestPaths struct
 		ShortestPaths paths = dijkstra(g , i);
 
+		// Counters to keep track of sum of paths and count
 		double sum_of_paths = 0;
 		double count = 0.0;
 
+		// Count the number of paths from verte
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
 			if(paths.dist[i]){
@@ -109,12 +119,8 @@ NodeValues closenessCentrality(Graph g){
 		// If sum of paths is 0 , closeness is set to 0
 		if(sum_of_paths <= 0.0) {
 			new_NV.values[i] = 0.0;
-		} else if(is_connected) {
-			// If graph is a strongly connected graph (i.e every node can reach every other
-			// node in graph) , we use the default closeness formula
-			new_NV.values[i] = (numVerticies(g) - 1) / sum_of_paths;
 		} else {
-			// If the graph has isolated vertices, we use the Wasserman and Faust formula
+			// Otherwise, we use the Wasserman and Faust formula
 			// for closeness
 			new_NV.values[i] = ((count) * (count)) / ((numVerticies(g) - 1) * sum_of_paths);
 		}
@@ -122,7 +128,7 @@ NodeValues closenessCentrality(Graph g){
 	return new_NV;
 }
 
-
+// Function to calculate betweenness centrality
 NodeValues betweennessCentrality(Graph g){
 
 	NodeValues new_NV;
@@ -144,7 +150,7 @@ NodeValues betweennessCentrality(Graph g){
 				double n = numPath(s,t,paths.pred);
 				double nv1 = numPath(s,v,paths.pred);
 				double nv2 = numPath(v,t,paths.pred);
-				npv = nv1*nv2;			//apparently this works.
+				npv = nv1*nv2;
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
@@ -155,6 +161,7 @@ NodeValues betweennessCentrality(Graph g){
 	return new_NV;
 }
 
+// Function to calculate normalised betweenness centrality
 NodeValues betweennessCentralityNormalised(Graph g){
 	NodeValues new_NV = betweennessCentrality(g);
 	for(int i = 0; i < new_NV.noNodes; i++) {
@@ -163,12 +170,14 @@ NodeValues betweennessCentralityNormalised(Graph g){
 	return new_NV;
 }
 
+// Helper function to dispaly NodeValues struct
 void showNodeValues(NodeValues values){
 	for(int i = 0; i < values.noNodes; i++) {
 		printf("%d: %lf\n" , i , values.values[i]);
 	}
 }
 
+// Free all data assocaied with NodeValues struct
 void freeNodeValues(NodeValues values){
 	free(values.values);
 }
@@ -209,30 +218,4 @@ static double numPath(int s,int t, PredNode **pred){
 		curr = curr->next;
 	}
 	return count;
-}
-
-static bool isConnected(Graph g) {
-	for(int i = 0; i < numVerticies(g); i++) {
-		int * visited = calloc(numVerticies(g) , sizeof(int));
-		DFS(g , i , visited);
-		for(int i = 0; i < numVerticies(g); i++) {
-			bool flag = visited[i];
-			if(flag  == 0) {
-				return false;
-			}
-		}
-		free(visited);
-	}
-	return true;
-}
-
-static void DFS(Graph g , Vertex v , int * visited) {
-	visited[v] = 1;
-	AdjList curr = outIncident(g , v);
-	while(curr != NULL) {
-		if(!visited[curr->w]) {
-			DFS(g , curr->w , visited);
-		}
-		curr = curr->next;
-	}
 }

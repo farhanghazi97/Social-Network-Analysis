@@ -10,7 +10,11 @@
 
 typedef struct PredNode * PNode;
 
+// ---------- STATIC FUNCTIONS START ----------
+
 static PNode NewPredNode (int val);
+
+// ---------- STATIC FUNCTIONS END ----------
 
 ShortestPaths dijkstra(Graph g, Vertex v) {
 
@@ -39,7 +43,6 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	}
 
 	// Add souce vertex to priority queue with shortest distance 0
-
 	static_SP.dist[v] = 0;
 	item.key = v;
 	item.value = 0;

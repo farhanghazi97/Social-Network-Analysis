@@ -21,9 +21,13 @@ typedef struct _adjList {
 	int in_size;
 } adjList;
 
+// ---------- STATIC FUNCTIONS START ---------- //
+
 static AdjNode newAdjList (void);
 static AdjList newAdjNode (int dest , int weight);
 static int NodeDest (AdjList L);
+
+// ---------- STATIC FUNCTIONS END ---------- //
 
 // Initialize graph data structure
 Graph newGraph(int noNodes) {

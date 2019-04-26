@@ -20,10 +20,13 @@ typedef struct Node {
 	Link next;
 } Node;
 
-static Link NewNode (void);
+// ---------- STATIC FUNCTIONS START ---------- //
 
+static Link NewNode (void);
 static void searchPQ(PQ pq, int key);
 static void sortPQ(PQ pq); 
+
+// ---------- STATIC FUNCTIONS END ---------- //
 
 // Allocate space for a new PQ struct
 PQ newPQ() {
