@@ -23,12 +23,12 @@ NodeValues outDegreeCentrality(Graph g){
 	assert(new_NV.values != NULL);
 
 	for(int i = 0; i < new_NV.noNodes; i++) {
-		AdjList curr = outIncident(g , i);
+		AdjList currVertex = outIncident(g , i);
 		float count = 0;
-		if(curr != NULL) {
-			while(curr != NULL) {
+		if(currVertex != NULL) {
+			while(currVertex != NULL) {
 				count++;
-				curr = curr->next;
+				currVertex = currVertex->next;
 			}
 		}
 		new_NV.values[i] = count;
@@ -45,12 +45,12 @@ NodeValues inDegreeCentrality(Graph g){
 	assert(new_NV.values != NULL);
 
 	for(int i = 0; i < new_NV.noNodes; i++) {
-		AdjList curr = inIncident(g , i);
+		AdjList currVertex = inIncident(g , i);
 		float count = 0;
-		if(curr != NULL) {
-			while(curr != NULL) {
+		if(currVertex != NULL) {
+			while(currVertex != NULL) {
 				count++;
-				curr = curr->next;
+				currVertex = currVertex->next;
 			}
 		}
 		new_NV.values[i] = count;
@@ -67,20 +67,20 @@ NodeValues degreeCentrality(Graph g) {
 	assert(new_NV.values != NULL);
 
 	for(int i = 0; i < new_NV.noNodes; i++) {
-		AdjList out_curr = outIncident(g , i);
+		AdjList currVertex_out = outIncident(g , i);
 		float out_count = 0;
-		if(out_curr != NULL) {
-			while(out_curr != NULL) {
+		if(currVertex_out != NULL) {
+			while(currVertex_out != NULL) {
 				out_count++;
-				out_curr = out_curr->next;
+				currVertex_out = currVertex_out->next;
 			}
 		}
-		AdjList in_curr = inIncident(g , i);
+		AdjList currVertex_in = inIncident(g , i);
 		float in_count = 0;
-		if(in_curr != NULL) {
-			while(in_curr != NULL) {
+		if(currVertex_in != NULL) {
+			while(currVertex_in != NULL) {
 				in_count++;
-				in_curr = in_curr->next;
+				currVertex_in = currVertex_in->next;
 			}
 		}
 		float total_count = out_count + in_count;
@@ -108,7 +108,7 @@ NodeValues closenessCentrality(Graph g){
 		double sum_of_paths = 0;
 		double count = 0.0;
 
-		// Count the number of paths from verte
+		// Count the number of paths from vertex
 		for(int i = 0; i < paths.noNodes; i++) {
 			sum_of_paths += paths.dist[i];
 			if(paths.dist[i]){
@@ -184,17 +184,17 @@ void freeNodeValues(NodeValues values){
 
 static double numPathThroughV(int s,int t, int v, PredNode **pred){
 	double count = 0;
-	struct PredNode *curr = pred[t];
-	if(!curr){
+	struct PredNode *currVertex = pred[t];
+	if(!currVertex){
 		return 0;
 	}
 	if(t == v ){
 		{count = 1;}
 	}
-	while(curr!=NULL) {
-		t = curr->v;
+	while(currVertex!=NULL) {
+		t = currVertex->v;
 		count = numPathThroughV(s,t,v,pred) + count;
-		curr = curr->next;
+		currVertex = currVertex->next;
 	}
 	return count;
 }
@@ -204,18 +204,18 @@ static double numPath(int s,int t, PredNode **pred){
 	if(pred[t]==NULL){
 		return 0;
 	}
-	struct PredNode *curr = pred[t];
-	if(curr->v == s){
+	struct PredNode *currVertex = pred[t];
+	if(currVertex->v == s){
 		count = 1;
-		curr = curr->next;
+		currVertex = currVertex->next;
 	}
-	while(curr!=NULL){
-		t = curr->v;
+	while(currVertex!=NULL){
+		t = currVertex->v;
 		if(t==s){
 			count++;
 		}
 		count = numPath(s,t,pred) + count;
-		curr = curr->next;
+		currVertex = currVertex->next;
 	}
 	return count;
 }
