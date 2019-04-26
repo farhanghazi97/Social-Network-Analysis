@@ -8,8 +8,7 @@
 #include "GraphVis.h"
 
 // ---------- STATIC FUNCTIONS START ---------- //
-
-static double numPathThroughV(int s,int t, int v, PredNode **pred);
+// Calculate number of paths that exist between given nodes
 static double numPath(int s,int t, PredNode **pred);
 
 // ---------- STATIC FUNCTIONS END ---------- //
@@ -146,11 +145,12 @@ NodeValues betweennessCentrality(Graph g){
 				if(s == t || v == t){
 					continue;
 				}
-				double npv = numPathThroughV(s, t, v, paths.pred);
 				double n = numPath(s,t,paths.pred);
 				double nv1 = numPath(s,v,paths.pred);
 				double nv2 = numPath(v,t,paths.pred);
-				npv = nv1*nv2;
+				// Multiplying paths from s to v and from v to t
+				// gives number of paths through v
+				double npv = nv1*nv2;
 				if(n){
 					new_NV.values[v] = new_NV.values[v] + npv/n;
 				}
@@ -182,23 +182,7 @@ void freeNodeValues(NodeValues values){
 	free(values.values);
 }
 
-static double numPathThroughV(int s,int t, int v, PredNode **pred){
-	double count = 0;
-	struct PredNode *currVertex = pred[t];
-	if(!currVertex){
-		return 0;
-	}
-	if(t == v ){
-		{count = 1;}
-	}
-	while(currVertex!=NULL) {
-		t = currVertex->v;
-		count = numPathThroughV(s,t,v,pred) + count;
-		currVertex = currVertex->next;
-	}
-	return count;
-}
-
+// Recursively counting the path to get from s to t
 static double numPath(int s,int t, PredNode **pred){
 	double count = 0;
 	if(pred[t]==NULL){
