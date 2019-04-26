@@ -10,28 +10,16 @@
 #include "Graph.h"
 #define numVertices numVerticies
 
-
+// Function to create initial distance matrix
 static double ** InitializeDistArray(Graph g);
-static Dendrogram MakeDNode (Vertex v);
-//static void PrintDendArray (Dendrogram * D , int size);
-
-static void PrintDistArray (double ** dist_array , int size) {
-    // Pretty print array
-    for(int i = 0; i < size; i++) {
-        for(int j = 0; j < size; j++) {
-            printf("%.4lf\t" , dist_array[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-static Dendrogram MakeEmptyDNode ();
+// Function to create new distance matrix
 static double ** MakeNewDistArray(int size);
-static void printTree(Dendrogram A) {
-    if(A->vertex != -1){ printf("%d ",A->vertex); }
-    if(A->left != NULL) { printTree(A->left); }
-    if(A->right != NULL) { printTree(A->right); }
-}
+// Function to make new Dendrogram node
+static Dendrogram MakeDNode (Vertex v);
+// Function to make empty dendrogram node during merging
+static Dendrogram MakeEmptyDNode ();
+
+
 /*
  * Finds Dendrogram using Lance-Williams algorithm (as discussed in the specs)
    for the given graph g and the specified method for agglomerative clustering.
@@ -46,100 +34,99 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
     double ** dist_array = InitializeDistArray(g);
     int N = numVertices(g);
     Dendrogram * dendA = malloc(N * sizeof(DNode));
+    // initialise dendrogram array
     for(int i = 0; i < N; i++) {
         dendA[i] = MakeDNode(i);
     }
-    
-    //PrintDistArray(dist_array , N);
+
     int matSize = N;
     for(int s = 0; s < N; s++){
         // Find closest clusters and grab those indices
         float minimum = INFINITY;
-        int count = 0;
         int index1 = 0;
         int index2 = 0; 
         for(int i = 0; i < matSize;i++){
             for(int j = i+1; j < matSize;j++){
                 if(dist_array[j][i] <= minimum){
-                    //grabbing these indices
-
+                    //grabbing indices corresponding to the minimum distance
                     minimum = dist_array[j][i];
                     index1 = j;
                     index2 = i;
-                    if(matSize == 15){
-                        if(index1 == 12 || index2 == 12){
-                            printf("Hello\n");
-                            break;
-                        }                                
-                    }
-                    count++;
                 }
             }
-                    if(matSize == 15){
-                        if(index1 == 12 || index2 == 12){
-                            printf("Hello\n");
-                            break;
-                        }                                
-                    }
         }
-
-        // By now we would know which clusters to merge
-        // Need to remove items/clean the dendA
-        printf("Minimum: %lf\n",minimum);
-        // printf("Index 1: %d\n",index1);
-        // printf("Index 2: %d\n",index2);
         if(index1>index2){
-            // I want index1 to be less than index2
+            // sort the the two indices
+            // making index 1 less than index 2
             int temp = index1;
             index1 = index2;
             index2 = temp;
         }
 
-        printf("Index 1: %d\n",index1);
-        printf("Index 2: %d\n",index2);
-        printf("Count: %d & MatSize: %d\n",count,matSize);
+        // Merging two clusters that are shortest distance apart
         Dendrogram newCluster = MakeEmptyDNode();
         newCluster->left = dendA[index1];
         newCluster->right = dendA[index2];
-        // printf("Merging %d & %d\n",dendA[index1]->vertex,dendA[index2]->vertex);
-        printf("Merging ( ");
-        printTree(dendA[index1]);
-        printf(") & ( ");
-        printTree(dendA[index2]);
-        printf(")\n");
-        // Begin resizing dendA
+
+        // Reduce the size to N-1
         matSize--;
+
         for(int i = 0; i < matSize; i++){
-            //Wanna keep all cells before index1 intact only moving cells after
+            // Placing newly formed cluster at the back of dendrogram array
             if(i == matSize -1) {
                 dendA[i] = newCluster;
             } else {
+                /*
+                Data in array should be shifted by 1 to the left if its position
+                between index1 and index2-1
+                Data after at array[index2-1] should be shifted to the left twice
+                */
                 if(i >= index1) { dendA[i] = dendA[i+1]; }
                 if(i >= index2-1) { dendA[i] = dendA[i+2]; }
             }
 
         }
-        //By now we would have the new dendA array
-        //Create new dist array and perform calculation
+        /*
+            Create a new distance matrix and update it using matrix manipulation
+            Last row of the new matrix is the distance between the newly merged cluster and
+            other existing clusters.
+                        Col i       Col i+1       Col i+2
+            Row j       a[j][i]     a[j][i+1]     a[j][i+2]  
+            Row j+1     a[j+1][i]   a[j+1][i+1]   a[j+1][i+2]
+            Row j+2     a[j+2][i]   a[j+2][i+1]   a[j+2][i+2]
+        */
         double ** updatedDist = MakeNewDistArray(matSize);
         for(int i = 0; i < matSize;i++){
             for(int j = i; j < matSize;j++){
                 if (j == i) {
                     continue;
                 }
+                // When j is the last row, update its distance cells using Lance William
                 if (j == matSize -1){
-                    int grabIndex = i;
-                    if( i>= index1){
-                        grabIndex++;
+                    /*
+                        When accessing the previous distance matrix, possible index shifting must be accounted for
+                        because we remove those clusters, 2 rows and 2 columns get removed, and appended
+                        the merged one as the last row of the matrixs
+                    */
+                    int accessIndex = i;
+                    
+                    if(i>= index1){
+                        // Shift by 1 column
+                        accessIndex++;
                     }
-                    if( i>= index2-1 ){
-                        grabIndex++;
+                    if(i>= index2-1){
+                        // Shift by 2 columns
+                        accessIndex++;
                     }
-                    double num1 = dist_array[index1][grabIndex];
-                    double num2 = dist_array[index2][grabIndex];
-                    if(!(num1 < INFINITY)){ num1 = dist_array[grabIndex][index1];}
-                    if(!(num2 < INFINITY)){ num2 = dist_array[grabIndex][index2];}
+                    /*
+                        Obtain two numbers Dist(c_i,c_k) and Dist(c_j,c_k)
+                        Choose min for single link or max for complete link
+                    */
+                    double num1 = dist_array[index1][accessIndex];
+                    double num2 = dist_array[index2][accessIndex];
                     if (method == 1){
+                        // Single link
+                        // Update both indices for symmetry
                         if (num1<num2){
                             updatedDist[j][i] = num1;
                             updatedDist[i][j] = num1;
@@ -148,6 +135,8 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                             updatedDist[i][j] = num2;
                         } 
                     } else if (method == 2) {
+                        // Complete link
+                        // Update both indices for symmetry
                         if (num1>num2){
                             updatedDist[j][i] = num1;
                             updatedDist[i][j] = num1;
@@ -156,10 +145,23 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                             updatedDist[i][j] = num2;
                         } 
                     }
+                    // Because this is guaranteed to be the last row we can skip the rest of the code below
                     continue;
                 }
-
+                /*
+                    This section of distance matrix update executes when j is not the last row
+                    No LW needed, just matrix manipulation.
+                    If the current column i is less than index1, no right horizontal shifting needed
+                    If the current column i is between index1 and index2-1, 1 right horizontal shifting is needed
+                    If the current column i is more than or equal to index2-1, 2 right horizontal shifting is needed
+                */
                 if (i < index1) {
+                    /*
+                        Similar to horizontal shifting, vertical shifting is also required on certain cases
+                        If the current row j is less than index1, no vertical shifting needed
+                        If the current row j is between index1 and index2-1, 1 down vertical shifting is needed
+                        If the current row j is more than or equal to index2-1, 2 down vertical shifting is needed
+                    */
                     if (j < index1) { updatedDist[j][i] = dist_array[j][i]; updatedDist[i][j] = dist_array[j][i]; }
                     if (j >= index1) { updatedDist[j][i] = dist_array[j+1][i]; updatedDist[i][j] = dist_array[j+1][i]; }
                     if (j >= index2-1) { updatedDist[j][i] = dist_array[j+2][i]; updatedDist[i][j] = dist_array[j+2][i]; }
@@ -176,23 +178,26 @@ Dendrogram LanceWilliamsHAC(Graph g, int method) {
                 }
             }
         }
+        // Copy updated matrix to the original distance matrix
         for(int i = 0; i < matSize; i++) {
             for(int j = 0; j < matSize; j++){
                 dist_array[j][i] = updatedDist[j][i];
             }
         }
+        // Free the created updated distance matrix
         for(int i = 0; i < matSize; i++){
             free(updatedDist[i]);
         }
         free(updatedDist);
-        PrintDistArray(dist_array , matSize);
+
     }
     
-    // Free array
+    // Free original distance matrix
     for(int i = 0; i < numVerticies(g); i++){
         free(dist_array[i]);
     }
     free(dist_array);
+    // Return the dengrogram at index 0
     return dendA[0];
 }
 
@@ -214,23 +219,34 @@ static double ** InitializeDistArray(Graph g) {
     // Calculate distance between vertices i-j
     // according to given distance matrix
     for(int i = 0; i < numVertices(g); i++) {
-        AdjList curr = outIncident(g,i);
-        AdjList curr1 = inIncident(g,i);
-        while(curr != NULL) {
-            float distance =  1 / (float) curr->weight;
-            if(dist[i][curr->w] > distance || dist[curr->w][i] > distance) {
-                dist[i][curr->w] = distance;
-                dist[curr->w][i] = distance;
+        AdjList currOut = outIncident(g,i);
+        AdjList currIn = inIncident(g,i);
+        /*
+            Grab outlinks and inlinks of vertex in question (i)
+            For every outlinks and inlinks find its distance and update the distance matrix
+            accordingly
+        */
+        while(currOut != NULL) {
+            float distance =  1 / (float) currOut->weight;
+            // Choosing higher weight implies smaller distance
+            // Compare the current distance in the cell and update it if the calculated
+            // distance is smaller
+            if(dist[i][currOut->w] > distance || dist[currOut->w][i] > distance) {
+                dist[i][currOut->w] = distance;
+                dist[currOut->w][i] = distance;
             }
-            curr = curr->next;
+            currOut = currOut->next;
         }
-        while(curr1 != NULL) {
-            float distance =  1 / (float) curr1->weight;
-            if(dist[i][curr1->w] > distance || dist[curr1->w][i] > distance) {
-                dist[i][curr1->w] = distance;
-                dist[curr1->w][i] = distance;
+        while(currIn != NULL) {
+            float distance =  1 / (float) currIn->weight;
+            // Choosing higher weight implies smaller distance
+            // Compare the current distance in the cell and update it if the calculated
+            // distance is smaller
+            if(dist[i][currIn->w] > distance || dist[currIn->w][i] > distance) {
+                dist[i][currIn->w] = distance;
+                dist[currIn->w][i] = distance;
             }
-            curr1 = curr1->next;
+            currIn = currIn->next;
         }
     }
     return dist;
@@ -245,6 +261,7 @@ static Dendrogram MakeDNode (Vertex v) {
 }
 
 static Dendrogram MakeEmptyDNode () {
+    // Set vertex to -1 because it does not matter
     Dendrogram new_DNode = malloc(sizeof(struct DNode));
     new_DNode->vertex = -1;
     new_DNode->left = NULL;
@@ -252,12 +269,8 @@ static Dendrogram MakeEmptyDNode () {
     return new_DNode;
 }
 
-// static void PrintDendArray (Dendrogram * D , int size) {
-//     for(int i = 0; i < size; i++) {
-//         printf("VERTEX : %d\n" , D[i]->vertex);
-//     }
-// }
 
+// Function to free dendrogram
 void freeDendrogram(Dendrogram d) {
     if(d != NULL) {
         freeDendrogram(d->left);
