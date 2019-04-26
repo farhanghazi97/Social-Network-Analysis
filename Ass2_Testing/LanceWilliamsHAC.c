@@ -1,5 +1,6 @@
-/*Lance-Williams Algorithm for Agglomerative Clustering
-  Written by
+/*
+  Lance-Williams Algorithm for Agglomerative Clustering
+  Written by Kanadech Jirapongtanavech (z5176970) & Farhan Ghazi (z5199861)
   COMP2521 2019 T1
 */
 #include <stdlib.h>

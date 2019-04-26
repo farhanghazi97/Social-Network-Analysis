@@ -1,4 +1,9 @@
-// PQ ADT interface for Ass2 (COMP2521)
+/*
+  Priotity Queue ADT Interface for Assignment 2
+  Written by Kanadech Jirapongtanavech (z5176970) & Farhan Ghazi (z5199861)
+  COMP2521 2019 T1
+*/
+
 #include "PQ.h"
 #include <stdlib.h>
 #include <stdio.h>

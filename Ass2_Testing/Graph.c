@@ -1,3 +1,9 @@
+/* 
+   Graph ADT Interface for Assignment 2
+   Written by Kanadech Jirapongtanavech (z5176970) and Farhan Ghazi (z5199861)
+   COMP2521 T1 2019
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
