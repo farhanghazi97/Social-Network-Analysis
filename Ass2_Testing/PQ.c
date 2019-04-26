@@ -22,8 +22,11 @@ typedef struct Node {
 
 // ---------- STATIC FUNCTIONS START ---------- //
 
+// Function to create a new Node struct
 static Link NewNode (void);
+// Function to search PQ for given key
 static void searchPQ(PQ pq, int key);
+// Function that implements INSERTION SORT to sort given PQ
 static void sortPQ(PQ pq); 
 
 // ---------- STATIC FUNCTIONS END ---------- //

@@ -12,6 +12,7 @@ typedef struct PredNode * PNode;
 
 // ---------- STATIC FUNCTIONS START ----------
 
+// Function to create new PredNode struct
 static PNode NewPredNode (int val);
 
 // ---------- STATIC FUNCTIONS END ----------

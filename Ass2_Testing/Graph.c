@@ -23,8 +23,11 @@ typedef struct _adjList {
 
 // ---------- STATIC FUNCTIONS START ---------- //
 
+// Function to create a new _adjList struct
 static AdjNode newAdjList (void);
+// Function to create a new struct _adjListNode struct
 static AdjList newAdjNode (int dest , int weight);
+// Function to grab vertex associated with AdjList struct
 static int NodeDest (AdjList L);
 
 // ---------- STATIC FUNCTIONS END ---------- //
