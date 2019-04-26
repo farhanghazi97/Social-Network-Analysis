@@ -19,7 +19,7 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	ItemPQ item;
 
 	// Visited array for Dijkstra
-	int *visited = calloc(numVerticies(g),sizeof(int));
+	int *visited = calloc(numVerticies(g) , sizeof(int));
 
 	// Initialize static struct and initialize data associated with it
 	ShortestPaths static_SP;
@@ -27,15 +27,15 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 	static_SP.src = v;
 
 	// Set dist values to a very large value mimicking infinity
-	static_SP.dist = malloc(numVerticies(g)*sizeof(int));
+	static_SP.dist = malloc(numVerticies(g) * sizeof(int));
 	for(int i = 0; i < static_SP.noNodes; i++) {
 		static_SP.dist[i] = 1000000;
 	}
 
 	// Initialize all pred pointers to intially point to NULL
 	static_SP.pred = malloc(numVerticies(g)*sizeof(struct PredNode*));
-	for (int i=0; i<numVerticies(g);i++){
-		static_SP.pred[i]=NULL;
+	for (int i = 0; i < numVerticies(g); i++){
+		static_SP.pred[i] = NULL;
 	}
 
 	// Add souce vertex to priority queue with shortest distance 0
@@ -54,24 +54,24 @@ ShortestPaths dijkstra(Graph g, Vertex v) {
 		ItemPQ vertex = dequeuePQ(new_PQ);
 		if (!visited[vertex.key]) {
 			visited[vertex.key] = 1;
-			AdjList curr = outIncident(g , vertex.key);
-			while(curr) {
-				temp.key = curr->w;
-				temp.value = curr->weight;
+			AdjList currVertex = outIncident(g , vertex.key);
+			while(currVertex) {
+				temp.key = currVertex->w;
+				temp.value = currVertex->weight;
 				if(static_SP.dist[temp.key] >= static_SP.dist[vertex.key] + temp.value) {
 					if (static_SP.dist[temp.key] == static_SP.dist[vertex.key] + temp.value){
-						PNode curr1 = static_SP.pred[temp.key];
-						while(curr1->next != NULL){
-							curr1 = curr1->next;
+						PNode PredVertex = static_SP.pred[temp.key];
+						while(PredVertex->next != NULL){
+							PredVertex = PredVertex->next;
 						}
-						curr1->next = NewPredNode(vertex.key);
+						PredVertex->next = NewPredNode(vertex.key);
 					} else {
 						static_SP.pred[temp.key] = NewPredNode(vertex.key);
 						static_SP.dist[temp.key] = static_SP.dist[vertex.key] + temp.value;
 						addPQ(new_PQ , temp);
 					}
 				}
-				curr = curr->next;
+				currVertex = currVertex->next;
 			}
 		}
 	}
@@ -114,7 +114,12 @@ void showShortestPaths(ShortestPaths paths) {
 
 // Helper function to free all data associated with ShortestPath struct
 void freeShortestPaths(ShortestPaths paths) {
+	
+	// Free dist array in paths struct
 	free(paths.dist);
+	
+	// Iterate over every non-NULL linked list in pred array 
+	// and free data associated with them
 	for(int i = 0; i < paths.noNodes; i++) {
 		PNode curr = paths.pred[i];
 		if(curr != NULL) {
@@ -125,6 +130,8 @@ void freeShortestPaths(ShortestPaths paths) {
 			}
 		}
 	}
+
+	// Free pred array in paths struct
 	free(paths.pred);
 }
 

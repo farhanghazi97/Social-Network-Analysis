@@ -23,8 +23,9 @@ typedef struct Node {
 static Link NewNode (void);
 
 static void searchPQ(PQ pq, int key);
-static void sortPQ(PQ pq); // TODO
+static void sortPQ(PQ pq); 
 
+// Allocate space for a new PQ struct
 PQ newPQ() {
 	PQ new_PQ = malloc(sizeof(struct PQRep));
 	assert(new_PQ != NULL);
@@ -37,12 +38,15 @@ PQ newPQ() {
 	return new_PQ;
 }
 
+// Allocate space to make a new Node struct 
+// comprising of an ItemPQ and Link
 static Link NewNode (void) {
 	Link new_node = malloc(sizeof(struct Node));
 	new_node->next = NULL;
 	return new_node;
 }
 
+// Boolean function to check if a PQ is empty
 int PQEmpty(PQ p) {
 	if(p->size == 0) {
 		return 1;
@@ -50,6 +54,7 @@ int PQEmpty(PQ p) {
 	return 0;
 }
 
+// Enqueue function for PQ
 void addPQ(PQ pq, ItemPQ element) {
 
 	if(PQEmpty(pq)) {
@@ -102,6 +107,7 @@ void addPQ(PQ pq, ItemPQ element) {
 	}
 }
 
+// Dequeue function for PQ
 ItemPQ dequeuePQ(PQ pq) {
 	assert(pq->front != NULL);
 	ItemPQ item = pq->front->val;
@@ -115,6 +121,7 @@ ItemPQ dequeuePQ(PQ pq) {
 	return item;
 }
 
+// Helpter function to rearrange a PQ
 void updatePQ(PQ pq, ItemPQ element) {
 	searchPQ(pq, element.key);
 	if(!pq->found){
@@ -126,6 +133,7 @@ void updatePQ(PQ pq, ItemPQ element) {
 	}
 }
 
+// Helper function to display PQ
 void showPQ(PQ pq) {
 	Link curr = pq->front;
 	while(curr != NULL) {
@@ -134,6 +142,7 @@ void showPQ(PQ pq) {
 	}
 }
 
+// Helper function to search for given key in PQ
 static void searchPQ(PQ pq,int key){
 	pq->search = pq->front;
 	while(pq->search != NULL){
@@ -145,13 +154,17 @@ static void searchPQ(PQ pq,int key){
 	}
 }
 
+// Helper function to associated sort function to swap given pointers 
 static void swap(Link p1 , Link p2) {
 	ItemPQ temp = p1->val;
 	p1->val = p2->val;
 	p2->val = temp;
 }
 
+// A sort helper function that implements 
+// INSERTION SORT to reorder items in PQ
 static void sortPQ(PQ pq) {
+	
 	Link start = pq->front;
 	Link traverse;
 	Link min;
@@ -170,6 +183,7 @@ static void sortPQ(PQ pq) {
 	}
 }
 
+// Helper function to free all data associated with PQ
 void freePQ(PQ pq) {
 	if(pq != NULL) {
 		Link curr = pq->front;
