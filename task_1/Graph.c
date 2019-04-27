@@ -7,6 +7,7 @@
 
 // Struct representing Graph
 typedef struct GraphRep {
+	int nV;
 	AdjList L [MAX_NODES];
 	AdjNode OutLinks [MAX_NODES];
 	AdjNode InLinks [MAX_NODES];
@@ -38,21 +39,23 @@ typedef struct EdgeRep {
 } EdgeRep;
 
 // Construct graph from array of edge objects
-Graph newGraph(Edge * edges , int no_of_edges) {
+Graph newGraph(Edge * edges , int no_of_edges , int noNodes) {
 
 	Graph new_graph = malloc(sizeof(struct GraphRep));
 	assert(new_graph != NULL);
 
+	new_graph->nV = noNodes;
+
 	// Initialize OutLinks array to NULL pointers
-	for(int i = 0; i < MAX_NODES; i++) {
+	for(int i = 0; i < noNodes; i++) {
 		new_graph->OutLinks[i] = NULL;
 	}
 	// Initialize InLinks array to NULL pointers
-	for(int i = 0; i < MAX_NODES; i++) {
+	for(int i = 0; i < noNodes; i++) {
 		new_graph->InLinks[i]= NULL;
 	}
 	// Initialize Adjacency List Tracker 
-	for(int i = 0; i < MAX_NODES; i++) {
+	for(int i = 0; i < noNodes; i++) {
 		new_graph->L[i] = newAdjList();
 	}
 
@@ -206,7 +209,7 @@ int EdgeWeight (Edge e) {
 // Display graph structure
 void showGraph(Graph g) {
 
-	for(int i = 0; i <= MAX_NODES; i++) {
+	for(int i = 0; i < g->nV; i++) {
 		AdjNode curr_out = g->OutLinks[i];
 		/*if(g->L[i]->out_size > 0) {
 			printf("OutLinks size: %d\n" , g->L[i]->out_size);

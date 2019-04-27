@@ -65,11 +65,28 @@ void displayShortestPathsStruct(ShortestPaths sps){
 	}
 	printf("  Preds\n");
 	for (i = 0; i < sps.noNodes; i++) {
+		int numPreds = 0;
+		int preds[sps.noNodes];
 		printf("    %d : ",i);
-		PredNode* curr = sps.pred[i];
-		while(curr!=NULL) {
-			printf("[%d]->",curr->v);
+		PredNode *curr = sps.pred[i];
+		while (curr != NULL && numPreds < sps.noNodes) {
+			preds[numPreds++] = curr->v;
 			curr = curr->next;
+		}
+
+		// Insertion sort
+		for (int j = 1; j < numPreds; j++) {
+			int temp = preds[j];
+			int k = j;
+			while (preds[k - 1] > temp && k > 0) {
+				preds[k] = preds[k - 1];
+				k--;
+			}
+			preds[k] = temp;
+		}
+
+		for (int j = 0; j < numPreds; j++) {
+			printf("[%d]->", preds[j]);
 		}
 		printf("NULL\n");
 	}

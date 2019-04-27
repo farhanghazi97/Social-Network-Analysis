@@ -11,5 +11,7 @@ PQ.o: PQ.c PQ.h
 
 testPQself.o: testPQself.c PQ.h
 
+Djikstra.o: Djikstra.c Djikstra.h
+
 clean:
 	rm -f $(BINS) *.o core

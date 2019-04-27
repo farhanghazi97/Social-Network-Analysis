@@ -28,7 +28,7 @@ int main(void) {
 	}
 
 	// Using data from the array of edges , we construct graph
-	Graph new_graph = newGraph(edges , number_of_edges);
+	Graph new_graph = newGraph(edges , number_of_edges , 10);
 
 	printf("// ---------- INITIAL STATE OF GRAPH ---------- //\n\n");
 

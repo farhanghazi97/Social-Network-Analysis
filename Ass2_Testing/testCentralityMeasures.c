@@ -1,6 +1,6 @@
 /*
  * testCentralityMeasures.c
- * Written By Zain Afzal for cs2521 
+ * Written By Zain Afzal for cs2521
  *
  * Includes basic interface to read a graph in from
  * a file and a measure and calls the related functions
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 	Graph g = readGraph(argv[1]);
-	printf("HASN'T BEEN IMPLEMENTED\n");
+	//printf("HASN'T BEEN IMPLEMENTED\n");
 	if (argv[2][0] == 'd' && argv[2][1] == '\0') {
   	NodeValues val = degreeCentrality(g);
   	showNodeValues(val);

@@ -1,15 +1,23 @@
+/* 
+   Graph ADT Interface for Assignment 2
+   Written by Kanadech Jirapongtanavech (z5176970) and Farhan Ghazi (z5199861)
+   COMP2521 T1 2019
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
 #include "Graph.h"
+
+typedef struct _adjList *AdjNode;
 
 // Struct representing Graph
 typedef struct GraphRep {
-	AdjList L [MAX_NODES];
-	AdjNode OutLinks [MAX_NODES];
-	AdjNode InLinks [MAX_NODES];
+	int nV;
+	AdjNode * L;
+	AdjList * OutLinks;
+	AdjList * InLinks;
 } GraphRep;
 
 // Struct to keep track of length of adjacency
@@ -17,67 +25,39 @@ typedef struct GraphRep {
 typedef struct _adjList {
 	int out_size;
 	int in_size;
-	AdjNode first;
-	AdjNode last;
 } adjList;
 
-// Struct representing individual nodes
-// that populate the Graph struct
-typedef struct _adjListNode {
-   Vertex      dest;
-   int         weight;
-   AdjNode     next;
-} adjListNode;
+// ---------- STATIC FUNCTIONS START ---------- //
 
-// Struct representing the connections
-// between nodes and the weight between them
-typedef struct EdgeRep {
-	int source;
-	int dest;
-	int weight;
-} EdgeRep;
+// Function to create a new _adjList struct
+static AdjNode newAdjList (void);
+// Function to create a new struct _adjListNode struct
+static AdjList newAdjNode (int dest , int weight);
+// Function to grab vertex associated with AdjList struct
+static int NodeVertex (AdjList L);
 
-// Construct graph from array of edge objects
-Graph newGraph(Edge * edges , int no_of_edges) {
+// ---------- STATIC FUNCTIONS END ---------- //
+
+// Initialize graph data structure
+Graph newGraph(int noNodes) {
 
 	Graph new_graph = malloc(sizeof(struct GraphRep));
 	assert(new_graph != NULL);
 
-	// Initialize OutLinks array to NULL pointers
-	for(int i = 0; i < MAX_NODES; i++) {
-		new_graph->OutLinks[i] = NULL;
-	}
+	new_graph->nV = noNodes;
+
+    // Initialize OutLinks array to NULL pointers
+	new_graph->OutLinks = malloc(noNodes * sizeof(AdjList));
 	// Initialize InLinks array to NULL pointers
-	for(int i = 0; i < MAX_NODES; i++) {
+	new_graph->InLinks = malloc(noNodes * sizeof(AdjList));
+	// Initialize Adjacency List Tracker
+	new_graph->L = malloc(noNodes * sizeof(AdjNode));
+	
+	// Set pointers to NULL
+	for(int i = 0; i < noNodes; i++) {
+		new_graph->OutLinks[i] = NULL;
 		new_graph->InLinks[i]= NULL;
-	}
-	// Initialize Adjacency List Tracker 
-	for(int i = 0; i < MAX_NODES; i++) {
 		new_graph->L[i] = newAdjList();
-	}
-
-	// While iterating over the edge objects in array,
-	// modify graph structure.
-	for(int i = 0; i < no_of_edges; i++) {
-
-		int src = EdgeSource(edges[i]);
-		int dest = EdgeDest(edges[i]);
-		int weight = EdgeWeight(edges[i]);
-
-		// Set up links between top level vertex array
-		// and the vertices they connect to
-		AdjNode new_node_out = newAdjNode(dest , weight);
-		new_node_out->next = new_graph->OutLinks[src];
-		new_graph->OutLinks[src] = new_node_out;
-		new_graph->L[src]->out_size++;
-
-		AdjNode new_node_in = newAdjNode(src , weight);
-		new_node_in->next = new_graph->InLinks[dest];
-		new_graph->InLinks[dest] = new_node_in;
-		new_graph->L[dest]->in_size++;
-
-		//Set first to point to head of each adjacency list that is updated
-		new_graph->L[src]->first = new_node_out;
 	}
 
 	// Return updated graph structure
@@ -86,147 +66,60 @@ Graph newGraph(Edge * edges , int no_of_edges) {
 
 
 // Allocate a new Adjacency List Node
-AdjNode newAdjNode (int dest , int weight) {
-	AdjNode new_node = malloc(sizeof(struct _adjListNode));
-	new_node->dest = dest;
+static AdjList newAdjNode (int dest , int weight) {
+	AdjList new_node = malloc(sizeof(struct _adjListNode));
+	new_node->w = dest;
 	new_node->weight = weight;
 	new_node->next = NULL;
 	return new_node;
 }
 
-AdjNode outIncident(Graph g, Vertex v) {
+// Returns list of vertices outgoing from vertex v
+AdjList outIncident(Graph g, Vertex v) {
 	return g->OutLinks[v];
 }
 
-AdjNode inIncident(Graph g , Vertex v) {
+// Return list of vertices incoming to vertex v
+AdjList inIncident(Graph g , Vertex v) {
 	return g->InLinks[v];
 }
 
-// Allocate a new Edge object
-Edge newEdge (int source , int dest , int weight) {
-	Edge new_edge = malloc(sizeof(Edge));
-	assert(new_edge != NULL);
-	new_edge->source = source;
-	new_edge->dest = dest;
-	new_edge->weight = weight;
-	return new_edge;
-}
-
-
 // Allocate a new Adjacency List Tracker object
-AdjList newAdjList (void) {
-	AdjList L = malloc(sizeof(struct _adjList));
+static AdjNode newAdjList (void) {
+	AdjNode L = malloc(sizeof(struct _adjList));
 	L->out_size = 0;
 	L->in_size = 0;
-	L->first = NULL;
-	L->last = NULL;
 	return L;
 }
 
-// Parse input file and grab relevant data
-int * ReadFile (char * filename) {
-
-    int i = 0;
-    int lines = 0;
-
-    // Open file for reading
-	FILE * fp = fopen(filename , "r");
-
-	char buffer[BUFSIZ];
-	if(fp != NULL) {
-		// Determine how many sets of entries there are
-		while(fgets(buffer , BUFSIZ , fp) != NULL) {
-			lines++;
-		}
-		// Malloc enough space to hold just those numbers
-		// where every line has 3 numbers
-		int * array = malloc(lines * 3 * sizeof(int));
-		// Reset file pointer to beginning of file
-		rewind(fp);
-		// Package size of array into array index;
-		array[i] = (lines * 3);
-		i++;
-		// Grab data points from input file and store in array
-		int data;
-		while(fscanf(fp , "%d ,[\n]" , &data) != EOF) {
-			array[i] = data;
-			i++;
-		}
-		// Close file
-		fclose(fp);
-		// return array with data
-		return array;
-
-	} else {
-		//ERROR: File does not exist
-		printf("Could not open file!\n");
-	}
+// Helper function to grab vertex ID of current vertex
+static int NodeVertex (AdjList L) {
+	return L->w;
 }
 
-//  -----------------   HELPER FUNCTIONS START ------------- //
-
-AdjNode * GetConnectionsArray(Graph g) {
-	if(g != NULL) {
-		return g->OutLinks;
-	}
+// Helper function to grab number of total vertices in graph
+int numVerticies(Graph g) {
+	return g->nV;
 }
-
-int NodeDest (AdjNode L) {
-	if(L != NULL) {
-		return L->dest;
-	}
-}
-
-int NodeWeight (AdjNode L) {
-	if(L != NULL) {
-		return L->weight;
-	}
-}
-
-int EdgeSource (Edge e) {
-	if(e != NULL) {
-		return e->source;
-	}
-}
-
-int EdgeDest   (Edge e) {
-	if(e != NULL) {
-		return e->dest;
-	}
-}
-
-int EdgeWeight (Edge e) {
-	if(e != NULL) {
-		return e->weight;
-	}
-}
-
-//  -----------------   HELPER FUNCTIONS END ------------- //
 
 // Display graph structure
 void showGraph(Graph g) {
 
-	for(int i = 0; i <= MAX_NODES; i++) {
-		AdjNode curr_out = g->OutLinks[i];
-		/*if(g->L[i]->out_size > 0) {
-			printf("OutLinks size: %d\n" , g->L[i]->out_size);
-		}
-		if(g->L[i]->in_size > 0) {
-			printf("InLinks size: %d\n" , g->L[i]->in_size);
-		}*/
+	for(int i = 0; i < g->nV; i++) {
+		AdjList curr_out = g->OutLinks[i];
 		if(curr_out != NULL) {
 			printf("OutLinks: ");
 			while(curr_out != NULL) {
-				printf("%d -> %d (%d)  " , i , curr_out->dest , curr_out->weight);
+				printf("%d -> %d (%d)  " , i , curr_out->w , curr_out->weight);
 				curr_out = curr_out->next;
 			}
 			printf("\n");
 		}
-		AdjNode curr_in = g->InLinks[i];
+		AdjList curr_in = g->InLinks[i];
 		if(curr_in != NULL) {
 			printf("InLinks: ");
 			while(curr_in != NULL) {
-				printf("%d <- %d (%d) " , i ,curr_in->dest , curr_in->weight);
+				printf("%d <- %d (%d) " , i ,curr_in->w , curr_in->weight);
 				curr_in = curr_in->next;
 			}
 			printf("\n");
@@ -235,29 +128,15 @@ void showGraph(Graph g) {
 	}
 }
 
-void PrintAdjList(AdjNode List) {
-	if(List != NULL) {
-		AdjNode curr = List;
-		while(curr != NULL) {
-			printf("Vertex: %d | Weight: %d\n" , NodeDest(curr) , NodeWeight(curr));
-			curr = curr->next;
-
-		}
-		printf("\n");
-	} else {
-		printf("Pointer is NULL\n");
-	}
-}
-
 // Appends to appropriate top level adjacency list
-void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
+void insertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 
-	AdjNode new_node_out = newAdjNode(dest , weight);
+	AdjList new_node_out = newAdjNode(dest , weight);
 	new_node_out->next = g->OutLinks[src];
 	g->OutLinks[src] = new_node_out;
 	g->L[src]->out_size++;
 
-	AdjNode new_node_in = newAdjNode(src , weight);
+	AdjList new_node_in = newAdjNode(src , weight);
 	new_node_in->next = g->InLinks[dest];
 	g->InLinks[dest] = new_node_in;
 	g->L[dest]->in_size++;
@@ -265,93 +144,96 @@ void InsertEdge (Graph g, Vertex src, Vertex dest, int weight) {
 }
 
 // Remove an edge from appropriate top level adjacency list
-void RemoveEdge (Graph g, Vertex src, Vertex dest) {
+void removeEdge (Graph g, Vertex src, Vertex dest) {
 
-	// NEED TO RETHINK APPROACH TO MAKING THIS WORK
+	// Introduced a new ((AdjList)) struct (see above)
+	// that will keep track of the length of each individual
+	// adjacency list in array, plus have pointers to head and tail
 
-	// Update - Introduced a new ((AdjList)) struct (see above)
-	//          that will keep track of the length of each individual
-	//			adjacency list in array, plus have pointers to head and tail
+	// Create pointer to iterate over list of outlinks from source node
+	AdjList currVertice_out = g->OutLinks[src];
+	
+	// Create pointer to iterate over list of inlinks to destination node
+	AdjList currVertice_in = g->InLinks[dest];
 
-	AdjNode curr_out = g->OutLinks[src];
-	AdjNode curr_in = g->InLinks[dest];
-
+	// Flag to determine if value to be removed has been found
 	bool found = false;
-	if(curr_out != NULL) {
-		if(NodeDest(curr_out) == dest) {
+	
+	if(currVertice_out != NULL) {
+		if(NodeVertex(currVertice_out) == dest) {
 			// Remove head of list
 			// Update OutLinks list
-			AdjNode temp_1 = curr_out;
-			g->OutLinks[src] = curr_out->next;
+			AdjList temp_1 = currVertice_out;
+			g->OutLinks[src] = currVertice_out->next;
 			free(temp_1);
 			g->L[src]->out_size--;
 			// Parallel update to InLinks List
-			if(curr_in != NULL) {
-				if(NodeDest(curr_in) == src) {
-					AdjNode temp_2 = curr_in;
-					g->InLinks[dest] = curr_in->next;
+			if(currVertice_in != NULL) {
+				if(NodeVertex(currVertice_in) == src) {
+					AdjList temp_2 = currVertice_in;
+					g->InLinks[dest] = currVertice_in->next;
 					free(temp_2);
 					g->L[dest]->in_size--;
 				} else {
-					while(curr_in->next != NULL) {
-						if(NodeDest(curr_in->next) == src) {
-							AdjNode temp = curr_in->next;
-							curr_in->next = NULL;
+					while(currVertice_in->next != NULL) {
+						if(NodeVertex(currVertice_in->next) == src) {
+							AdjList temp = currVertice_in->next;
+							currVertice_in->next = NULL;
 							free(temp);
 							g->L[dest]->in_size--;
 							break;
 						}
-						curr_in = curr_in->next;
+						currVertice_in = currVertice_in->next;
 					}
 				}
 			}
 		} else {
 			int size = g->L[src]->out_size;
 			int i = 1;
-			while(curr_out->next != NULL) {
-				if(NodeDest(curr_out->next) == dest) {
+			while(currVertice_out->next != NULL) {
+				if(NodeVertex(currVertice_out->next) == dest) {
 					if(i + 1 == size) {
 						// Remove tail of list
-						AdjNode temp = curr_out->next;
-						curr_out->next = NULL;
+						AdjList temp = currVertice_out->next;
+						currVertice_out->next = NULL;
 						free(temp);
 						g->L[src]->out_size--;
 						found = true;
 						break;
 					} else {
 						// Remove between head and tail of list
-						AdjNode temp_1 = curr_out->next;
-						curr_out->next = curr_out->next->next;
+						AdjList temp_1 = currVertice_out->next;
+						currVertice_out->next = currVertice_out->next->next;
 						free(temp_1);
 						g->L[src]->out_size--;
 						found = true;
 						break;
 					}
 				}
-				curr_out = curr_out->next;
+				currVertice_out = currVertice_out->next;
 				i++;
 			}
 			int size_in = g->L[dest]->in_size;
 			int j = 1;
-			while(curr_in != NULL) {
-				if(NodeDest(curr_in) == src) {
-					AdjNode temp = curr_in;
-					g->InLinks[dest] = curr_in->next;
+			while(currVertice_in != NULL) {
+				if(NodeVertex(currVertice_in) == src) {
+					AdjList temp = currVertice_in;
+					g->InLinks[dest] = currVertice_in->next;
 					free(temp);
 					g->L[dest]->in_size--;
 					break;
 				} else {
-					while(curr_in->next != NULL) {
-						if(NodeDest(curr_in->next) == src){
+					while(currVertice_in->next != NULL) {
+						if(NodeVertex(currVertice_in->next) == src){
 							if(j + 1 == size_in) {
-								AdjNode temp = curr_in->next;
-								curr_in->next = NULL;
+								AdjList temp = currVertice_in->next;
+								currVertice_in->next = NULL;
 								free(temp);
 								g->L[dest]->in_size--;
 								break;
 							} else {
-								AdjNode temp_1 = curr_in->next;
-								curr_in->next = curr_in->next->next;
+								AdjList temp_1 = currVertice_in->next;
+								currVertice_in->next = currVertice_in->next->next;
 								free(temp_1);
 								g->L[dest]->in_size--;
 								break;
@@ -359,7 +241,7 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 						}
 					}
 				}
-				curr_in = curr_in->next;
+				currVertice_in = currVertice_in->next;
 			}
 			if(!found) printf("Connection does not exist!\n");
 		}
@@ -367,11 +249,11 @@ void RemoveEdge (Graph g, Vertex src, Vertex dest) {
 }
 
 // Determines if vertices are adjacent to each other
-bool Adjacent (Graph g, Vertex src, Vertex dest) {
-	AdjNode curr = g->OutLinks[src];
+bool adjacent (Graph g, Vertex src, Vertex dest) {
+	AdjList curr = g->OutLinks[src];
 	bool flag = false;
 	while(curr != NULL) {
-		if(NodeDest(curr) == dest) {
+		if(NodeVertex(curr) == dest) {
 			flag = true;
 			break;
 		}
@@ -380,40 +262,41 @@ bool Adjacent (Graph g, Vertex src, Vertex dest) {
 	return flag;
 }
 
-// Free all memory associated with Edges array
-void FreeEdgesArray(Edge * edges , int NEdges) {
-	for(int i = 0; i < NEdges; i++) {
-		free(edges[i]);
-	}
-}
-
 // Free all the memory associated with the graph
-void FreeGraph(Graph g) {
+void freeGraph(Graph g) {
 	if(g != NULL) {
 		//Free OutLinks array
-		for(int i = 0; i < MAX_NODES; i++) {
-			AdjNode curr = g->OutLinks[i];
-			while(curr != NULL) {
-				AdjNode temp = curr;
-				free(temp);
-				curr = curr->next;
+		for(int i = 0; i < g->nV; i++) {
+			AdjList out_curr = g->OutLinks[i];
+			if(out_curr != NULL) {
+				while(out_curr->next != NULL) {
+					AdjList out_temp = out_curr;
+					free(out_temp);
+					out_curr = out_curr->next;
+				}
 			}
 		}
 		//Free AdjList Tracker array
-		for(int i = 0; i < MAX_NODES; i++) {
-			AdjList temp = g->L[i];
-			free(temp);
-		}
-		// Free InLinks array
-		for(int i = 0; i < MAX_NODES; i++) {
-			AdjNode curr = g->InLinks[i];
-			while(curr != NULL) {
-				AdjNode temp = curr;
+		for(int i = 0; i < g->nV; i++) {
+			AdjNode temp = g->L[i];
+			if(temp != NULL) {
 				free(temp);
-				curr = curr->next;
 			}
 		}
+		// Free InLinks array
+		for(int i = 0; i < g->nV; i++) {
+			AdjList in_curr = g->InLinks[i];
+			if(in_curr != NULL) {
+				while(in_curr->next != NULL) {
+					AdjList in_temp = in_curr;
+					free(in_temp);
+					in_curr = in_curr->next;
+				}
+			}
+		}
+		// Free graph
+		free(g);
+	} else {
+		return;
 	}
-	// Free graph
-	free(g);
 }
