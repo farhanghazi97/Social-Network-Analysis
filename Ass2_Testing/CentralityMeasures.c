@@ -13,6 +13,7 @@
 #include "GraphVis.h"
 
 // ---------- STATIC FUNCTIONS START ---------- //
+
 // Calculate number of paths that exist between given nodes
 static double numPath(int s,int t, PredNode **pred);
 

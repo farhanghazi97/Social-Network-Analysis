@@ -34,7 +34,7 @@ static AdjNode newAdjList (void);
 // Function to create a new struct _adjListNode struct
 static AdjList newAdjNode (int dest , int weight);
 // Function to grab vertex associated with AdjList struct
-static int NodeDest (AdjList L);
+static int NodeVertex (AdjList L);
 
 // ---------- STATIC FUNCTIONS END ---------- //
 
@@ -53,6 +53,7 @@ Graph newGraph(int noNodes) {
 	// Initialize Adjacency List Tracker
 	new_graph->L = malloc(noNodes * sizeof(AdjNode));
 	
+	// Set pointers to NULL
 	for(int i = 0; i < noNodes; i++) {
 		new_graph->OutLinks[i] = NULL;
 		new_graph->InLinks[i]= NULL;
@@ -91,8 +92,8 @@ static AdjNode newAdjList (void) {
 	return L;
 }
 
-// Helper function to grab weight of current vertice
-static int NodeDest (AdjList L) {
+// Helper function to grab vertex ID of current vertex
+static int NodeVertex (AdjList L) {
 	return L->w;
 }
 
@@ -159,7 +160,7 @@ void removeEdge (Graph g, Vertex src, Vertex dest) {
 	bool found = false;
 	
 	if(currVertice_out != NULL) {
-		if(NodeDest(currVertice_out) == dest) {
+		if(NodeVertex(currVertice_out) == dest) {
 			// Remove head of list
 			// Update OutLinks list
 			AdjList temp_1 = currVertice_out;
@@ -168,14 +169,14 @@ void removeEdge (Graph g, Vertex src, Vertex dest) {
 			g->L[src]->out_size--;
 			// Parallel update to InLinks List
 			if(currVertice_in != NULL) {
-				if(NodeDest(currVertice_in) == src) {
+				if(NodeVertex(currVertice_in) == src) {
 					AdjList temp_2 = currVertice_in;
 					g->InLinks[dest] = currVertice_in->next;
 					free(temp_2);
 					g->L[dest]->in_size--;
 				} else {
 					while(currVertice_in->next != NULL) {
-						if(NodeDest(currVertice_in->next) == src) {
+						if(NodeVertex(currVertice_in->next) == src) {
 							AdjList temp = currVertice_in->next;
 							currVertice_in->next = NULL;
 							free(temp);
@@ -190,7 +191,7 @@ void removeEdge (Graph g, Vertex src, Vertex dest) {
 			int size = g->L[src]->out_size;
 			int i = 1;
 			while(currVertice_out->next != NULL) {
-				if(NodeDest(currVertice_out->next) == dest) {
+				if(NodeVertex(currVertice_out->next) == dest) {
 					if(i + 1 == size) {
 						// Remove tail of list
 						AdjList temp = currVertice_out->next;
@@ -215,7 +216,7 @@ void removeEdge (Graph g, Vertex src, Vertex dest) {
 			int size_in = g->L[dest]->in_size;
 			int j = 1;
 			while(currVertice_in != NULL) {
-				if(NodeDest(currVertice_in) == src) {
+				if(NodeVertex(currVertice_in) == src) {
 					AdjList temp = currVertice_in;
 					g->InLinks[dest] = currVertice_in->next;
 					free(temp);
@@ -223,7 +224,7 @@ void removeEdge (Graph g, Vertex src, Vertex dest) {
 					break;
 				} else {
 					while(currVertice_in->next != NULL) {
-						if(NodeDest(currVertice_in->next) == src){
+						if(NodeVertex(currVertice_in->next) == src){
 							if(j + 1 == size_in) {
 								AdjList temp = currVertice_in->next;
 								currVertice_in->next = NULL;
@@ -252,7 +253,7 @@ bool adjacent (Graph g, Vertex src, Vertex dest) {
 	AdjList curr = g->OutLinks[src];
 	bool flag = false;
 	while(curr != NULL) {
-		if(NodeDest(curr) == dest) {
+		if(NodeVertex(curr) == dest) {
 			flag = true;
 			break;
 		}
@@ -266,12 +267,12 @@ void freeGraph(Graph g) {
 	if(g != NULL) {
 		//Free OutLinks array
 		for(int i = 0; i < g->nV; i++) {
-			AdjList curr = g->OutLinks[i];
-			if(curr != NULL) {
-				while(curr != NULL) {
-					AdjList temp = curr;
-					free(temp);
-					curr = curr->next;
+			AdjList out_curr = g->OutLinks[i];
+			if(out_curr != NULL) {
+				while(out_curr->next != NULL) {
+					AdjList out_temp = out_curr;
+					free(out_temp);
+					out_curr = out_curr->next;
 				}
 			}
 		}
@@ -284,16 +285,18 @@ void freeGraph(Graph g) {
 		}
 		// Free InLinks array
 		for(int i = 0; i < g->nV; i++) {
-			AdjList curr = g->InLinks[i];
-			if(curr != NULL) {
-				while(curr != NULL) {
-					AdjList temp = curr;
-					free(temp);
-					curr = curr->next;
+			AdjList in_curr = g->InLinks[i];
+			if(in_curr != NULL) {
+				while(in_curr->next != NULL) {
+					AdjList in_temp = in_curr;
+					free(in_temp);
+					in_curr = in_curr->next;
 				}
 			}
 		}
 		// Free graph
 		free(g);
+	} else {
+		return;
 	}
 }

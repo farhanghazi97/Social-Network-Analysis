@@ -11,6 +11,8 @@
 #include "Graph.h"
 #define numVertices numVerticies
 
+// ---------- STATIC FUNCTIONS START ---------- //
+
 // Function to create initial distance matrix
 static double ** InitializeDistArray(Graph g);
 // Function to create new distance matrix
@@ -19,6 +21,8 @@ static double ** MakeNewDistArray(int size);
 static Dendrogram MakeDNode (Vertex v);
 // Function to make empty dendrogram node during merging
 static Dendrogram MakeEmptyDNode ();
+
+// ---------- STATIC FUNCTIONS END ---------- //
 
 
 /*
