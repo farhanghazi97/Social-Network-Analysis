@@ -48,19 +48,14 @@ Graph newGraph(int noNodes) {
 
     // Initialize OutLinks array to NULL pointers
 	new_graph->OutLinks = malloc(noNodes * sizeof(AdjList));
-	for(int i = 0; i < noNodes; i++) {
-		new_graph->OutLinks[i] = NULL;
-	}
-
 	// Initialize InLinks array to NULL pointers
 	new_graph->InLinks = malloc(noNodes * sizeof(AdjList));
-	for(int i = 0; i < noNodes; i++) {
-		new_graph->InLinks[i]= NULL;
-	}
-
 	// Initialize Adjacency List Tracker
 	new_graph->L = malloc(noNodes * sizeof(AdjNode));
+	
 	for(int i = 0; i < noNodes; i++) {
+		new_graph->OutLinks[i] = NULL;
+		new_graph->InLinks[i]= NULL;
 		new_graph->L[i] = newAdjList();
 	}
 
@@ -272,27 +267,33 @@ void freeGraph(Graph g) {
 		//Free OutLinks array
 		for(int i = 0; i < g->nV; i++) {
 			AdjList curr = g->OutLinks[i];
-			while(curr != NULL) {
-				AdjList temp = curr;
-				free(temp);
-				curr = curr->next;
+			if(curr != NULL) {
+				while(curr != NULL) {
+					AdjList temp = curr;
+					free(temp);
+					curr = curr->next;
+				}
 			}
 		}
 		//Free AdjList Tracker array
 		for(int i = 0; i < g->nV; i++) {
 			AdjNode temp = g->L[i];
-			free(temp);
+			if(temp != NULL) {
+				free(temp);
+			}
 		}
 		// Free InLinks array
 		for(int i = 0; i < g->nV; i++) {
 			AdjList curr = g->InLinks[i];
-			while(curr != NULL) {
-				AdjList temp = curr;
-				free(temp);
-				curr = curr->next;
+			if(curr != NULL) {
+				while(curr != NULL) {
+					AdjList temp = curr;
+					free(temp);
+					curr = curr->next;
+				}
 			}
 		}
+		// Free graph
+		free(g);
 	}
-	// Free graph
-	free(g);
 }
